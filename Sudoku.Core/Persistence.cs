@@ -17,6 +17,8 @@ public static class Persistence
     }
 }
 
+
+
 public class SudokuJsonFile
 {
     public SudokuBoard[] Easy { get; set; } = Array.Empty<SudokuBoard>();
