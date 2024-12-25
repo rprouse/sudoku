@@ -1,7 +1,3 @@
-using FluentAssertions;
-
-using Sudoku.Core;
-
 namespace Sudoku.Tests;
 
 public class PersistenceTests

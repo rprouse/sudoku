@@ -1,5 +1,4 @@
-﻿using Sudoku.Core;
-using Sudoku.Tests.Extensions;
+﻿using Sudoku.Tests.Extensions;
 
 namespace Sudoku.Tests;
 
