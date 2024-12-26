@@ -4,6 +4,9 @@ namespace Sudoku.Tests.Extensions;
 
 public static class TestExtensions
 {
+    public static void ShouldBeEqualTo(this SudokuBoard board, SudokuBoard actual) =>
+        board.Sudoku.ShouldBeEqualTo(actual.Sudoku);
+
     public static void ShouldBeEqualTo(this int[][] board, int[][] actual)
     {
         using (new AssertionScope())
