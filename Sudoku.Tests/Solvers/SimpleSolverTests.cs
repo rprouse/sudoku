@@ -1,6 +1,7 @@
-﻿using Sudoku.Tests.Extensions;
+﻿using Sudoku.Core.Solvers;
+using Sudoku.Tests.Extensions;
 
-namespace Sudoku.Tests;
+namespace Sudoku.Tests.Solvers;
 
 public class SimpleSolverTests
 {

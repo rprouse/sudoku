@@ -1,4 +1,4 @@
-﻿namespace Sudoku.Core;
+﻿namespace Sudoku.Core.Solvers;
 
 public static class SimpleSolver
 {
