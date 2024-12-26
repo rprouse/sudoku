@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sudoku.Tests.Extensions;
+﻿namespace Sudoku.Tests.Extensions;
 
 public class SudokuBoardExtensionsTests : SolverTestsBase
 {
@@ -147,5 +141,27 @@ public class SudokuBoardExtensionsTests : SolverTestsBase
         yield return new object[] { 0, 0, new int[] { 5, 3, 4, 1, 6, 2, 9, 8, 7 } };
         yield return new object[] { 1, 1, new int[] { 7, 6, 2, 8, 1, 3, 5, 9, 4 } };
         yield return new object[] { 2, 2, new int[] { 9, 4, 3, 1, 2, 5, 6, 8, 7 } };
+    }
+
+    [Test]
+    public void CloneArrayShouldReturnNewArray()
+    {
+        var result = UNSOLVED_VALID.CloneArray();
+        result.Should().NotBeSameAs(UNSOLVED_VALID);
+    }
+
+    [Test]
+    public void CloneArrayShouldReturnEqualArray()
+    {
+        var result = UNSOLVED_VALID.CloneArray();
+        result.Should().BeEquivalentTo(UNSOLVED_VALID);
+    }
+
+    [Test]
+    public void ModifyingClonedArrayShouldNotModifyOriginalArray()
+    {
+        var result = UNSOLVED_VALID.CloneArray();
+        result[0][0] = 1;
+        UNSOLVED_VALID[0][0].Should().NotBe(1);
     }
 }

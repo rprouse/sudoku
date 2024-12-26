@@ -8,6 +8,10 @@ public static class SudokuBoardExtensions
     public static bool IsValid(this int[][] sudoku) =>
         IsValidRows(sudoku) && IsValidColumns(sudoku) && IsValidBoxes(sudoku);
 
+
+    public static int[][] CloneArray(this int[][] sudoku) =>
+        sudoku.Select(a => a.Select(i => i).ToArray()).ToArray();
+
     public static bool IsValidRows(this int[][] sudoku)
     {
         for (int i = 0; i < 9; i++)
