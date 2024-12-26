@@ -19,17 +19,20 @@ public static class Persistence
 
 public class SudokuJsonFile
 {
-    public SudokuBoard[] Easy { get; set; } = Array.Empty<SudokuBoard>();
-    public SudokuBoard[] Medium { get; set; } = Array.Empty<SudokuBoard>();
-    public SudokuBoard[] Hard { get; set; } = Array.Empty<SudokuBoard>();
-    public SudokuBoard[] Expert { get; set; } = Array.Empty<SudokuBoard>();
-    public SudokuBoard[] Evil { get; set; } = Array.Empty<SudokuBoard>();
+    public SudokuJsonBoard[] Easy { get; set; } = Array.Empty<SudokuJsonBoard>();
+    public SudokuJsonBoard[] Medium { get; set; } = Array.Empty<SudokuJsonBoard>();
+    public SudokuJsonBoard[] Hard { get; set; } = Array.Empty<SudokuJsonBoard>();
+    public SudokuJsonBoard[] Expert { get; set; } = Array.Empty<SudokuJsonBoard>();
+    public SudokuJsonBoard[] Evil { get; set; } = Array.Empty<SudokuJsonBoard>();
 }
 
-public class SudokuBoard
+public class SudokuJsonBoard
 {
+    public int Id { get; set; }
     public int Iterations { get; set; }
     public int[][] Sudoku { get; set; } = new int[9][];
     public int[][] Solution { get; set; } = new int[9][];
-    public int Id { get; set; }
+
+    public SudokuBoard GetSudokuBoard() => new(Sudoku);
+    public SudokuBoard GetSolutionBoard() => new(Solution);
 }

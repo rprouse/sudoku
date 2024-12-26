@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Sudoku.Core.Solvers;
 
-using Sudoku.Core.Extensions;
-
-namespace Sudoku.Core;
-
-public static class SimpleSolver
+public class SimpleSolver : ISolver
 {
-    public static int[][] Solve(int[][] sudoku)
+    public int Iterations { get; private set; }
+
+    public SudokuBoard Solve(SudokuBoard sudoku)
     {
         return BruteForceSolve(sudoku).FirstOrDefault() ??
             throw new InvalidOperationException("No solution found.");
     }
 
-    private static IEnumerable<int[][]> BruteForceSolve(int[][] sudoku)
+    private IEnumerable<SudokuBoard> BruteForceSolve(SudokuBoard sudoku)
     {
         if (sudoku.IsFilled())
         {
@@ -27,19 +21,20 @@ public static class SimpleSolver
         {
             for (int j = 0; j < 9; j++)
             {
-                if (sudoku[i][j] == 0)
+                if (sudoku.Sudoku[i][j] == 0)
                 {
                     for (int k = 1; k <= 9; k++)
                     {
-                        sudoku[i][j] = k;
+                        sudoku.Sudoku[i][j] = k;
                         if (sudoku.IsValid())
                         {
-                            foreach (int[][] solution in BruteForceSolve(sudoku))
+                            foreach (SudokuBoard solution in BruteForceSolve(sudoku))
                             {
+                                Iterations++;
                                 yield return solution;
                             }
                         }
-                        sudoku[i][j] = 0;
+                        sudoku.Sudoku[i][j] = 0;
                     }
                     yield break;
                 }
