@@ -144,24 +144,24 @@ public class SudokuBoardTests
     }
 
     [Test]
-    public void CloneArrayShouldReturnNewArray()
+    public void NewSudokuShouldReturnNewSudokuArray()
     {
-        var result = UNSOLVED_VALID.CloneArray();
-        result.Should().NotBeSameAs(UNSOLVED_VALID.Sudoku);
+        var result = new SudokuBoard(UNSOLVED_VALID.Sudoku);
+        result.Sudoku.Should().NotBeSameAs(UNSOLVED_VALID.Sudoku);
     }
 
     [Test]
-    public void CloneArrayShouldReturnEqualArray()
+    public void NewSudokuShouldReturnEqualSudoku()
     {
-        var result = UNSOLVED_VALID.CloneArray();
-        result.Should().BeEquivalentTo(UNSOLVED_VALID.Sudoku);
+        var result = new SudokuBoard(UNSOLVED_VALID.Sudoku);
+        result.Sudoku.Should().BeEquivalentTo(UNSOLVED_VALID.Sudoku);
     }
 
     [Test]
-    public void ModifyingClonedArrayShouldNotModifyOriginalArray()
+    public void ModifyingClonedSudokuShouldNotModifyOriginalSudoku()
     {
-        var result = UNSOLVED_VALID.CloneArray();
-        result[0][0] = 1;
+        var result = new SudokuBoard(UNSOLVED_VALID.Sudoku);
+        result.Sudoku[0][0] = 1;
         UNSOLVED_VALID.Sudoku[0][0].Should().NotBe(1);
     }
 

@@ -15,8 +15,13 @@ public class SudokuBoard
 
     public SudokuBoard(int[][] sudoku)
     {
-        Sudoku = sudoku;
+        if (sudoku.Length != 9 || sudoku.Any(r => r.Length != 9))
+        {
+            throw new ArgumentException("Sudoku board must be 9x9.");
+        }
+        Sudoku = CloneArray(sudoku);
     }
+
     public bool IsFilled() =>
         Sudoku.All(r => r.All(c => c > 0 && c <= 9));
 
@@ -24,8 +29,8 @@ public class SudokuBoard
         IsValidRows() && IsValidColumns() && IsValidBoxes();
 
 
-    public int[][] CloneArray() =>
-        Sudoku.Select(a => a.Select(i => i).ToArray()).ToArray();
+    private static int[][] CloneArray(int[][] sudoku) =>
+        sudoku.Select(a => a.Select(i => i).ToArray()).ToArray();
 
     public bool IsValidRows()
     {
