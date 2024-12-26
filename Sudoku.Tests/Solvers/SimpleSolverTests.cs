@@ -5,19 +5,27 @@ namespace Sudoku.Tests.Solvers;
 
 public class SimpleSolverTests
 {
+    private SimpleSolver _solver;
     private SudokuJsonFile _sudokus;
 
     [SetUp]
     public void Setup()
     {
+        _solver = new SimpleSolver();
         _sudokus = Persistence.LoadFromJson("sudokus.json");
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        TestContext.WriteLine($"Iterations: {_solver.Iterations}");
     }
 
     [Test]
     public void SolvingAlreadySolvedSudokuReturnsSameSudoku()
     {
         var easySudoku = _sudokus.Easy[0];
-        var solution = SimpleSolver.Solve(easySudoku.GetSolutionBoard());
+        var solution = _solver.Solve(easySudoku.GetSolutionBoard());
 
         solution.ShouldBeEqualTo(easySudoku.GetSolutionBoard());
     }
@@ -26,7 +34,7 @@ public class SimpleSolverTests
     public void CanSolveEasySudoku()
     {
         var easySudoku = _sudokus.Easy[0];
-        var solution = SimpleSolver.Solve(easySudoku.GetSudokuBoard());
+        var solution = _solver.Solve(easySudoku.GetSudokuBoard());
 
         solution.ShouldBeEqualTo(easySudoku.GetSolutionBoard());
     }
@@ -35,7 +43,7 @@ public class SimpleSolverTests
     public void CanSolveMediumSudoku()
     {
         var easySudoku = _sudokus.Medium[0];
-        var solution = SimpleSolver.Solve(easySudoku.GetSudokuBoard());
+        var solution = _solver.Solve(easySudoku.GetSudokuBoard());
 
         solution.ShouldBeEqualTo(easySudoku.GetSolutionBoard());
     }
@@ -44,7 +52,7 @@ public class SimpleSolverTests
     public void CanSolveHardSudoku()
     {
         var easySudoku = _sudokus.Hard[0];
-        var solution = SimpleSolver.Solve(easySudoku.GetSudokuBoard());
+        var solution = _solver.Solve(easySudoku.GetSudokuBoard());
 
         solution.ShouldBeEqualTo(easySudoku.GetSolutionBoard());
     }
@@ -53,7 +61,7 @@ public class SimpleSolverTests
     public void CanSolveExpertSudoku()
     {
         var easySudoku = _sudokus.Expert[0];
-        var solution = SimpleSolver.Solve(easySudoku.GetSudokuBoard());
+        var solution = _solver.Solve(easySudoku.GetSudokuBoard());
 
         solution.ShouldBeEqualTo(easySudoku.GetSolutionBoard());
     }
@@ -62,7 +70,7 @@ public class SimpleSolverTests
     public void CanSolveEvilSudoku()
     {
         var easySudoku = _sudokus.Evil[0];
-        var solution = SimpleSolver.Solve(easySudoku.GetSudokuBoard());
+        var solution = _solver.Solve(easySudoku.GetSudokuBoard());
 
         solution.ShouldBeEqualTo(easySudoku.GetSolutionBoard());
     }

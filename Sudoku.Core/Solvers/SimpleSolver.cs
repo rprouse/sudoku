@@ -1,14 +1,16 @@
 ﻿namespace Sudoku.Core.Solvers;
 
-public static class SimpleSolver
+public class SimpleSolver : ISolver
 {
-    public static SudokuBoard Solve(SudokuBoard sudoku)
+    public int Iterations { get; private set; }
+
+    public SudokuBoard Solve(SudokuBoard sudoku)
     {
         return BruteForceSolve(sudoku).FirstOrDefault() ??
             throw new InvalidOperationException("No solution found.");
     }
 
-    private static IEnumerable<SudokuBoard> BruteForceSolve(SudokuBoard sudoku)
+    private IEnumerable<SudokuBoard> BruteForceSolve(SudokuBoard sudoku)
     {
         if (sudoku.IsFilled())
         {
@@ -28,6 +30,7 @@ public static class SimpleSolver
                         {
                             foreach (SudokuBoard solution in BruteForceSolve(sudoku))
                             {
+                                Iterations++;
                                 yield return solution;
                             }
                         }
