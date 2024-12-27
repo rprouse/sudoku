@@ -28,7 +28,6 @@ public class SudokuBoard
     public bool IsValid() =>
         IsValidRows() && IsValidColumns() && IsValidBoxes();
 
-
     private static int[][] CloneArray(int[][] sudoku) =>
         sudoku.Select(a => a.Select(i => i).ToArray()).ToArray();
 

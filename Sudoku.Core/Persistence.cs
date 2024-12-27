@@ -35,4 +35,6 @@ public class SudokuJsonBoard
 
     public SudokuBoard GetSudokuBoard() => new(Sudoku);
     public SudokuBoard GetSolutionBoard() => new(Solution);
+
+    override public string ToString() => $"Sudoku: {Id}, Iterations: {Iterations}";
 }
