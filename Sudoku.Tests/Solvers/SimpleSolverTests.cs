@@ -3,10 +3,13 @@ using Sudoku.Tests.Extensions;
 
 namespace Sudoku.Tests.Solvers;
 
+[Parallelizable(ParallelScope.All)]
 public class SimpleSolverTests
 {
     private ISolver _solver;
     private SudokuJsonFile _sudokus;
+
+    private static readonly SudokuJsonFile SUDOKUS = Persistence.LoadFromJson("sudokus.json");
 
     [SetUp]
     public void Setup()
@@ -91,4 +94,20 @@ public class SimpleSolverTests
 
         solution.ShouldBeEqualTo(easySudoku.GetSolutionBoard());
     }
+
+    [Explicit("This test is too slow to run on every build.")]
+    [TestCaseSource(nameof(SudokuBoards))]
+    public void CanSolveAllSudokus(SudokuJsonBoard board)
+    {
+        var solution = _solver.Solve(board.GetSudokuBoard());
+
+        solution.ShouldBeEqualTo(board.GetSolutionBoard());
+    }
+
+    public static IEnumerable<SudokuJsonBoard> SudokuBoards() =>
+        SUDOKUS.Easy
+            .Union(SUDOKUS.Medium)
+            .Union(SUDOKUS.Hard)
+            .Union(SUDOKUS.Expert)
+            .Union(SUDOKUS.Evil);
 }
