@@ -4,11 +4,24 @@ public class SimpleSolver : ISolver
 {
     public int Iterations { get; private set; }
 
-    public SudokuBoard Solve(SudokuBoard sudoku)
+    public bool IsUnique(SudokuBoard sudoku)
     {
-        return BruteForceSolve(sudoku).FirstOrDefault() ??
-            throw new InvalidOperationException("No solution found.");
+        Iterations = 0;
+        var solutions = BruteForceSolve(sudoku).Take(2).ToList();
+        if (solutions.Count == 1)
+        {
+            return true;
+        }
+        if (solutions.Count > 1)
+        {
+            return false;
+        }
+        throw new InvalidOperationException("No solution found.");
     }
+
+    public SudokuBoard Solve(SudokuBoard sudoku) =>
+        BruteForceSolve(sudoku).FirstOrDefault() ??
+            throw new InvalidOperationException("No solution found.");
 
     private IEnumerable<SudokuBoard> BruteForceSolve(SudokuBoard sudoku)
     {
@@ -28,10 +41,10 @@ public class SimpleSolver : ISolver
                         sudoku.Sudoku[i][j] = k;
                         if (sudoku.IsValid())
                         {
+                            Iterations++;
                             foreach (SudokuBoard solution in BruteForceSolve(sudoku))
                             {
-                                Iterations++;
-                                yield return solution;
+                                yield return new SudokuBoard(solution.Sudoku);
                             }
                         }
                         sudoku.Sudoku[i][j] = 0;

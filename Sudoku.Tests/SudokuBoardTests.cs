@@ -165,7 +165,6 @@ public class SudokuBoardTests
         UNSOLVED_VALID.Sudoku[0][0].Should().NotBe(1);
     }
 
-
     public static readonly SudokuBoard UNSOLVED_VALID = new(
     [
         [ 5, 3, 4, 9, 2, 0, 7, 0, 0 ],

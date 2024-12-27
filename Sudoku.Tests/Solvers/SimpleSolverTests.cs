@@ -5,7 +5,7 @@ namespace Sudoku.Tests.Solvers;
 
 public class SimpleSolverTests
 {
-    private SimpleSolver _solver;
+    private ISolver _solver;
     private SudokuJsonFile _sudokus;
 
     [SetUp]
@@ -28,6 +28,23 @@ public class SimpleSolverTests
         var solution = _solver.Solve(easySudoku.GetSolutionBoard());
 
         solution.ShouldBeEqualTo(easySudoku.GetSolutionBoard());
+    }
+
+    [Test]
+    public void SolvingUniqueSudokuReturnsOneSolution()
+    {
+        var sudoku = _sudokus.Easy[0];
+
+        _solver.IsUnique(sudoku.GetSudokuBoard()).Should().BeTrue();
+    }
+
+    [Test]
+    public void SolvingNonuniqueSudokuReturnsMoreThanOneSolution()
+    {
+        SudokuBoard sudoku = _sudokus.Evil[0].GetSudokuBoard();
+        sudoku.Sudoku[0][0] = 0;
+
+        _solver.IsUnique(sudoku).Should().BeFalse();
     }
 
     [Test]
