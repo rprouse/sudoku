@@ -61,21 +61,11 @@ public class SudokuBoard
         return clone;
     }
 
-    private IEnumerable<int> Row(int row)
-    {
-        for (int col = 0; col < 9; col++)
-        {
-            yield return Sudoku[row, col];
-        }
-    }
+    private IEnumerable<int> Row(int row) =>
+        Enumerable.Range(0, 9).Select(col => Sudoku[row, col]);
 
-    private IEnumerable<int> Column(int col)
-    {
-        for (int row = 0; row < 9; row++)
-        {
-            yield return Sudoku[row, col];
-        }
-    }
+    private IEnumerable<int> Column(int col) =>
+        Enumerable.Range(0, 9).Select(row => Sudoku[row, col]);
 
     public bool IsValidRows()
     {
