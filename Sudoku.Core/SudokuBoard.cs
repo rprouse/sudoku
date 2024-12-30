@@ -2,27 +2,23 @@
 
 public class SudokuBoard
 {
-    private int[][] Sudoku { get; }
+    private int[,] Sudoku { get; }
 
     public int this[int row, int column]
     {
         get
         {
-            return Sudoku[row][column];
+            return Sudoku[row, column];
         }
         set
         {
-            Sudoku[row][column] = value;
+            Sudoku[row, column] = value;
         }
     }
 
     public SudokuBoard()
     {
-        Sudoku = new int[9][];
-        for (int i = 0; i < 9; i++)
-        {
-            Sudoku[i] = new int[9];
-        }
+        Sudoku = new int[9, 9];
     }
 
     public SudokuBoard(SudokuBoard copy)
@@ -32,28 +28,61 @@ public class SudokuBoard
 
     public SudokuBoard(int[][] sudoku)
     {
-        if (sudoku.Length != 9 || sudoku.Any(r => r.Length != 9))
-        {
-            throw new ArgumentException("Sudoku board must be 9x9.");
-        }
         Sudoku = CloneArray(sudoku);
     }
 
     public bool IsFilled() =>
-        Sudoku.All(r => r.All(c => c > 0 && c <= 9));
+        Sudoku.Cast<int>().All(c => c > 0 && c <= 9);
 
     public bool IsValid() =>
         IsValidRows() && IsValidColumns() && IsValidBoxes();
 
-    private static int[][] CloneArray(int[][] sudoku) =>
-        sudoku.Select(a => a.Select(i => i).ToArray()).ToArray();
+    private static int[,] CloneArray(int[][] sudoku)
+    {
+        if (sudoku.Length != 9 || sudoku.Any(r => r.Length != 9))
+        {
+            throw new ArgumentException("Sudoku board must be 9x9.");
+        }
+        var clone = new int[9, 9];
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                clone[i, j] = sudoku[i][j];
+            }
+        }
+        return clone;
+    }
+
+    private static int[,] CloneArray(int[,] sudoku)
+    {
+        var clone = new int[9, 9];
+        Buffer.BlockCopy(sudoku, 0, clone, 0, sudoku.Length * sizeof(int));
+        return clone;
+    }
+
+    private IEnumerable<int> Row(int row)
+    {
+        for (int col = 0; col < 9; col++)
+        {
+            yield return Sudoku[row, col];
+        }
+    }
+
+    private IEnumerable<int> Column(int col)
+    {
+        for (int row = 0; row < 9; row++)
+        {
+            yield return Sudoku[row, col];
+        }
+    }
 
     public bool IsValidRows()
     {
-        for (int i = 0; i < 9; i++)
+        for (int r = 0; r < 9; r++)
         {
-            int zeroes = Sudoku[i].Count(c => c == 0);
-            if (Sudoku[i].Where(s => s > 0 && s <= 9).Distinct().Count() != 9 - zeroes)
+            int zeroes = Row(r).Count(cell => cell == 0);
+            if (Row(r).Where(cell => cell > 0 && cell <= 9).Distinct().Count() != 9 - zeroes)
             {
                 return false;
             }
@@ -63,10 +92,10 @@ public class SudokuBoard
 
     public bool IsValidColumns()
     {
-        for (int i = 0; i < 9; i++)
+        for (int c = 0; c < 9; c++)
         {
-            int zeroes = Sudoku.Count(r => r[i] == 0);
-            if (Sudoku.Select(r => r[i]).Where(s => s > 0 && s <= 9).Distinct().Count() != 9 - zeroes)
+            int zeroes = Column(c).Count(cell => cell == 0);
+            if (Column(c).Where(cell => cell > 0 && cell <= 9).Distinct().Count() != 9 - zeroes)
             {
                 return false;
             }
@@ -94,11 +123,11 @@ public class SudokuBoard
     {
         int boxRow = row * 3;
         int boxColumn = column * 3;
-        for (int i = boxRow; i < boxRow + 3; i++)
+        for (int r = boxRow; r < boxRow + 3; r++)
         {
-            for (int j = boxColumn; j < boxColumn + 3; j++)
+            for (int c = boxColumn; c < boxColumn + 3; c++)
             {
-                yield return Sudoku[i][j];
+                yield return Sudoku[r, c];
             }
         }
     }
