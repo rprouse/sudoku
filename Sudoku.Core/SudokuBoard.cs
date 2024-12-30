@@ -2,7 +2,19 @@
 
 public class SudokuBoard
 {
-    public int[][] Sudoku { get; private set; }
+    private int[][] Sudoku { get; }
+
+    public int this[int row, int column]
+    {
+        get
+        {
+            return Sudoku[row][column];
+        }
+        set
+        {
+            Sudoku[row][column] = value;
+        }
+    }
 
     public SudokuBoard()
     {
@@ -11,6 +23,11 @@ public class SudokuBoard
         {
             Sudoku[i] = new int[9];
         }
+    }
+
+    public SudokuBoard(SudokuBoard copy)
+    {
+        Sudoku = CloneArray(copy.Sudoku);
     }
 
     public SudokuBoard(int[][] sudoku)

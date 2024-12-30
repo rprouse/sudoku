@@ -45,7 +45,7 @@ public class SimpleSolverTests
     public void SolvingNonuniqueSudokuReturnsMoreThanOneSolution()
     {
         SudokuBoard sudoku = _sudokus.Evil[0].GetSudokuBoard();
-        sudoku.Sudoku[0][0] = 0;
+        sudoku[0, 0] = 0;
 
         _solver.IsUnique(sudoku).Should().BeFalse();
     }

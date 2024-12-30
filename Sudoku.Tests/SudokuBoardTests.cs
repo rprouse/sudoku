@@ -1,4 +1,6 @@
-﻿namespace Sudoku.Tests;
+﻿using Sudoku.Tests.Extensions;
+
+namespace Sudoku.Tests;
 
 public class SudokuBoardTests
 {
@@ -146,23 +148,23 @@ public class SudokuBoardTests
     [Test]
     public void NewSudokuShouldReturnNewSudokuArray()
     {
-        var result = new SudokuBoard(UNSOLVED_VALID.Sudoku);
-        result.Sudoku.Should().NotBeSameAs(UNSOLVED_VALID.Sudoku);
+        var result = new SudokuBoard(UNSOLVED_VALID);
+        result.Should().NotBeSameAs(UNSOLVED_VALID);
     }
 
     [Test]
     public void NewSudokuShouldReturnEqualSudoku()
     {
-        var result = new SudokuBoard(UNSOLVED_VALID.Sudoku);
-        result.Sudoku.Should().BeEquivalentTo(UNSOLVED_VALID.Sudoku);
+        var result = new SudokuBoard(UNSOLVED_VALID);
+        result.ShouldBeEqualTo(UNSOLVED_VALID);
     }
 
     [Test]
     public void ModifyingClonedSudokuShouldNotModifyOriginalSudoku()
     {
-        var result = new SudokuBoard(UNSOLVED_VALID.Sudoku);
-        result.Sudoku[0][0] = 1;
-        UNSOLVED_VALID.Sudoku[0][0].Should().NotBe(1);
+        var result = new SudokuBoard(UNSOLVED_VALID);
+        result[0, 0] = 1;
+        UNSOLVED_VALID[0, 0].Should().NotBe(1);
     }
 
     public static readonly SudokuBoard UNSOLVED_VALID = new(

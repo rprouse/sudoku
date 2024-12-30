@@ -34,20 +34,20 @@ public class SimpleSolver : ISolver
         {
             for (int j = 0; j < 9; j++)
             {
-                if (sudoku.Sudoku[i][j] == 0)
+                if (sudoku[i, j] == 0)
                 {
                     for (int k = 1; k <= 9; k++)
                     {
-                        sudoku.Sudoku[i][j] = k;
+                        sudoku[i, j] = k;
                         if (sudoku.IsValid())
                         {
                             Iterations++;
                             foreach (SudokuBoard solution in BruteForceSolve(sudoku))
                             {
-                                yield return new SudokuBoard(solution.Sudoku);
+                                yield return new SudokuBoard(solution);
                             }
                         }
-                        sudoku.Sudoku[i][j] = 0;
+                        sudoku[i, j] = 0;
                     }
                     yield break;
                 }
