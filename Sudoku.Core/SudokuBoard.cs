@@ -61,18 +61,12 @@ public class SudokuBoard
         return clone;
     }
 
-    private IEnumerable<int> Row(int row) =>
-        Enumerable.Range(0, 9).Select(col => Sudoku[row, col]);
-
-    private IEnumerable<int> Column(int col) =>
-        Enumerable.Range(0, 9).Select(row => Sudoku[row, col]);
-
     public bool IsValidRows()
     {
         for (int r = 0; r < 9; r++)
         {
-            int zeroes = Row(r).Count(cell => cell == 0);
-            if (Row(r).Where(cell => cell > 0 && cell <= 9).Distinct().Count() != 9 - zeroes)
+            int zeroes = GetRow(r).Count(cell => cell == 0);
+            if (GetRow(r).Where(cell => cell > 0 && cell <= 9).Distinct().Count() != 9 - zeroes)
             {
                 return false;
             }
@@ -84,8 +78,8 @@ public class SudokuBoard
     {
         for (int c = 0; c < 9; c++)
         {
-            int zeroes = Column(c).Count(cell => cell == 0);
-            if (Column(c).Where(cell => cell > 0 && cell <= 9).Distinct().Count() != 9 - zeroes)
+            int zeroes = GetColumn(c).Count(cell => cell == 0);
+            if (GetColumn(c).Where(cell => cell > 0 && cell <= 9).Distinct().Count() != 9 - zeroes)
             {
                 return false;
             }
@@ -108,6 +102,12 @@ public class SudokuBoard
         }
         return true;
     }
+
+    private IEnumerable<int> GetRow(int row) =>
+        Enumerable.Range(0, 9).Select(col => Sudoku[row, col]);
+
+    private IEnumerable<int> GetColumn(int col) =>
+        Enumerable.Range(0, 9).Select(row => Sudoku[row, col]);
 
     public IEnumerable<int> GetBox(int row, int column)
     {
