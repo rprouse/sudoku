@@ -2,37 +2,80 @@
 
 public class SudokuBoard
 {
-    private int[,] Sudoku { get; }
+    private readonly int[,] _board;
+
+    // 9 bits for each cell, 1-9
+    private readonly int[,] _possibilities = new int[9, 9];
 
     public int this[int row, int column]
     {
         get
         {
-            return Sudoku[row, column];
+            return _board[row, column];
         }
         set
         {
-            Sudoku[row, column] = value;
+            _board[row, column] = value;
+        }
+    }
+
+    public IEnumerable<int> GetPossibilities(int row, int column)
+    {
+        for (int i = 1; i <= 9; i++)
+        {
+            if ((_possibilities[row, column] & (1 << i)) > 0)
+            {
+                yield return i;
+            }
         }
     }
 
     public SudokuBoard()
     {
-        Sudoku = new int[9, 9];
+        _board = new int[9, 9];
+        for (int r = 0; r < 9; r++)
+        {
+            for (int c = 0; c < 9; c++)
+            {
+                // Set all possibilities to 1-9
+                _possibilities[r, c] = 0b00000001_11111111;
+            }
+        }
     }
 
     public SudokuBoard(SudokuBoard copy)
     {
-        Sudoku = CloneArray(copy.Sudoku);
+        _board = CloneArray(copy._board);
+        CalculatePossibilites();
     }
 
     public SudokuBoard(int[][] sudoku)
     {
-        Sudoku = CloneArray(sudoku);
+        _board = CloneArray(sudoku);
+        CalculatePossibilites();
+    }
+
+    private void CalculatePossibilites()
+    {
+        for (int r = 0; r < 9; r++)
+        {
+            for (int c = 0; c < 9; c++)
+            {
+                if (_board[r, c] > 0)
+                {
+                    _possibilities[r, c] = 0;
+                    continue;
+                }
+                int row = GetRow(r).Where(cell => cell > 0).Aggregate(0, (acc, cell) => acc | (1 << cell));
+                int col = GetColumn(c).Where(cell => cell > 0).Aggregate(0, (acc, cell) => acc | (1 << cell));
+                int box = GetBox(r / 3, c / 3).Where(cell => cell > 0).Aggregate(0, (acc, cell) => acc | (1 << cell));
+                _possibilities[r, c] = ~(row | col | box);
+            }
+        }
     }
 
     public bool IsFilled() =>
-        Sudoku.Cast<int>().All(c => c > 0 && c <= 9);
+        _board.Cast<int>().All(c => c > 0 && c <= 9);
 
     public bool IsValid() =>
         IsValidRows() && IsValidColumns() && IsValidBoxes();
@@ -104,10 +147,10 @@ public class SudokuBoard
     }
 
     private IEnumerable<int> GetRow(int row) =>
-        Enumerable.Range(0, 9).Select(col => Sudoku[row, col]);
+        Enumerable.Range(0, 9).Select(col => _board[row, col]);
 
     private IEnumerable<int> GetColumn(int col) =>
-        Enumerable.Range(0, 9).Select(row => Sudoku[row, col]);
+        Enumerable.Range(0, 9).Select(row => _board[row, col]);
 
     public IEnumerable<int> GetBox(int row, int column)
     {
@@ -117,7 +160,7 @@ public class SudokuBoard
         {
             for (int c = boxColumn; c < boxColumn + 3; c++)
             {
-                yield return Sudoku[r, c];
+                yield return _board[r, c];
             }
         }
     }

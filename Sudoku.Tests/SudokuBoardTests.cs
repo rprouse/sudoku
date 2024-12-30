@@ -167,6 +167,23 @@ public class SudokuBoardTests
         UNSOLVED_VALID[0, 0].Should().NotBe(1);
     }
 
+    [Test]
+    public void ShouldCalculatePossibilites()
+    {
+        UNSOLVED_VALID.GetPossibilities(1, 0)
+            .Should().BeEquivalentTo([1, 2]);
+
+        UNSOLVED_VALID.GetPossibilities(0, 8)
+            .Should().BeEquivalentTo([8]);
+    }
+
+    [Test]
+    public void PossibilitiesShouldBeEmptyWhenCellIsFilled()
+    {
+        UNSOLVED_VALID.GetPossibilities(0, 0)
+            .Should().BeEmpty();
+    }
+
     public static readonly SudokuBoard UNSOLVED_VALID = new(
     [
         [ 5, 3, 4, 9, 2, 0, 7, 0, 0 ],
