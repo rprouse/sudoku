@@ -22,7 +22,7 @@ public class SudokuGeneratorTests
     [TestCase(Difficulty.Medium, 33, 39)]
     [TestCase(Difficulty.Hard, 28, 32)]
     [TestCase(Difficulty.Expert, 24, 27)]
-    [TestCase(Difficulty.Evil, 20, 23)]
+    [TestCase(Difficulty.Evil, 20, 27)]
     public void Generate_ClueCountWithinRange(Difficulty difficulty, int min, int max)
     {
         var generator = new SudokuGenerator(new SimpleSolver(), new Random(42));

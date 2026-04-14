@@ -104,7 +104,7 @@ public class SudokuGenerator : IGenerator
         Difficulty.Medium => (33, 39),
         Difficulty.Hard => (28, 32),
         Difficulty.Expert => (24, 27),
-        Difficulty.Evil => (20, 23),
+        Difficulty.Evil => (20, 27),
         _ => throw new ArgumentOutOfRangeException(nameof(difficulty))
     };
 

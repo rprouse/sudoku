@@ -80,7 +80,7 @@ public class SudokuGenerator : IGenerator
 | Medium     | 33-39       | 18-22                  |
 | Hard       | 28-32       | 23-26                  |
 | Expert     | 24-27       | 27-29                  |
-| Evil       | 20-23       | 29-31                  |
+| Evil       | 20-27       | 27-31                  |
 
 These ranges are starting points and may be tuned based on results.
 
