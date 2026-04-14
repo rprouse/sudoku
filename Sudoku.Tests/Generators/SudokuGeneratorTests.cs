@@ -1,5 +1,6 @@
 using Sudoku.Core.Generators;
 using Sudoku.Core.Solvers;
+using Sudoku.Tests.Extensions;
 
 namespace Sudoku.Tests.Generators;
 
@@ -67,5 +68,17 @@ public class SudokuGeneratorTests
         var puzzle = generator.Generate(difficulty);
 
         new SimpleSolver().IsUnique(puzzle).Should().BeTrue();
+    }
+
+    [Test]
+    public void Generate_WithSameSeed_ProducesSameBoard()
+    {
+        var generator1 = new SudokuGenerator(new SimpleSolver(), new Random(123));
+        var generator2 = new SudokuGenerator(new SimpleSolver(), new Random(123));
+
+        var puzzle1 = generator1.Generate(Difficulty.Medium);
+        var puzzle2 = generator2.Generate(Difficulty.Medium);
+
+        puzzle1.ShouldBeEqualTo(puzzle2);
     }
 }
