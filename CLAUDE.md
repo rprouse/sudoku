@@ -24,6 +24,6 @@ The puzzle data model represents boards as `int[][]` (9 arrays of 9 ints), with 
 
 Enforced via `.editorconfig`. Key conventions:
 - Private fields: `_camelCase`; private static fields: `s_camelCase`
-- Explicit types preferred over `var`
+- Prefer `var` over explicit types
 - Allman brace style (braces on new lines)
 - File-scoped namespaces
