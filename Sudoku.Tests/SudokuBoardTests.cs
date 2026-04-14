@@ -167,6 +167,25 @@ public class SudokuBoardTests
         UNSOLVED_VALID[0, 0].Should().NotBe(1);
     }
 
+    [Test]
+    public void ClueCount_ReturnsNumberOfNonZeroCells()
+    {
+        var board = new SudokuBoard();
+        board[0, 0] = 5;
+        board[4, 4] = 3;
+        board[8, 8] = 7;
+
+        board.ClueCount.Should().Be(3);
+    }
+
+    [Test]
+    public void ClueCount_EmptyBoard_ReturnsZero()
+    {
+        var board = new SudokuBoard();
+
+        board.ClueCount.Should().Be(0);
+    }
+
     public static readonly SudokuBoard UNSOLVED_VALID = new(
     [
         [ 5, 3, 4, 9, 2, 0, 7, 0, 0 ],

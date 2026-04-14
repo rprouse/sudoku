@@ -34,6 +34,9 @@ public class SudokuBoard
     public bool IsFilled() =>
         Sudoku.Cast<int>().All(c => c > 0 && c <= 9);
 
+    public int ClueCount =>
+        Sudoku.Cast<int>().Count(c => c > 0);
+
     public bool IsValid() =>
         IsValidRows() && IsValidColumns() && IsValidBoxes();
 
