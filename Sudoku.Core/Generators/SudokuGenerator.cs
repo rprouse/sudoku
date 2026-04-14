@@ -50,8 +50,63 @@ public class SudokuGenerator : IGenerator
 
     private void RemoveClues(SudokuBoard board, Difficulty difficulty)
     {
-        // Stub — implemented in Task 5
+        var (min, max) = GetClueRange(difficulty);
+        var pairs = BuildSymmetricPairs();
+        Shuffle(pairs);
+
+        foreach (var (r1, c1, r2, c2) in pairs)
+        {
+            if (board.ClueCount <= max)
+                break;
+
+            var val1 = board[r1, c1];
+            var val2 = (r1 == r2 && c1 == c2) ? val1 : board[r2, c2];
+
+            board[r1, c1] = 0;
+            if (r1 != r2 || c1 != c2)
+                board[r2, c2] = 0;
+
+            if (!_solver.IsUnique(board))
+            {
+                board[r1, c1] = val1;
+                if (r1 != r2 || c1 != c2)
+                    board[r2, c2] = val2;
+            }
+        }
     }
+
+    private static (int r1, int c1, int r2, int c2)[] BuildSymmetricPairs()
+    {
+        var pairs = new List<(int r1, int c1, int r2, int c2)>();
+        var visited = new bool[9, 9];
+
+        for (var r = 0; r < 9; r++)
+        {
+            for (var c = 0; c < 9; c++)
+            {
+                if (visited[r, c])
+                    continue;
+
+                var mr = 8 - r;
+                var mc = 8 - c;
+                visited[r, c] = true;
+                visited[mr, mc] = true;
+                pairs.Add((r, c, mr, mc));
+            }
+        }
+
+        return pairs.ToArray();
+    }
+
+    private static (int min, int max) GetClueRange(Difficulty difficulty) => difficulty switch
+    {
+        Difficulty.Easy => (40, 46),
+        Difficulty.Medium => (33, 39),
+        Difficulty.Hard => (28, 32),
+        Difficulty.Expert => (24, 27),
+        Difficulty.Evil => (20, 23),
+        _ => throw new ArgumentOutOfRangeException(nameof(difficulty))
+    };
 
     private void Shuffle<T>(T[] array)
     {

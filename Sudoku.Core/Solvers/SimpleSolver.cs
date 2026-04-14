@@ -7,7 +7,8 @@ public class SimpleSolver : ISolver
     public bool IsUnique(SudokuBoard sudoku)
     {
         Iterations = 0;
-        var solutions = BruteForceSolve(sudoku).Take(2).ToList();
+        var copy = new SudokuBoard(sudoku);
+        var solutions = BruteForceSolve(copy).Take(2).ToList();
         if (solutions.Count == 1)
         {
             return true;
