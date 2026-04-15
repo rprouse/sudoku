@@ -18,6 +18,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "specs", "specs", "{1DE62B72
 		docs\superpowers\specs\2026-04-13-board-generation-design.md = docs\superpowers\specs\2026-04-13-board-generation-design.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plans", "plans", "{37891905-5F39-43B4-851F-E1589196E745}"
+	ProjectSection(SolutionItems) = preProject
+		docs\superpowers\plans\2026-04-13-board-generation.md = docs\superpowers\plans\2026-04-13-board-generation.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +48,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{FF85CCD1-382D-4AFA-B005-CA8240A0F9CF} = {54D2D6E7-D7BD-47EF-84FC-13A650E3FF54}
 		{1DE62B72-08B2-49D9-95F1-CD6BE0112A5A} = {FF85CCD1-382D-4AFA-B005-CA8240A0F9CF}
+		{37891905-5F39-43B4-851F-E1589196E745} = {FF85CCD1-382D-4AFA-B005-CA8240A0F9CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D86CC3A-C0D7-49BB-90C5-D94AB034C470}
