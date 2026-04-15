@@ -17,13 +17,13 @@ public partial class MenuViewModel : ObservableObject
     private readonly GameViewModel _gameViewModel;
 
     [ObservableProperty]
-    private bool _hasSavedGame;
+    public partial bool HasSavedGame { get; set; }
 
     [ObservableProperty]
-    private string _savedGameInfo = "";
+    public partial string SavedGameInfo { get; set; } = "";
 
     [ObservableProperty]
-    private bool _isGenerating;
+    public partial bool IsGenerating { get; set; }
 
     public MenuViewModel(SudokuGenerator generator, ISolver solver,
         GamePersistenceService persistenceService, GameViewModel gameViewModel)

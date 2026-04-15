@@ -10,11 +10,20 @@ public partial class SettingsViewModel : ObservableObject
     private readonly SettingsService _settingsService;
     private GameSettings _settings = new();
 
-    [ObservableProperty] private bool _isDarkTheme = true;
-    [ObservableProperty] private bool _highlightRelatedCells = true;
-    [ObservableProperty] private bool _highlightSameNumbers = true;
-    [ObservableProperty] private bool _showErrors = true;
-    [ObservableProperty] private bool _autoRemoveCandidates;
+    [ObservableProperty]
+    public partial bool IsDarkTheme { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool HighlightRelatedCells { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool HighlightSameNumbers { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool ShowErrors { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool AutoRemoveCandidates { get; set; }
 
     public SettingsViewModel(SettingsService settingsService)
     {

@@ -14,34 +14,34 @@ public partial class GameViewModel : ObservableObject, IDisposable
     private System.Timers.Timer? _timer;
 
     [ObservableProperty]
-    private GameState? _state;
+    public partial GameState? State { get; set; }
 
     [ObservableProperty]
-    private GameSettings _settings = new();
+    public partial GameSettings Settings { get; set; } = new();
 
     [ObservableProperty]
-    private int _selectedRow = -1;
+    public partial int SelectedRow { get; set; } = -1;
 
     [ObservableProperty]
-    private int _selectedCol = -1;
+    public partial int SelectedCol { get; set; } = -1;
 
     [ObservableProperty]
-    private bool _isNormalMode = true;
+    public partial bool IsNormalMode { get; set; } = true;
 
     [ObservableProperty]
-    private bool _isAutoCandidateMode;
+    public partial bool IsAutoCandidateMode { get; set; }
 
     [ObservableProperty]
-    private string _timerText = "0:00";
+    public partial string TimerText { get; set; } = "0:00";
 
     [ObservableProperty]
-    private string _difficultyText = "";
+    public partial string DifficultyText { get; set; } = "";
 
     [ObservableProperty]
-    private int _errorCount;
+    public partial int ErrorCount { get; set; }
 
     [ObservableProperty]
-    private bool _isGameComplete;
+    public partial bool IsGameComplete { get; set; }
 
     public SudokuBoardDrawable Drawable { get; } = new();
     public Action? RequestInvalidate { get; set; }
