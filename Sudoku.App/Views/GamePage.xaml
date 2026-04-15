@@ -49,7 +49,7 @@
 
         <!-- Row 2: Sudoku grid -->
         <GraphicsView x:Name="BoardView" Grid.Row="2"
-                       HorizontalOptions="Center" VerticalOptions="Center" />
+                       HorizontalOptions="Fill" VerticalOptions="Fill" />
 
         <!-- Row 3: Mode toggle + Undo -->
         <Grid ColumnDefinitions="*,Auto" Padding="12,8" Grid.Row="3">

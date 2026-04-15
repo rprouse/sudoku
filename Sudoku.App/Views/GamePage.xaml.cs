@@ -39,17 +39,6 @@ public partial class GamePage : ContentPage
 
         BoardView.StartInteraction += OnBoardTouched;
 
-        // Make the board square
-        BoardView.SizeChanged += (_, _) =>
-        {
-            var size = Math.Min(BoardView.Width, BoardView.Height);
-            if (size > 0)
-            {
-                BoardView.WidthRequest = size;
-                BoardView.HeightRequest = size;
-            }
-        };
-
         // Win detection
         _viewModel.PropertyChanged += async (_, args) =>
         {
