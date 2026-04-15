@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Sudoku.App.ViewModels"
              x:Class="Sudoku.App.Views.MenuPage"
-             Title="Sudoku">
-    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
-        <Label Text="SUDOKU" FontSize="32" FontAttributes="Bold" HorizontalTextAlignment="Center" />
-    </VerticalStackLayout>
+             x:DataType="vm:MenuViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight}, Dark={StaticResource PageBackgroundDark}}">
+
+    <Grid RowDefinitions="*,Auto" Padding="24">
+        <VerticalStackLayout VerticalOptions="Center" Spacing="8">
+            <Label Text="SUDOKU" FontSize="36" FontAttributes="Bold" HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}" />
+            <Label Text="PUZZLE GAME" FontSize="12" CharacterSpacing="4" HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light=#999999, Dark=#666666}" />
+
+            <Button Text="{Binding SavedGameInfo, StringFormat='Continue — {0}'}"
+                    IsVisible="{Binding HasSavedGame}" BackgroundColor="#2970c2"
+                    TextColor="White" FontSize="16" FontAttributes="Bold"
+                    HeightRequest="56" CornerRadius="10" Margin="0,32,0,0"
+                    Command="{Binding ContinueGameCommand}" />
+
+            <ActivityIndicator IsRunning="{Binding IsGenerating}" IsVisible="{Binding IsGenerating}"
+                               Color="#2970c2" HeightRequest="40" Margin="0,16,0,0" />
+
+            <Label Text="NEW GAME" FontSize="11" CharacterSpacing="2" HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light=#999999, Dark=#666666}" Margin="0,24,0,4" />
+
+            <Button Text="Easy" TextColor="#b5bd68" Style="{StaticResource DifficultyButton}"
+                    Command="{Binding NewGameCommand}" CommandParameter="Easy" />
+            <Button Text="Medium" TextColor="#f0c674" Style="{StaticResource DifficultyButton}"
+                    Command="{Binding NewGameCommand}" CommandParameter="Medium" />
+            <Button Text="Hard" TextColor="#de935f" Style="{StaticResource DifficultyButton}"
+                    Command="{Binding NewGameCommand}" CommandParameter="Hard" />
+            <Button Text="Expert" TextColor="#cc6666" Style="{StaticResource DifficultyButton}"
+                    Command="{Binding NewGameCommand}" CommandParameter="Expert" />
+            <Button Text="Evil" TextColor="#b294bb" Style="{StaticResource DifficultyButton}"
+                    Command="{Binding NewGameCommand}" CommandParameter="Evil" />
+        </VerticalStackLayout>
+
+        <Button Text="&#9881; Settings" BackgroundColor="Transparent"
+                TextColor="{AppThemeBinding Light=#999999, Dark=#666666}"
+                FontSize="14" Clicked="OnSettingsClicked" Grid.Row="1"
+                HorizontalOptions="Center" Margin="0,0,0,16" />
+    </Grid>
 </ContentPage>

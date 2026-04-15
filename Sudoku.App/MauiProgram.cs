@@ -27,7 +27,7 @@ public static class MauiProgram
 
         // ViewModels
         builder.Services.AddTransient<MenuViewModel>();
-        builder.Services.AddTransient<GameViewModel>();
+        builder.Services.AddSingleton<GameViewModel>();
         builder.Services.AddTransient<SettingsViewModel>();
 
         // Pages
