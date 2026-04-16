@@ -1,64 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="456" height="456" viewBox="0 0 456 456" xmlns="http://www.w3.org/2000/svg">
-    <!-- Sudoku 3x3 grid icon -->
-    <!-- Grid area: 264x264, centered at 228,228 (from 96 to 360) -->
-    <!-- Each big box: 88x88, each cell: ~29.3x29.3 -->
+    <!-- Sudoku grid icon - compact for Android adaptive icon safe zone -->
+    <!-- Grid: 198x198 centered (129 to 327), well within ~25% margin -->
+    <!-- Big box: 66, Cell: 22 -->
 
     <!-- Outer border -->
-    <rect x="96" y="96" width="264" height="264" rx="6" fill="none" stroke="white" stroke-width="10"/>
+    <rect x="129" y="129" width="198" height="198" rx="4" fill="none" stroke="white" stroke-width="8"/>
 
-    <!-- Thick box dividers (vertical) -->
-    <line x1="184" y1="96" x2="184" y2="360" stroke="white" stroke-width="6"/>
-    <line x1="272" y1="96" x2="272" y2="360" stroke="white" stroke-width="6"/>
-
-    <!-- Thick box dividers (horizontal) -->
-    <line x1="96" y1="184" x2="360" y2="184" stroke="white" stroke-width="6"/>
-    <line x1="96" y1="272" x2="360" y2="272" stroke="white" stroke-width="6"/>
+    <!-- Thick box dividers -->
+    <line x1="195" y1="129" x2="195" y2="327" stroke="white" stroke-width="5"/>
+    <line x1="261" y1="129" x2="261" y2="327" stroke="white" stroke-width="5"/>
+    <line x1="129" y1="195" x2="327" y2="195" stroke="white" stroke-width="5"/>
+    <line x1="129" y1="261" x2="327" y2="261" stroke="white" stroke-width="5"/>
 
     <!-- Thin cell dividers (vertical) -->
-    <line x1="125.3" y1="96" x2="125.3" y2="360" stroke="white" stroke-width="1.5" opacity="0.5"/>
-    <line x1="154.7" y1="96" x2="154.7" y2="360" stroke="white" stroke-width="1.5" opacity="0.5"/>
-    <line x1="213.3" y1="96" x2="213.3" y2="360" stroke="white" stroke-width="1.5" opacity="0.5"/>
-    <line x1="242.7" y1="96" x2="242.7" y2="360" stroke="white" stroke-width="1.5" opacity="0.5"/>
-    <line x1="301.3" y1="96" x2="301.3" y2="360" stroke="white" stroke-width="1.5" opacity="0.5"/>
-    <line x1="330.7" y1="96" x2="330.7" y2="360" stroke="white" stroke-width="1.5" opacity="0.5"/>
+    <line x1="151" y1="129" x2="151" y2="327" stroke="white" stroke-width="1" opacity="0.35"/>
+    <line x1="173" y1="129" x2="173" y2="327" stroke="white" stroke-width="1" opacity="0.35"/>
+    <line x1="217" y1="129" x2="217" y2="327" stroke="white" stroke-width="1" opacity="0.35"/>
+    <line x1="239" y1="129" x2="239" y2="327" stroke="white" stroke-width="1" opacity="0.35"/>
+    <line x1="283" y1="129" x2="283" y2="327" stroke="white" stroke-width="1" opacity="0.35"/>
+    <line x1="305" y1="129" x2="305" y2="327" stroke="white" stroke-width="1" opacity="0.35"/>
 
     <!-- Thin cell dividers (horizontal) -->
-    <line x1="96" y1="125.3" x2="360" y2="125.3" stroke="white" stroke-width="1.5" opacity="0.5"/>
-    <line x1="96" y1="154.7" x2="360" y2="154.7" stroke="white" stroke-width="1.5" opacity="0.5"/>
-    <line x1="96" y1="213.3" x2="360" y2="213.3" stroke="white" stroke-width="1.5" opacity="0.5"/>
-    <line x1="96" y1="242.7" x2="360" y2="242.7" stroke="white" stroke-width="1.5" opacity="0.5"/>
-    <line x1="96" y1="301.3" x2="360" y2="301.3" stroke="white" stroke-width="1.5" opacity="0.5"/>
-    <line x1="96" y1="330.7" x2="360" y2="330.7" stroke="white" stroke-width="1.5" opacity="0.5"/>
+    <line x1="129" y1="151" x2="327" y2="151" stroke="white" stroke-width="1" opacity="0.35"/>
+    <line x1="129" y1="173" x2="327" y2="173" stroke="white" stroke-width="1" opacity="0.35"/>
+    <line x1="129" y1="217" x2="327" y2="217" stroke="white" stroke-width="1" opacity="0.35"/>
+    <line x1="129" y1="239" x2="327" y2="239" stroke="white" stroke-width="1" opacity="0.35"/>
+    <line x1="129" y1="283" x2="327" y2="283" stroke="white" stroke-width="1" opacity="0.35"/>
+    <line x1="129" y1="305" x2="327" y2="305" stroke="white" stroke-width="1" opacity="0.35"/>
 
-    <!-- Numbers - placed at cell centers, font sized for visibility at small icon sizes -->
-    <!-- Cell centers: 110.7, 140, 169.3 | 198.7, 228, 257.3 | 286.7, 316, 345.3 -->
-    <g fill="white" font-family="sans-serif" font-weight="bold" font-size="24" text-anchor="middle" dominant-baseline="central">
-        <!-- Row 1 -->
-        <text x="110.7" y="110.7">5</text>
-        <text x="257.3" y="110.7">6</text>
-        <!-- Row 2 -->
-        <text x="198.7" y="140">8</text>
-        <text x="345.3" y="140">3</text>
-        <!-- Row 3 -->
-        <text x="140" y="169.3">9</text>
-        <!-- Row 4 -->
-        <text x="110.7" y="198.7">8</text>
-        <text x="286.7" y="198.7">1</text>
-        <!-- Row 5 (center) -->
-        <text x="169.3" y="228">6</text>
-        <text x="228" y="228" font-size="28">3</text>
-        <text x="316" y="228">7</text>
-        <!-- Row 6 -->
-        <text x="140" y="257.3">4</text>
-        <text x="345.3" y="257.3">9</text>
-        <!-- Row 7 -->
-        <text x="257.3" y="286.7">2</text>
-        <!-- Row 8 -->
-        <text x="110.7" y="316">2</text>
-        <text x="228" y="316">5</text>
-        <!-- Row 9 -->
-        <text x="198.7" y="345.3">1</text>
-        <text x="345.3" y="345.3">7</text>
+    <!-- Numbers — y values offset by +font_size*0.35 (~5.6) for visual centering -->
+    <!-- Cell centers: 140,162,184 | 206,228,250 | 272,294,316 -->
+    <g fill="white" font-family="sans-serif" font-weight="bold" font-size="16" text-anchor="middle">
+        <text x="140" y="145.6">5</text>
+        <text x="316" y="145.6">3</text>
+        <text x="228" y="167.6">8</text>
+        <text x="162" y="189.6">9</text>
+        <text x="272" y="211.6">1</text>
+        <text x="228" y="234" font-size="18">7</text>
+        <text x="184" y="255.6">4</text>
+        <text x="250" y="277.6">2</text>
+        <text x="294" y="299.6">6</text>
     </g>
 </svg>
