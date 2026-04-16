@@ -8,54 +8,54 @@ on:
 
 jobs:
   test:
-    name: Build & Test
+    name: 🧪 Build & Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
 
-      - name: Setup .NET 8
+      - name: 🔧 Setup .NET 8
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '8.0.x'
 
-      - name: Build Core
+      - name: 🏗️ Build Core
         run: dotnet build Sudoku.Core
 
-      - name: Run Tests
+      - name: ✅ Run Tests
         run: dotnet test Sudoku.Tests --verbosity normal
 
   build-android:
-    name: Build MAUI Android
+    name: 🤖 Build MAUI Android
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
 
-      - name: Setup .NET 10
+      - name: 🔧 Setup .NET 10
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
           include-prerelease: true
 
-      - name: Install MAUI Workloads
+      - name: 📦 Install MAUI Workloads
         run: dotnet workload restore Sudoku.App
 
-      - name: Build Android
+      - name: 🏗️ Build Android
         run: dotnet build Sudoku.App -f net10.0-android
 
   build-windows:
-    name: Build MAUI Windows
+    name: 🪟 Build MAUI Windows
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v5
 
-      - name: Setup .NET 10
+      - name: 🔧 Setup .NET 10
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
           include-prerelease: true
 
-      - name: Install MAUI Workloads
+      - name: 📦 Install MAUI Workloads
         run: dotnet workload restore Sudoku.App
 
-      - name: Build Windows
+      - name: 🏗️ Build Windows
         run: dotnet build Sudoku.App -f net10.0-windows10.0.19041.0
