@@ -1,28 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="456" height="456" viewBox="0 0 456 456" xmlns="http://www.w3.org/2000/svg">
-    <!-- Zen sudoku icon: ensō circle with minimal 3x3 grid and sparse numbers -->
-    <!-- All content within adaptive icon safe zone (~129-327) -->
+    <!-- Ensō — zen brush-stroke circle -->
+    <!-- Center: (228, 228), radius: 85, gap at top-right -->
+    <!-- Two arcs simulate brush pressure: thick body tapering to thin tail -->
 
-    <!-- Ensō — nearly complete circle, thick brush stroke, slight gap at top-right -->
-    <path d="M 290 148
-             A 100 100 0 1 0 310 175"
-          fill="none" stroke="white" stroke-width="12" stroke-linecap="round" opacity="0.25"/>
+    <!-- Main body — bold stroke where brush presses firmly -->
+    <path d="M 293 173 A 85 85 0 1 1 199 148"
+          fill="none" stroke="white" stroke-width="22" stroke-linecap="round"/>
 
-    <!-- Minimal 3x3 grid — thick dividers only, no thin cell lines -->
-    <!-- Grid: 150x150 centered at 228 (153 to 303) -->
-    <rect x="153" y="153" width="150" height="150" rx="3" fill="none" stroke="white" stroke-width="5"/>
-    <line x1="203" y1="153" x2="203" y2="303" stroke="white" stroke-width="3.5"/>
-    <line x1="253" y1="153" x2="253" y2="303" stroke="white" stroke-width="3.5"/>
-    <line x1="153" y1="203" x2="303" y2="203" stroke="white" stroke-width="3.5"/>
-    <line x1="153" y1="253" x2="303" y2="253" stroke="white" stroke-width="3.5"/>
-
-    <!-- Sparse numbers — just a few, like a puzzle in progress -->
-    <!-- Cell centers: 178, 228, 278 -->
-    <g fill="white" font-family="sans-serif" font-weight="bold" font-size="22" text-anchor="middle">
-        <text x="178" y="185.7">9</text>
-        <text x="278" y="185.7">3</text>
-        <text x="228" y="235.7">7</text>
-        <text x="178" y="285.7">4</text>
-        <text x="278" y="285.7">1</text>
-    </g>
+    <!-- Tapered tail — brush lifting off the paper -->
+    <path d="M 199 148 A 85 85 0 0 1 243 144"
+          fill="none" stroke="white" stroke-width="7" stroke-linecap="round"/>
 </svg>

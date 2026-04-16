@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="456" height="456" viewBox="0 0 456 456" xmlns="http://www.w3.org/2000/svg">
-    <!-- Zen splash screen: ensō circle with minimal grid -->
+    <!-- Ensō — zen brush-stroke circle, larger for splash -->
+    <!-- Center: (228, 228), radius: 120, gap at top-right -->
 
-    <!-- Ensō — large, nearly complete circle with brush-stroke feel -->
-    <path d="M 310 165
-             A 130 130 0 1 0 335 200"
-          fill="none" stroke="white" stroke-width="14" stroke-linecap="round" opacity="0.2"/>
+    <!-- Main body — bold confident stroke -->
+    <path d="M 320 151 A 120 120 0 1 1 187 115"
+          fill="none" stroke="white" stroke-width="28" stroke-linecap="round"/>
 
-    <!-- Minimal 3x3 grid — clean and spacious -->
-    <!-- Grid: 198x198 centered at 228 (129 to 327) -->
-    <rect x="129" y="129" width="198" height="198" rx="4" fill="none" stroke="white" stroke-width="6"/>
-    <line x1="195" y1="129" x2="195" y2="327" stroke="white" stroke-width="4"/>
-    <line x1="261" y1="129" x2="261" y2="327" stroke="white" stroke-width="4"/>
-    <line x1="129" y1="195" x2="327" y2="195" stroke="white" stroke-width="4"/>
-    <line x1="129" y1="261" x2="327" y2="261" stroke="white" stroke-width="4"/>
-
-    <!-- Sparse numbers — meditative, unhurried -->
-    <!-- Cell centers: 162, 228, 294 -->
-    <g fill="white" font-family="sans-serif" font-weight="bold" font-size="28" text-anchor="middle">
-        <text x="162" y="171.8">5</text>
-        <text x="294" y="171.8">6</text>
-        <text x="228" y="237.8">3</text>
-        <text x="162" y="303.8">4</text>
-        <text x="294" y="303.8">2</text>
-    </g>
+    <!-- Tapered tail — brush lifting gently -->
+    <path d="M 187 115 A 120 120 0 0 1 249 110"
+          fill="none" stroke="white" stroke-width="8" stroke-linecap="round"/>
 </svg>
