@@ -19,8 +19,8 @@ dotnet build Sudoku.App -f net10.0-windows10.0.19041.0 -t:Run  # Run MAUI app (W
 
 This is a C# Sudoku library and mobile game with nullable reference types enabled. The solution has four projects:
 
-- **Sudoku.Core** (net8.0) — Core library containing `SudokuBoard` data model, `Solvers` (`ISolver`, `SimpleSolver`), `Generators` (`SudokuGenerator`), `Game` namespace (`GameState`, `CellState`, `GameSettings`, `Difficulty`, `UndoAction`), and `Persistence` (JSON deserialization).
-- **Sudoku.App** (net10.0-android/windows) — .NET MAUI game app. MVVM with CommunityToolkit.Mvvm. GraphicsView-based board rendering. References Sudoku.Core.
+- **Sudoku.Core** (net8.0) — Core library containing `SudokuBoard` data model, `Solvers` (`ISolver`, `SimpleSolver`), `Generators` (`SudokuGenerator`), `Game` namespace (`GameState`, `CellState`, `GameSettings`, `UndoAction`, `WinMessages`), `Difficulty` enum (root namespace), and `Persistence` (JSON deserialization).
+- **Sudoku.App** (net10.0-android/windows) — .NET MAUI game app. MVVM with CommunityToolkit.Mvvm. GraphicsView-based board rendering. References Sudoku.Core. Structure: `Views/` (XAML pages), `ViewModels/` (observable ViewModels), `Services/` (`GamePersistenceService`, `SettingsService`), `Controls/` (`SudokuBoardDrawable`), `Converters/`.
 - **Sudoku.Tests** (net8.0) — NUnit 4 test project using FluentAssertions. Test data files (`sudokus.json`, `sudokus.txt`) are copied to output on build.
 - **Sudoku.Benchmarks** (net9.0) — BenchmarkDotNet performance benchmarks for solver implementations.
 
@@ -42,3 +42,5 @@ Enforced via `.editorconfig`. Key conventions:
 - **SVG text centering**: SkiaSharp's SVG renderer (used by MAUI resizetizer) does not support `dominant-baseline`. Use manual y-offset (`+font_size * 0.35`) for vertical centering.
 - **Resizetizer caching**: Icon/splash changes may not regenerate. Delete `obj/**/resizetizer/` and rebuild.
 - **Android adaptive icons**: Keep foreground SVG content within ~72% of the canvas center to survive circular/shaped icon masks.
+- **MAUI .NET 10 animation API**: `FadeTo`, `ScaleTo`, etc. are deprecated. Use `FadeToAsync`, `ScaleToAsync` instead.
+- **Save-state lifecycle**: `SaveGameAsync` runs after every `NumberInput`. Any code that deletes the save file during input processing must also guard `SaveGameAsync` from re-creating it (check `IsGameComplete`).
