@@ -104,7 +104,7 @@
                     HorizontalOptions="Center" VerticalOptions="Center"
                     Padding="24,32" WidthRequest="340">
                 <VerticalStackLayout Spacing="12" HorizontalOptions="Fill">
-                    <Label Text="&#127942;" FontSize="40"
+                    <Label Text="&#9775;" FontSize="40"
                            HorizontalTextAlignment="Center" />
                     <Label x:Name="WinWordLabel"
                            Text="{Binding WinMessage}"
@@ -112,7 +112,7 @@
                            TextColor="{AppThemeBinding Light=#7d8c6e, Dark=#9aab88}"
                            HorizontalTextAlignment="Center"
                            Opacity="0" />
-                    <Label Text="Puzzle Complete!"
+                    <Label Text="The circle closes."
                            FontSize="16"
                            TextColor="{AppThemeBinding Light=#8a7e74, Dark=#9a8e84}"
                            HorizontalTextAlignment="Center" />
