@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build Core
+        run: dotnet build Sudoku.Core
+
+      - name: Run Tests
+        run: dotnet test Sudoku.Tests --verbosity normal
+
+  build-android:
+    name: Build MAUI Android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          include-prerelease: true
+
+      - name: Install MAUI Android Workload
+        run: dotnet workload install maui-android
+
+      - name: Build Android
+        run: dotnet build Sudoku.App -f net10.0-android
+
+  build-windows:
+    name: Build MAUI Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          include-prerelease: true
+
+      - name: Install MAUI Windows Workload
+        run: dotnet workload install maui-windows
+
+      - name: Build Windows
+        run: dotnet build Sudoku.App -f net10.0-windows10.0.19041.0
