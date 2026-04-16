@@ -39,6 +39,8 @@ public class SudokuBoardDrawable : IDrawable
         if (State == null) return;
 
         var size = Math.Min(dirtyRect.Width, dirtyRect.Height);
+        if (size <= 0) return;
+
         var cellSize = size / 9f;
         var offsetX = (dirtyRect.Width - size) / 2f;
         var offsetY = (dirtyRect.Height - size) / 2f;

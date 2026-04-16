@@ -91,7 +91,7 @@ public partial class GameViewModel : ObservableObject, IDisposable
         }
         else
         {
-            State.ToggleCandidate(SelectedRow, SelectedCol, number);
+            State.ToggleCandidate(SelectedRow, SelectedCol, number, IsAutoCandidateMode);
         }
 
         UpdateDrawable();
@@ -110,7 +110,7 @@ public partial class GameViewModel : ObservableObject, IDisposable
         }
         else
         {
-            State.ClearCandidates(SelectedRow, SelectedCol);
+            State.ClearCandidates(SelectedRow, SelectedCol, IsAutoCandidateMode);
         }
 
         UpdateDrawable();

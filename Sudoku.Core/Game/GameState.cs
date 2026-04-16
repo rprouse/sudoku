@@ -45,6 +45,7 @@ public class GameState
         PushUndo(row, col);
         cell.Value = number;
         cell.ClearCandidates();
+        Array.Clear(cell.ManualCandidates);
 
         if (settings?.ShowErrors == true)
         {
@@ -72,29 +73,45 @@ public class GameState
         cell.IsError = false;
     }
 
-    public void ToggleCandidate(int row, int col, int number)
+    public void ToggleCandidate(int row, int col, int number, bool isAutoMode = false)
     {
         var cell = Cells[row, col];
         if (cell.IsGiven || cell.HasValue) return;
 
         PushUndo(row, col);
-        cell.ToggleCandidate(number);
 
-        if (!cell.HasCandidate(number))
-            cell.ExcludedCandidates[number - 1] = true;
+        if (isAutoMode)
+        {
+            cell.ExcludedCandidates[number - 1] = !cell.ExcludedCandidates[number - 1];
+            var isValid = !IsNumberInRow(row, number)
+                          && !IsNumberInColumn(col, number)
+                          && !IsNumberInBox(row, col, number);
+            cell.Candidates[number - 1] = isValid && !cell.ExcludedCandidates[number - 1];
+        }
         else
-            cell.ExcludedCandidates[number - 1] = false;
+        {
+            cell.ManualCandidates[number - 1] = !cell.ManualCandidates[number - 1];
+            cell.Candidates[number - 1] = cell.ManualCandidates[number - 1];
+        }
     }
 
-    public void ClearCandidates(int row, int col)
+    public void ClearCandidates(int row, int col, bool isAutoMode = false)
     {
         var cell = Cells[row, col];
         if (cell.IsGiven || cell.HasValue) return;
 
         PushUndo(row, col);
-        for (var i = 0; i < 9; i++)
+
+        if (isAutoMode)
         {
-            if (cell.Candidates[i]) cell.ExcludedCandidates[i] = true;
+            for (var i = 0; i < 9; i++)
+            {
+                if (cell.Candidates[i]) cell.ExcludedCandidates[i] = true;
+            }
+        }
+        else
+        {
+            Array.Clear(cell.ManualCandidates);
         }
         cell.ClearCandidates();
     }
@@ -108,6 +125,7 @@ public class GameState
         cell.Value = action.PreviousValue;
         cell.IsError = false;
         Array.Copy(action.PreviousCandidates, cell.Candidates, 9);
+        Array.Copy(action.PreviousManualCandidates, cell.ManualCandidates, 9);
         Array.Copy(action.PreviousExcludedCandidates, cell.ExcludedCandidates, 9);
     }
 
@@ -139,7 +157,7 @@ public class GameState
             {
                 var cell = Cells[r, c];
                 if (!cell.IsGiven && !cell.HasValue)
-                    cell.ClearCandidates();
+                    Array.Copy(cell.ManualCandidates, cell.Candidates, 9);
             }
         }
     }
@@ -176,6 +194,7 @@ public class GameState
             row, col,
             cell.Value,
             cell.CloneCandidates(),
+            cell.CloneManualCandidates(),
             cell.CloneExcludedCandidates()));
     }
 
@@ -204,6 +223,7 @@ public class GameState
         if (!cell.IsGiven && !cell.HasValue)
         {
             cell.Candidates[number - 1] = false;
+            cell.ManualCandidates[number - 1] = false;
             cell.ExcludedCandidates[number - 1] = true;
         }
     }

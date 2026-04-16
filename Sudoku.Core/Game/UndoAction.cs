@@ -5,4 +5,5 @@ public record UndoAction(
     int Col,
     int PreviousValue,
     bool[] PreviousCandidates,
+    bool[] PreviousManualCandidates,
     bool[] PreviousExcludedCandidates);
