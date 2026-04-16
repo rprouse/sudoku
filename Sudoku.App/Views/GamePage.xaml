@@ -72,15 +72,15 @@
         <!-- Row 4: Number pad -->
         <Grid ColumnDefinitions="*,*,*,*,*" RowDefinitions="Auto,Auto"
               ColumnSpacing="8" RowSpacing="8" Padding="12,4" Grid.Row="4">
-            <Button Text="1" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="0" Grid.Column="0" />
-            <Button Text="2" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="0" Grid.Column="1" />
-            <Button Text="3" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="0" Grid.Column="2" />
-            <Button Text="4" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="0" Grid.Column="3" />
-            <Button Text="5" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="0" Grid.Column="4" />
-            <Button Text="6" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="0" />
-            <Button Text="7" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="1" />
-            <Button Text="8" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="2" />
-            <Button Text="9" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="3" />
+            <Button x:Name="NumButton1" Text="1" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="0" Grid.Column="0" />
+            <Button x:Name="NumButton2" Text="2" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="0" Grid.Column="1" />
+            <Button x:Name="NumButton3" Text="3" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="0" Grid.Column="2" />
+            <Button x:Name="NumButton4" Text="4" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="0" Grid.Column="3" />
+            <Button x:Name="NumButton5" Text="5" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="0" Grid.Column="4" />
+            <Button x:Name="NumButton6" Text="6" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="0" />
+            <Button x:Name="NumButton7" Text="7" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="1" />
+            <Button x:Name="NumButton8" Text="8" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="2" />
+            <Button x:Name="NumButton9" Text="9" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="3" />
             <Button Text="✕" Style="{StaticResource NumberPadButton}" Clicked="OnClearClicked" Grid.Row="1" Grid.Column="4" />
         </Grid>
 

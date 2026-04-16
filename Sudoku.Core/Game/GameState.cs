@@ -156,6 +156,19 @@ public class GameState
         return true;
     }
 
+    public bool IsNumberFilled(int number)
+    {
+        var count = 0;
+        for (var r = 0; r < 9; r++)
+        {
+            for (var c = 0; c < 9; c++)
+            {
+                if (Cells[r, c].Value == number) count++;
+            }
+        }
+        return count >= 9;
+    }
+
     private void PushUndo(int row, int col)
     {
         var cell = Cells[row, col];

@@ -27,14 +27,23 @@ public partial class GamePage : ContentPage
         _viewModel?.StopTimer();
     }
 
+    private Button[] _numberButtons = [];
+
     private void SetupBoard()
     {
         if (_viewModel == null) return;
+
+        _numberButtons = [NumButton1, NumButton2, NumButton3, NumButton4, NumButton5,
+                          NumButton6, NumButton7, NumButton8, NumButton9];
 
         BoardView.Drawable = _viewModel.Drawable;
         _viewModel.RequestInvalidate = () =>
         {
             MainThread.BeginInvokeOnMainThread(() => BoardView.Invalidate());
+        };
+        _viewModel.RequestUpdateNumberButton = (number, isEnabled) =>
+        {
+            MainThread.BeginInvokeOnMainThread(() => _numberButtons[number - 1].IsEnabled = isEnabled);
         };
 
         BoardView.StartInteraction += OnBoardTouched;

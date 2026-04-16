@@ -45,6 +45,7 @@ public partial class GameViewModel : ObservableObject, IDisposable
 
     public SudokuBoardDrawable Drawable { get; } = new();
     public Action? RequestInvalidate { get; set; }
+    public Action<int, bool>? RequestUpdateNumberButton { get; set; }
 
     public GameViewModel(GamePersistenceService persistenceService, SettingsService settingsService)
     {
@@ -145,6 +146,16 @@ public partial class GameViewModel : ObservableObject, IDisposable
         Drawable.SelectedCol = SelectedCol;
         Drawable.IsDarkTheme = Settings.IsDarkTheme;
         RequestInvalidate?.Invoke();
+        UpdateNumberButtons();
+    }
+
+    private void UpdateNumberButtons()
+    {
+        if (State == null || RequestUpdateNumberButton == null) return;
+        for (var n = 1; n <= 9; n++)
+        {
+            RequestUpdateNumberButton(n, !State.IsNumberFilled(n));
+        }
     }
 
     private void StartTimer()

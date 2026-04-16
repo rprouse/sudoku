@@ -11,6 +11,19 @@
         <Setter Property="CornerRadius" Value="8" />
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource NumberPadLight}, Dark={StaticResource NumberPadDark}}" />
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource NumberPadTextLight}, Dark={StaticResource NumberPadTextDark}}" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource NumberPadDisabledLight}, Dark={StaticResource NumberPadDisabledDark}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource NumberPadTextDisabledLight}, Dark={StaticResource NumberPadTextDisabledDark}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
     <Style x:Key="DifficultyButton" TargetType="Button">

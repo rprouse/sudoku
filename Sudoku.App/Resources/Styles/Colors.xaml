@@ -11,6 +11,10 @@
     <Color x:Key="NumberPadLight">#d0d0d0</Color>
     <Color x:Key="NumberPadTextDark">#e8e8e8</Color>
     <Color x:Key="NumberPadTextLight">#1a1a1a</Color>
+    <Color x:Key="NumberPadDisabledDark">#2a2a2a</Color>
+    <Color x:Key="NumberPadDisabledLight">#e8e8e8</Color>
+    <Color x:Key="NumberPadTextDisabledDark">#555555</Color>
+    <Color x:Key="NumberPadTextDisabledLight">#aaaaaa</Color>
     <Color x:Key="DifficultyBgDark">#2a2a2a</Color>
     <Color x:Key="DifficultyBgLight">#e0e0e0</Color>
     <Color x:Key="DifficultyBorderDark">#3a3a3a</Color>
