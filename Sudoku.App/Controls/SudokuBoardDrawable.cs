@@ -12,19 +12,19 @@ public class SudokuBoardDrawable : IDrawable
 
     // Dark theme colors
     private static readonly Color s_darkBackground = Color.FromArgb("#1a1a1a");
-    private static readonly Color s_darkSelectedCell = Color.FromArgb("#2970c2");
+    private static readonly Color s_darkSelectedCell = Color.FromArgb("#243750");
     private static readonly Color s_darkRelatedCell = Color.FromArgb("#1a2640");
     private static readonly Color s_darkSameNumber = Color.FromArgb("#1e3520");
     private static readonly Color s_darkErrorCell = Color.FromArgb("#cc4444");
     private static readonly Color s_darkThinLine = Color.FromArgb("#444444");
     private static readonly Color s_darkThickLine = Color.FromArgb("#888888");
     private static readonly Color s_darkGivenText = Colors.White;
-    private static readonly Color s_darkPlayerText = Color.FromArgb("#b0c4de");
-    private static readonly Color s_darkCandidateText = Color.FromArgb("#888888");
+    private static readonly Color s_darkPlayerText = Color.FromArgb("#6fa8dc");
+    private static readonly Color s_darkCandidateText = Color.FromArgb("#9a9a9a");
 
     // Light theme colors
     private static readonly Color s_lightBackground = Color.FromArgb("#f0f0f0");
-    private static readonly Color s_lightSelectedCell = Color.FromArgb("#5b9bd5");
+    private static readonly Color s_lightSelectedCell = Color.FromArgb("#bdd3ea");
     private static readonly Color s_lightRelatedCell = Color.FromArgb("#d6e4f0");
     private static readonly Color s_lightSameNumber = Color.FromArgb("#d5e8d4");
     private static readonly Color s_lightErrorCell = Color.FromArgb("#f4cccc");
@@ -32,7 +32,7 @@ public class SudokuBoardDrawable : IDrawable
     private static readonly Color s_lightThickLine = Color.FromArgb("#333333");
     private static readonly Color s_lightGivenText = Color.FromArgb("#1a1a1a");
     private static readonly Color s_lightPlayerText = Color.FromArgb("#2970c2");
-    private static readonly Color s_lightCandidateText = Color.FromArgb("#888888");
+    private static readonly Color s_lightCandidateText = Color.FromArgb("#707070");
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
