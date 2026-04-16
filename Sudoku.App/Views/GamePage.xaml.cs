@@ -53,10 +53,7 @@ public partial class GamePage : ContentPage
         {
             if (args.PropertyName == nameof(GameViewModel.IsGameComplete) && _viewModel.IsGameComplete)
             {
-                await DisplayAlertAsync("Congratulations!",
-                    $"You completed the puzzle!\nTime: {_viewModel.TimerText}\nErrors: {_viewModel.ErrorCount}",
-                    "OK");
-                await Shell.Current.GoToAsync("..");
+                await ShowWinOverlayAsync();
             }
         };
     }
@@ -87,6 +84,21 @@ public partial class GamePage : ContentPage
     {
         if (_viewModel != null) _viewModel.IsNormalMode = false;
     }
+
+    private async Task ShowWinOverlayAsync()
+    {
+        WinOverlay.IsVisible = true;
+        WinWordLabel.Opacity = 0;
+
+        // Fade in the overlay backdrop and card
+        await WinOverlay.FadeToAsync(1, 250, Easing.CubicOut);
+
+        // Then fade in the congratulatory word slightly slower
+        await WinWordLabel.FadeToAsync(1, 500, Easing.CubicOut);
+    }
+
+    private async void OnContinueClicked(object? sender, EventArgs e) =>
+        await Shell.Current.GoToAsync("..");
 
     private async void OnBackClicked(object? sender, EventArgs e) =>
         await Shell.Current.GoToAsync("..");

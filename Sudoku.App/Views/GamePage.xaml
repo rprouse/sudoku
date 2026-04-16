@@ -92,5 +92,67 @@
                    TextColor="{AppThemeBinding Light=#666666, Dark=#aaaaaa}" FontSize="13" />
         </HorizontalStackLayout>
 
+        <!-- Win celebration overlay -->
+        <Grid x:Name="WinOverlay" Grid.RowSpan="6"
+              IsVisible="False" Opacity="0"
+              InputTransparent="False"
+              BackgroundColor="{AppThemeBinding Light=#CC000000, Dark=#CC000000}">
+            <Border x:Name="WinCard"
+                    StrokeShape="RoundRectangle 16"
+                    StrokeThickness="0"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#2a2a2a}"
+                    HorizontalOptions="Center" VerticalOptions="Center"
+                    Padding="40,32" WidthRequest="320">
+                <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                    <Label Text="&#127942;" FontSize="40"
+                           HorizontalTextAlignment="Center" />
+                    <Label x:Name="WinWordLabel"
+                           Text="{Binding WinMessage}"
+                           FontSize="28" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#2970c2, Dark=#5b9bd5}"
+                           HorizontalTextAlignment="Center"
+                           Opacity="0" />
+                    <Label Text="Puzzle Complete!"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light=#666666, Dark=#aaaaaa}"
+                           HorizontalTextAlignment="Center" />
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#e0e0e0, Dark=#3a3a3a}"
+                             Margin="0,4" />
+                    <Grid ColumnDefinitions="*,*,*" Margin="0,4">
+                        <VerticalStackLayout HorizontalOptions="Center">
+                            <Label Text="DIFFICULTY" FontSize="9"
+                                   TextColor="{AppThemeBinding Light=#999999, Dark=#888888}"
+                                   HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding DifficultyText}" FontSize="15" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}"
+                                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout HorizontalOptions="Center" Grid.Column="1">
+                            <Label Text="TIME" FontSize="9"
+                                   TextColor="{AppThemeBinding Light=#999999, Dark=#888888}"
+                                   HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding TimerText}" FontSize="15" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}"
+                                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout HorizontalOptions="Center" Grid.Column="2">
+                            <Label Text="ERRORS" FontSize="9"
+                                   TextColor="{AppThemeBinding Light=#999999, Dark=#888888}"
+                                   HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding ErrorCount}" FontSize="15" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}"
+                                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    <Button Text="Continue" FontSize="16" FontAttributes="Bold"
+                            CornerRadius="8" HeightRequest="44"
+                            BackgroundColor="{AppThemeBinding Light=#2970c2, Dark=#5b9bd5}"
+                            TextColor="White"
+                            Clicked="OnContinueClicked"
+                            Margin="0,8,0,0" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
     </Grid>
 </ContentPage>

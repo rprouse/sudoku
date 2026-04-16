@@ -43,6 +43,9 @@ public partial class GameViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     public partial bool IsGameComplete { get; set; }
 
+    [ObservableProperty]
+    public partial string WinMessage { get; set; } = "";
+
     public SudokuBoardDrawable Drawable { get; } = new();
     public Action? RequestInvalidate { get; set; }
     public Action<int, bool>? RequestUpdateNumberButton { get; set; }
@@ -85,6 +88,7 @@ public partial class GameViewModel : ObservableObject, IDisposable
             if (IsAutoCandidateMode) State.ComputeAutoCandidates();
             if (State.IsComplete())
             {
+                WinMessage = WinMessages.GetRandom();
                 IsGameComplete = true;
                 StopTimer();
                 _persistenceService.Delete();
