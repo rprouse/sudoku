@@ -87,6 +87,7 @@ public partial class GameViewModel : ObservableObject, IDisposable
             {
                 IsGameComplete = true;
                 StopTimer();
+                _persistenceService.Delete();
             }
         }
         else
