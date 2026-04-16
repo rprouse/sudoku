@@ -19,7 +19,7 @@ dotnet build Sudoku.App -f net10.0-windows10.0.19041.0 -t:Run  # Run MAUI app (W
 
 This is a C# Sudoku library and mobile game with nullable reference types enabled. The solution has four projects:
 
-- **Sudoku.Core** (net8.0) — Core library containing `SudokuBoard` data model, `Solvers` (`ISolver`, `SimpleSolver`), `Generators` (`SudokuGenerator`), `Game` namespace (`GameState`, `CellState`, `GameSettings`, `UndoAction`, `WinMessages`), `Difficulty` enum (root namespace), and `Persistence` (JSON deserialization).
+- **Sudoku.Core** (net8.0) — Core library containing `SudokuBoard` data model, `Solvers` (`ISolver`, `SimpleSolver`), `Generators` (`SudokuGenerator`), `Game` namespace (`GameState`, `CellState`, `GameSettings`, `UndoAction`, `WinMessages`), `Difficulty` enum (root namespace), `DifficultyExtensions` (display name mapping), and `Persistence` (JSON deserialization).
 - **Sudoku.App** (net10.0-android/windows) — .NET MAUI game app. MVVM with CommunityToolkit.Mvvm. GraphicsView-based board rendering. References Sudoku.Core. Structure: `Views/` (XAML pages), `ViewModels/` (observable ViewModels), `Services/` (`GamePersistenceService`, `SettingsService`), `Controls/` (`SudokuBoardDrawable`), `Converters/`.
 - **Sudoku.Tests** (net8.0) — NUnit 4 test project using FluentAssertions. Test data files (`sudokus.json`, `sudokus.txt`) are copied to output on build.
 - **Sudoku.Benchmarks** (net9.0) — BenchmarkDotNet performance benchmarks for solver implementations.
@@ -27,6 +27,22 @@ This is a C# Sudoku library and mobile game with nullable reference types enable
 `SudokuBoard` stores the grid internally as `int[,]` (2D array). It accepts `int[][]` (jagged array) via constructor for JSON deserialization but converts immediately. `0` represents empty cells. Puzzles are organized by difficulty tier: Easy, Medium, Hard, Expert, Evil (100 each).
 
 Game logic models (`GameState`, `CellState`, etc.) live in `Sudoku.Core/Game/` rather than the MAUI project so they remain testable from `Sudoku.Tests`.
+
+## Design System
+
+The app uses a zen-inspired warm earth-tone palette. Key design principles:
+
+- **Warm tones throughout**: No pure greys. Backgrounds, text, and UI elements all carry warm amber/brown undertones.
+- **Sage green accent**: Primary accent is `#7d8c6e` (light) / `#9aab88` (dark), replacing the original blue.
+- **Soft UI**: Buttons use `CornerRadius="16"`, difficulty buttons have no borders, generous spacing between elements.
+- **Difficulty display names**: The `Difficulty` enum retains its original values (`Easy`, `Medium`, `Hard`, `Expert`, `Evil`) for serialization compatibility. UI display names (`Gentle`, `Steady`, `Challenging`, `Deep`, `Profound`) are provided by `DifficultyExtensions.DisplayName()`. Always use `.DisplayName()` when showing difficulty to the user.
+- **Difficulty colors**: Earth-tone gradient from sage (`#8a9a7b`) through sand, clay, terracotta to dusty mauve (`#8b6d7b`).
+
+Color definitions live in:
+- `Colors.xaml` — resource dictionary colors (backgrounds, surfaces)
+- `SudokuBoardDrawable.cs` — board-specific colors as `static readonly Color` fields
+- `BoolToModeConverters.cs` — mode toggle button colors
+- XAML views — inline `AppThemeBinding` values for text and UI elements
 
 ## Code Style
 
@@ -38,6 +54,7 @@ Enforced via `.editorconfig`. Key conventions:
 
 ## Gotchas
 
+- **Difficulty naming**: The enum values (`Easy`, `Medium`, etc.) must not be renamed — they are used in JSON serialization for saved games and the puzzle data file. Use `DifficultyExtensions.DisplayName()` for UI text. XAML `CommandParameter` values still use the enum names (e.g., `CommandParameter="Easy"`).
 - **Candidate arrays**: Each `CellState` has three bool[9] arrays: `Candidates` (currently displayed), `ManualCandidates` (user-entered, preserved across mode switches), and `ExcludedCandidates` (auto-mode exclusions). `ToggleCandidate` and `ClearCandidates` require an `isAutoMode` parameter to write to the correct array.
 - **SVG text centering**: SkiaSharp's SVG renderer (used by MAUI resizetizer) does not support `dominant-baseline`. Use manual y-offset (`+font_size * 0.35`) for vertical centering.
 - **Resizetizer caching**: Icon/splash changes may not regenerate. Delete `obj/**/resizetizer/` and rebuild.

@@ -12,10 +12,10 @@
         <!-- Row 0: Navigation bar -->
         <Grid ColumnDefinitions="Auto,*,Auto" Padding="8,4">
             <Button Text="&#9664; Back" BackgroundColor="Transparent"
-                    TextColor="{AppThemeBinding Light=#666666, Dark=#888888}"
+                    TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}"
                     FontSize="14" Clicked="OnBackClicked" Grid.Column="0" />
             <Button Text="&#9881;" BackgroundColor="Transparent"
-                    TextColor="{AppThemeBinding Light=#666666, Dark=#888888}"
+                    TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}"
                     FontSize="20" Clicked="OnSettingsClicked" Grid.Column="2" />
         </Grid>
 
@@ -23,26 +23,26 @@
         <Grid ColumnDefinitions="*,*,*" Padding="8,4" Grid.Row="1">
             <VerticalStackLayout HorizontalOptions="Center">
                 <Label Text="DIFFICULTY" FontSize="10"
-                       TextColor="{AppThemeBinding Light=#999999, Dark=#888888}"
+                       TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}"
                        HorizontalTextAlignment="Center" />
                 <Label Text="{Binding DifficultyText}" FontSize="16" FontAttributes="Bold"
-                       TextColor="{AppThemeBinding Light=#2970c2, Dark=#5b9bd5}"
+                       TextColor="{AppThemeBinding Light=#7d8c6e, Dark=#9aab88}"
                        HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
             <VerticalStackLayout HorizontalOptions="Center" Grid.Column="1">
                 <Label Text="TIME" FontSize="10"
-                       TextColor="{AppThemeBinding Light=#999999, Dark=#888888}"
+                       TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}"
                        HorizontalTextAlignment="Center" />
                 <Label Text="{Binding TimerText}" FontSize="16" FontAttributes="Bold"
-                       TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}"
+                       TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}"
                        HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
             <VerticalStackLayout HorizontalOptions="Center" Grid.Column="2">
                 <Label Text="ERRORS" FontSize="10"
-                       TextColor="{AppThemeBinding Light=#999999, Dark=#888888}"
+                       TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}"
                        HorizontalTextAlignment="Center" />
                 <Label Text="{Binding ErrorCount}" FontSize="16" FontAttributes="Bold"
-                       TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}"
+                       TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}"
                        HorizontalTextAlignment="Center" />
             </VerticalStackLayout>
         </Grid>
@@ -54,18 +54,18 @@
         <!-- Row 3: Mode toggle + Undo -->
         <Grid ColumnDefinitions="*,Auto" Padding="12,8" Grid.Row="3">
             <HorizontalStackLayout Spacing="0">
-                <Button Text="Normal" WidthRequest="100" HeightRequest="40" FontSize="13" CornerRadius="6"
+                <Button Text="Normal" WidthRequest="100" HeightRequest="40" FontSize="13" CornerRadius="12"
                         BackgroundColor="{Binding IsNormalMode, Converter={StaticResource BoolToModeColorConverter}}"
                         TextColor="{Binding IsNormalMode, Converter={StaticResource BoolToModeTextConverter}}"
                         Clicked="OnNormalModeClicked" />
-                <Button Text="Candidate" WidthRequest="100" HeightRequest="40" FontSize="13" CornerRadius="6"
+                <Button Text="Candidate" WidthRequest="100" HeightRequest="40" FontSize="13" CornerRadius="12"
                         BackgroundColor="{Binding IsNormalMode, Converter={StaticResource InverseBoolToModeColorConverter}}"
                         TextColor="{Binding IsNormalMode, Converter={StaticResource InverseBoolToModeTextConverter}}"
                         Clicked="OnCandidateModeClicked" />
             </HorizontalStackLayout>
-            <Button Text="Undo" WidthRequest="80" HeightRequest="40" FontSize="13" CornerRadius="6"
-                    BackgroundColor="{AppThemeBinding Light=#e0e0e0, Dark=#2a2a2a}"
-                    TextColor="{AppThemeBinding Light=#666666, Dark=#888888}"
+            <Button Text="Undo" WidthRequest="80" HeightRequest="40" FontSize="13" CornerRadius="12"
+                    BackgroundColor="{AppThemeBinding Light=#e0d6cc, Dark=#2d2925}"
+                    TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}"
                     Command="{Binding UndoMoveCommand}" Grid.Column="1" />
         </Grid>
 
@@ -81,15 +81,15 @@
             <Button x:Name="NumButton7" Text="7" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="1" />
             <Button x:Name="NumButton8" Text="8" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="2" />
             <Button x:Name="NumButton9" Text="9" Style="{StaticResource NumberPadButton}" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="3" />
-            <Button Text="✕" Style="{StaticResource NumberPadButton}" Clicked="OnClearClicked" Grid.Row="1" Grid.Column="4" />
+            <Button Text="&#10005;" Style="{StaticResource NumberPadButton}" Clicked="OnClearClicked" Grid.Row="1" Grid.Column="4" />
         </Grid>
 
         <!-- Row 5: Auto Candidate -->
         <HorizontalStackLayout HorizontalOptions="Center" Spacing="8" Padding="8" Grid.Row="5">
             <CheckBox IsChecked="{Binding IsAutoCandidateMode}"
-                      Color="{AppThemeBinding Light=#2970c2, Dark=#5b9bd5}" />
+                      Color="{AppThemeBinding Light=#7d8c6e, Dark=#9aab88}" />
             <Label Text="Auto Candidate Mode" VerticalTextAlignment="Center"
-                   TextColor="{AppThemeBinding Light=#666666, Dark=#aaaaaa}" FontSize="13" />
+                   TextColor="{AppThemeBinding Light=#8a7e74, Dark=#9a8e84}" FontSize="13" />
         </HorizontalStackLayout>
 
         <!-- Win celebration overlay -->
@@ -98,9 +98,9 @@
               InputTransparent="False"
               BackgroundColor="{AppThemeBinding Light=#CC000000, Dark=#CC000000}">
             <Border x:Name="WinCard"
-                    StrokeShape="RoundRectangle 16"
+                    StrokeShape="RoundRectangle 20"
                     StrokeThickness="0"
-                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#2a2a2a}"
+                    BackgroundColor="{AppThemeBinding Light=#faf6f1, Dark=#2d2925}"
                     HorizontalOptions="Center" VerticalOptions="Center"
                     Padding="24,32" WidthRequest="340">
                 <VerticalStackLayout Spacing="12" HorizontalOptions="Fill">
@@ -109,44 +109,44 @@
                     <Label x:Name="WinWordLabel"
                            Text="{Binding WinMessage}"
                            FontSize="28" FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light=#2970c2, Dark=#5b9bd5}"
+                           TextColor="{AppThemeBinding Light=#7d8c6e, Dark=#9aab88}"
                            HorizontalTextAlignment="Center"
                            Opacity="0" />
                     <Label Text="Puzzle Complete!"
                            FontSize="16"
-                           TextColor="{AppThemeBinding Light=#666666, Dark=#aaaaaa}"
+                           TextColor="{AppThemeBinding Light=#8a7e74, Dark=#9a8e84}"
                            HorizontalTextAlignment="Center" />
-                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#e0e0e0, Dark=#3a3a3a}"
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#e0d6cc, Dark=#3d3632}"
                              Margin="0,4" />
                     <Grid ColumnDefinitions="*,*,*" Margin="0,4">
                         <VerticalStackLayout HorizontalOptions="Center">
                             <Label Text="DIFFICULTY" FontSize="9"
-                                   TextColor="{AppThemeBinding Light=#999999, Dark=#888888}"
+                                   TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}"
                                    HorizontalTextAlignment="Center" />
                             <Label Text="{Binding DifficultyText}" FontSize="15" FontAttributes="Bold"
-                                   TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}"
+                                   TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}"
                                    HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
                         <VerticalStackLayout HorizontalOptions="Center" Grid.Column="1">
                             <Label Text="TIME" FontSize="9"
-                                   TextColor="{AppThemeBinding Light=#999999, Dark=#888888}"
+                                   TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}"
                                    HorizontalTextAlignment="Center" />
                             <Label Text="{Binding TimerText}" FontSize="15" FontAttributes="Bold"
-                                   TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}"
+                                   TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}"
                                    HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
                         <VerticalStackLayout HorizontalOptions="Center" Grid.Column="2">
                             <Label Text="ERRORS" FontSize="9"
-                                   TextColor="{AppThemeBinding Light=#999999, Dark=#888888}"
+                                   TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}"
                                    HorizontalTextAlignment="Center" />
                             <Label Text="{Binding ErrorCount}" FontSize="15" FontAttributes="Bold"
-                                   TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}"
+                                   TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}"
                                    HorizontalTextAlignment="Center" />
                         </VerticalStackLayout>
                     </Grid>
-                    <Button Text="Continue" FontSize="16" FontAttributes="Bold"
-                            CornerRadius="8" HeightRequest="44"
-                            BackgroundColor="{AppThemeBinding Light=#2970c2, Dark=#5b9bd5}"
+                    <Button Text="Continue" FontSize="16"
+                            CornerRadius="16" HeightRequest="44"
+                            BackgroundColor="{AppThemeBinding Light=#7d8c6e, Dark=#9aab88}"
                             TextColor="White"
                             Clicked="OnContinueClicked"
                             Margin="0,8,0,0" />

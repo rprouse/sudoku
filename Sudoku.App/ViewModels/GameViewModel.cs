@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using Sudoku.App.Controls;
 using Sudoku.App.Services;
+using Sudoku.Core;
 using Sudoku.Core.Game;
 
 namespace Sudoku.App.ViewModels;
@@ -60,7 +61,7 @@ public partial class GameViewModel : ObservableObject, IDisposable
     public void LoadState(GameState state)
     {
         State = state;
-        DifficultyText = state.Difficulty.ToString();
+        DifficultyText = state.Difficulty.DisplayName();
         ErrorCount = state.ErrorCount;
         IsGameComplete = false;
         UpdateTimerText();

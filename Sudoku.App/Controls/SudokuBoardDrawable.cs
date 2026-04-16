@@ -10,29 +10,29 @@ public class SudokuBoardDrawable : IDrawable
     public int SelectedCol { get; set; } = -1;
     public bool IsDarkTheme { get; set; } = true;
 
-    // Dark theme colors
-    private static readonly Color s_darkBackground = Color.FromArgb("#1a1a1a");
-    private static readonly Color s_darkSelectedCell = Color.FromArgb("#243750");
-    private static readonly Color s_darkRelatedCell = Color.FromArgb("#1a2640");
-    private static readonly Color s_darkSameNumber = Color.FromArgb("#1e3520");
-    private static readonly Color s_darkErrorCell = Color.FromArgb("#cc4444");
-    private static readonly Color s_darkThinLine = Color.FromArgb("#444444");
-    private static readonly Color s_darkThickLine = Color.FromArgb("#888888");
-    private static readonly Color s_darkGivenText = Colors.White;
-    private static readonly Color s_darkPlayerText = Color.FromArgb("#6fa8dc");
-    private static readonly Color s_darkCandidateText = Color.FromArgb("#9a9a9a");
+    // Dark theme colors — warm earth tones
+    private static readonly Color s_darkBackground = Color.FromArgb("#1e1b18");
+    private static readonly Color s_darkSelectedCell = Color.FromArgb("#3a3228");
+    private static readonly Color s_darkRelatedCell = Color.FromArgb("#2a2520");
+    private static readonly Color s_darkSameNumber = Color.FromArgb("#2d3328");
+    private static readonly Color s_darkErrorCell = Color.FromArgb("#8b4040");
+    private static readonly Color s_darkThinLine = Color.FromArgb("#4a4038");
+    private static readonly Color s_darkThickLine = Color.FromArgb("#7a7068");
+    private static readonly Color s_darkGivenText = Color.FromArgb("#e0d8cf");
+    private static readonly Color s_darkPlayerText = Color.FromArgb("#9aab88");
+    private static readonly Color s_darkCandidateText = Color.FromArgb("#7a7068");
 
-    // Light theme colors
-    private static readonly Color s_lightBackground = Color.FromArgb("#f0f0f0");
-    private static readonly Color s_lightSelectedCell = Color.FromArgb("#bdd3ea");
-    private static readonly Color s_lightRelatedCell = Color.FromArgb("#d6e4f0");
-    private static readonly Color s_lightSameNumber = Color.FromArgb("#d5e8d4");
-    private static readonly Color s_lightErrorCell = Color.FromArgb("#f4cccc");
-    private static readonly Color s_lightThinLine = Color.FromArgb("#cccccc");
-    private static readonly Color s_lightThickLine = Color.FromArgb("#333333");
-    private static readonly Color s_lightGivenText = Color.FromArgb("#1a1a1a");
-    private static readonly Color s_lightPlayerText = Color.FromArgb("#2970c2");
-    private static readonly Color s_lightCandidateText = Color.FromArgb("#707070");
+    // Light theme colors — warm earth tones
+    private static readonly Color s_lightBackground = Color.FromArgb("#f5f0eb");
+    private static readonly Color s_lightSelectedCell = Color.FromArgb("#ddd2c4");
+    private static readonly Color s_lightRelatedCell = Color.FromArgb("#ebe4db");
+    private static readonly Color s_lightSameNumber = Color.FromArgb("#d8e0d0");
+    private static readonly Color s_lightErrorCell = Color.FromArgb("#e8c4c0");
+    private static readonly Color s_lightThinLine = Color.FromArgb("#c4b5a4");
+    private static readonly Color s_lightThickLine = Color.FromArgb("#5a4e44");
+    private static readonly Color s_lightGivenText = Color.FromArgb("#3d3632");
+    private static readonly Color s_lightPlayerText = Color.FromArgb("#7d8c6e");
+    private static readonly Color s_lightCandidateText = Color.FromArgb("#8a7e74");
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {

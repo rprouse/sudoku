@@ -4,20 +4,19 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <Color x:Key="PageBackgroundDark">#1a1a1a</Color>
-    <Color x:Key="PageBackgroundLight">#f0f0f0</Color>
-    <Color x:Key="AccentBlue">#2970c2</Color>
-    <Color x:Key="NumberPadDark">#3a3a3a</Color>
-    <Color x:Key="NumberPadLight">#d0d0d0</Color>
-    <Color x:Key="NumberPadTextDark">#e8e8e8</Color>
-    <Color x:Key="NumberPadTextLight">#1a1a1a</Color>
-    <Color x:Key="NumberPadDisabledDark">#2a2a2a</Color>
-    <Color x:Key="NumberPadDisabledLight">#e8e8e8</Color>
-    <Color x:Key="NumberPadTextDisabledDark">#555555</Color>
-    <Color x:Key="NumberPadTextDisabledLight">#aaaaaa</Color>
-    <Color x:Key="DifficultyBgDark">#2a2a2a</Color>
-    <Color x:Key="DifficultyBgLight">#e0e0e0</Color>
-    <Color x:Key="DifficultyBorderDark">#3a3a3a</Color>
-    <Color x:Key="DifficultyBorderLight">#cccccc</Color>
+    <Color x:Key="PageBackgroundDark">#1e1b18</Color>
+    <Color x:Key="PageBackgroundLight">#f5f0eb</Color>
+    <Color x:Key="AccentEarth">#7d8c6e</Color>
+    <Color x:Key="AccentEarthLight">#9aab88</Color>
+    <Color x:Key="NumberPadDark">#2d2925</Color>
+    <Color x:Key="NumberPadLight">#e0d6cc</Color>
+    <Color x:Key="NumberPadTextDark">#e0d8cf</Color>
+    <Color x:Key="NumberPadTextLight">#3d3632</Color>
+    <Color x:Key="NumberPadDisabledDark">#252220</Color>
+    <Color x:Key="NumberPadDisabledLight">#ebe4db</Color>
+    <Color x:Key="NumberPadTextDisabledDark">#504840</Color>
+    <Color x:Key="NumberPadTextDisabledLight">#b5aa9e</Color>
+    <Color x:Key="DifficultyBgDark">#2d2925</Color>
+    <Color x:Key="DifficultyBgLight">#ebe4db</Color>
 
 </ResourceDictionary>

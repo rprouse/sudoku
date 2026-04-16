@@ -10,71 +10,71 @@
     <Grid RowDefinitions="Auto,*" Padding="24,16">
         <HorizontalStackLayout Spacing="12">
             <Button Text="&#9664;" BackgroundColor="Transparent"
-                    TextColor="{AppThemeBinding Light=#666666, Dark=#888888}"
+                    TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}"
                     FontSize="18" Clicked="OnBackClicked" />
             <Label Text="Settings" FontSize="22" FontAttributes="Bold"
                    VerticalTextAlignment="Center"
-                   TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}" />
+                   TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}" />
         </HorizontalStackLayout>
 
         <ScrollView Grid.Row="1" Margin="0,16,0,0">
             <VerticalStackLayout Spacing="0">
-                <Label Text="APPEARANCE" FontSize="11" CharacterSpacing="2" TextColor="#2970c2" Margin="0,0,0,12" />
+                <Label Text="APPEARANCE" FontSize="11" CharacterSpacing="2" TextColor="#7d8c6e" Margin="0,0,0,12" />
 
                 <Grid ColumnDefinitions="*,Auto" Padding="0,14">
                     <VerticalStackLayout>
                         <Label Text="Dark Theme" FontSize="15"
-                               TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}" />
+                               TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}" />
                         <Label Text="Toggle between dark and light" FontSize="12"
-                               TextColor="{AppThemeBinding Light=#999999, Dark=#666666}" />
+                               TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}" />
                     </VerticalStackLayout>
-                    <Switch IsToggled="{Binding IsDarkTheme}" OnColor="#2970c2"
+                    <Switch IsToggled="{Binding IsDarkTheme}" OnColor="#7d8c6e"
                             Grid.Column="1" VerticalOptions="Center" />
                 </Grid>
 
-                <Label Text="GAMEPLAY" FontSize="11" CharacterSpacing="2" TextColor="#2970c2" Margin="0,24,0,12" />
+                <Label Text="GAMEPLAY" FontSize="11" CharacterSpacing="2" TextColor="#7d8c6e" Margin="0,24,0,12" />
 
                 <Grid ColumnDefinitions="*,Auto" Padding="0,14">
                     <VerticalStackLayout>
                         <Label Text="Highlight Related Cells" FontSize="15"
-                               TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}" />
+                               TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}" />
                         <Label Text="Shade row, column, and box" FontSize="12"
-                               TextColor="{AppThemeBinding Light=#999999, Dark=#666666}" />
+                               TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}" />
                     </VerticalStackLayout>
-                    <Switch IsToggled="{Binding HighlightRelatedCells}" OnColor="#2970c2"
+                    <Switch IsToggled="{Binding HighlightRelatedCells}" OnColor="#7d8c6e"
                             Grid.Column="1" VerticalOptions="Center" />
                 </Grid>
 
                 <Grid ColumnDefinitions="*,Auto" Padding="0,14">
                     <VerticalStackLayout>
                         <Label Text="Highlight Same Numbers" FontSize="15"
-                               TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}" />
+                               TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}" />
                         <Label Text="Tint cells with matching value" FontSize="12"
-                               TextColor="{AppThemeBinding Light=#999999, Dark=#666666}" />
+                               TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}" />
                     </VerticalStackLayout>
-                    <Switch IsToggled="{Binding HighlightSameNumbers}" OnColor="#2970c2"
+                    <Switch IsToggled="{Binding HighlightSameNumbers}" OnColor="#7d8c6e"
                             Grid.Column="1" VerticalOptions="Center" />
                 </Grid>
 
                 <Grid ColumnDefinitions="*,Auto" Padding="0,14">
                     <VerticalStackLayout>
                         <Label Text="Show Errors" FontSize="15"
-                               TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}" />
+                               TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}" />
                         <Label Text="Highlight incorrect values immediately" FontSize="12"
-                               TextColor="{AppThemeBinding Light=#999999, Dark=#666666}" />
+                               TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}" />
                     </VerticalStackLayout>
-                    <Switch IsToggled="{Binding ShowErrors}" OnColor="#2970c2"
+                    <Switch IsToggled="{Binding ShowErrors}" OnColor="#7d8c6e"
                             Grid.Column="1" VerticalOptions="Center" />
                 </Grid>
 
                 <Grid ColumnDefinitions="*,Auto" Padding="0,14">
                     <VerticalStackLayout>
                         <Label Text="Auto-Remove Candidates" FontSize="15"
-                               TextColor="{AppThemeBinding Light=#1a1a1a, Dark=#e8e8e8}" />
+                               TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}" />
                         <Label Text="Remove candidates when placing a number" FontSize="12"
-                               TextColor="{AppThemeBinding Light=#999999, Dark=#666666}" />
+                               TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}" />
                     </VerticalStackLayout>
-                    <Switch IsToggled="{Binding AutoRemoveCandidates}" OnColor="#2970c2"
+                    <Switch IsToggled="{Binding AutoRemoveCandidates}" OnColor="#7d8c6e"
                             Grid.Column="1" VerticalOptions="Center" />
                 </Grid>
             </VerticalStackLayout>

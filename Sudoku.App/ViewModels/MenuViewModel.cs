@@ -42,7 +42,7 @@ public partial class MenuViewModel : ObservableObject
             HasSavedGame = true;
             var minutes = state.ElapsedSeconds / 60;
             var seconds = state.ElapsedSeconds % 60;
-            SavedGameInfo = $"{state.Difficulty} — {minutes}:{seconds:D2}";
+            SavedGameInfo = $"{state.Difficulty.DisplayName()} — {minutes}:{seconds:D2}";
         }
         else
         {
