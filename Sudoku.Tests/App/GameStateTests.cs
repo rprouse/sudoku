@@ -139,8 +139,9 @@ public class GameStateTests
         var (puzzle, solution) = GenerateTestPuzzle();
         var state = new GameState(puzzle, solution, Difficulty.Easy);
         var (r, c) = FindEmptyCell(state);
+        var wrongValue = solution[r, c] == 9 ? 1 : solution[r, c] + 1;
 
-        state.PlaceNumber(r, c, solution[r, c]);
+        state.PlaceNumber(r, c, wrongValue);
         state.Undo();
 
         state.Cells[r, c].Value.Should().Be(0);
@@ -153,8 +154,9 @@ public class GameStateTests
         var (puzzle, solution) = GenerateTestPuzzle();
         var state = new GameState(puzzle, solution, Difficulty.Easy);
         var (r, c) = FindEmptyCell(state);
+        var wrongValue = solution[r, c] == 9 ? 1 : solution[r, c] + 1;
 
-        state.PlaceNumber(r, c, solution[r, c]);
+        state.PlaceNumber(r, c, wrongValue);
         state.ClearCell(r, c);
 
         state.Cells[r, c].Value.Should().Be(0);
@@ -303,6 +305,49 @@ public class GameStateTests
                 state.Cells[r, col].HasCandidate(value).Should().BeFalse();
             }
         }
+    }
+
+    [Test]
+    public void PlaceNumber_CannotOverwriteCorrectValue()
+    {
+        var (puzzle, solution) = GenerateTestPuzzle();
+        var state = new GameState(puzzle, solution, Difficulty.Easy);
+        var (r, c) = FindEmptyCell(state);
+        var correctValue = solution[r, c];
+
+        state.PlaceNumber(r, c, correctValue);
+        var wrongValue = correctValue == 9 ? 1 : correctValue + 1;
+        state.PlaceNumber(r, c, wrongValue);
+
+        state.Cells[r, c].Value.Should().Be(correctValue);
+    }
+
+    [Test]
+    public void ClearCell_CannotClearCorrectValue()
+    {
+        var (puzzle, solution) = GenerateTestPuzzle();
+        var state = new GameState(puzzle, solution, Difficulty.Easy);
+        var (r, c) = FindEmptyCell(state);
+        var correctValue = solution[r, c];
+
+        state.PlaceNumber(r, c, correctValue);
+        state.ClearCell(r, c);
+
+        state.Cells[r, c].Value.Should().Be(correctValue);
+    }
+
+    [Test]
+    public void Undo_CannotUndoCorrectValue()
+    {
+        var (puzzle, solution) = GenerateTestPuzzle();
+        var state = new GameState(puzzle, solution, Difficulty.Easy);
+        var (r, c) = FindEmptyCell(state);
+        var correctValue = solution[r, c];
+
+        state.PlaceNumber(r, c, correctValue);
+        state.Undo();
+
+        state.Cells[r, c].Value.Should().Be(correctValue);
     }
 
     private static (int r, int c) FindEmptyCell(GameState state)
