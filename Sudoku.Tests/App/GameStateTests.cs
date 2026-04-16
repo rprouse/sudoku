@@ -285,18 +285,17 @@ public class GameStateTests
     }
 
     [Test]
-    public void AutoRemoveCandidates_RemovesFromRelatedCells()
+    public void PlaceNumber_RemovesCandidatesFromRelatedCells()
     {
         var (puzzle, solution) = GenerateTestPuzzle();
         var state = new GameState(puzzle, solution, Difficulty.Easy);
-        var settings = new GameSettings { AutoRemoveCandidates = true };
 
         state.ComputeAutoCandidates();
 
         var (r, c) = FindEmptyCell(state);
         var value = solution[r, c];
 
-        state.PlaceNumber(r, c, value, settings);
+        state.PlaceNumber(r, c, value);
 
         for (var col = 0; col < 9; col++)
         {
@@ -304,6 +303,36 @@ public class GameStateTests
             {
                 state.Cells[r, col].HasCandidate(value).Should().BeFalse();
             }
+        }
+    }
+
+    [Test]
+    public void Undo_RestoresCandidatesInRelatedCells()
+    {
+        var (puzzle, solution) = GenerateTestPuzzle();
+        var state = new GameState(puzzle, solution, Difficulty.Easy);
+
+        state.ComputeAutoCandidates();
+
+        var (r, c) = FindEmptyCell(state);
+        var wrongValue = solution[r, c] == 9 ? 1 : solution[r, c] + 1;
+
+        // Snapshot candidates in the row before placing
+        var candidatesBefore = new bool[9];
+        for (var col = 0; col < 9; col++)
+        {
+            if (col != c && !state.Cells[r, col].HasValue)
+                candidatesBefore[col] = state.Cells[r, col].HasCandidate(wrongValue);
+        }
+
+        state.PlaceNumber(r, c, wrongValue);
+        state.Undo();
+
+        // Candidates in related cells should be restored
+        for (var col = 0; col < 9; col++)
+        {
+            if (col != c && !state.Cells[r, col].HasValue)
+                state.Cells[r, col].HasCandidate(wrongValue).Should().Be(candidatesBefore[col]);
         }
     }
 

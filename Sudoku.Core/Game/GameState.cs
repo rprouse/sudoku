@@ -42,7 +42,8 @@ public class GameState
         var cell = Cells[row, col];
         if (cell.IsGiven || IsCorrectlyPlaced(row, col)) return;
 
-        PushUndo(row, col);
+        var relatedChanges = SnapshotRelatedCells(row, col, number);
+        PushUndo(row, col, relatedChanges);
         cell.Value = number;
         cell.ClearCandidates();
         Array.Clear(cell.ManualCandidates);
@@ -57,10 +58,7 @@ public class GameState
             cell.IsError = false;
         }
 
-        if (settings?.AutoRemoveCandidates == true)
-        {
-            RemoveCandidateFromRelatedCells(row, col, number);
-        }
+        RemoveCandidateFromRelatedCells(row, col, number);
     }
 
     public void ClearCell(int row, int col)
@@ -128,6 +126,17 @@ public class GameState
         Array.Copy(action.PreviousCandidates, cell.Candidates, 9);
         Array.Copy(action.PreviousManualCandidates, cell.ManualCandidates, 9);
         Array.Copy(action.PreviousExcludedCandidates, cell.ExcludedCandidates, 9);
+
+        if (action.RelatedCellChanges != null)
+        {
+            foreach (var change in action.RelatedCellChanges)
+            {
+                var related = Cells[change.Row, change.Col];
+                Array.Copy(change.PreviousCandidates, related.Candidates, 9);
+                Array.Copy(change.PreviousManualCandidates, related.ManualCandidates, 9);
+                Array.Copy(change.PreviousExcludedCandidates, related.ExcludedCandidates, 9);
+            }
+        }
     }
 
     public void ComputeAutoCandidates()
@@ -188,7 +197,7 @@ public class GameState
         return count >= 9;
     }
 
-    private void PushUndo(int row, int col)
+    private void PushUndo(int row, int col, List<RelatedCellChange>? relatedChanges = null)
     {
         var cell = Cells[row, col];
         UndoStack.Push(new UndoAction(
@@ -196,7 +205,47 @@ public class GameState
             cell.Value,
             cell.CloneCandidates(),
             cell.CloneManualCandidates(),
-            cell.CloneExcludedCandidates()));
+            cell.CloneExcludedCandidates(),
+            relatedChanges));
+    }
+
+    private List<RelatedCellChange> SnapshotRelatedCells(int row, int col, int number)
+    {
+        var changes = new List<RelatedCellChange>();
+        var visited = new HashSet<(int, int)>();
+
+        void Snapshot(int r, int c)
+        {
+            if (r == row && c == col) return;
+            if (!visited.Add((r, c))) return;
+            var cell = Cells[r, c];
+            if (cell.IsGiven || cell.HasValue) return;
+            if (!cell.Candidates[number - 1] && !cell.ManualCandidates[number - 1]) return;
+
+            changes.Add(new RelatedCellChange(
+                r, c,
+                cell.CloneCandidates(),
+                cell.CloneManualCandidates(),
+                cell.CloneExcludedCandidates()));
+        }
+
+        for (var i = 0; i < 9; i++)
+        {
+            Snapshot(row, i);
+            Snapshot(i, col);
+        }
+
+        var boxRow = (row / 3) * 3;
+        var boxCol = (col / 3) * 3;
+        for (var r = boxRow; r < boxRow + 3; r++)
+        {
+            for (var c = boxCol; c < boxCol + 3; c++)
+            {
+                Snapshot(r, c);
+            }
+        }
+
+        return changes;
     }
 
     private void RemoveCandidateFromRelatedCells(int row, int col, int number)

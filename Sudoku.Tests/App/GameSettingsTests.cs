@@ -29,13 +29,6 @@ public class GameSettingsTests
     }
 
     [Test]
-    public void Defaults_AutoRemoveCandidates_IsFalse()
-    {
-        var settings = new GameSettings();
-        settings.AutoRemoveCandidates.Should().BeFalse();
-    }
-
-    [Test]
     public void Defaults_IsDarkTheme_IsTrue()
     {
         var settings = new GameSettings();

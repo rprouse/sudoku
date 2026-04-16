@@ -6,5 +6,4 @@ public class GameSettings
     public bool HighlightRelatedCells { get; set; } = true;
     public bool HighlightSameNumbers { get; set; } = true;
     public bool ShowErrors { get; set; } = true;
-    public bool AutoRemoveCandidates { get; set; }
 }

@@ -67,16 +67,6 @@
                             Grid.Column="1" VerticalOptions="Center" />
                 </Grid>
 
-                <Grid ColumnDefinitions="*,Auto" Padding="0,14">
-                    <VerticalStackLayout>
-                        <Label Text="Auto-Remove Candidates" FontSize="15"
-                               TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}" />
-                        <Label Text="Remove candidates when placing a number" FontSize="12"
-                               TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}" />
-                    </VerticalStackLayout>
-                    <Switch IsToggled="{Binding AutoRemoveCandidates}" OnColor="#7d8c6e"
-                            Grid.Column="1" VerticalOptions="Center" />
-                </Grid>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>
