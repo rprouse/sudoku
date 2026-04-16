@@ -37,7 +37,7 @@ jobs:
           include-prerelease: true
 
       - name: 📦 Install MAUI Workloads
-        run: dotnet workload restore --project Sudoku.App
+        run: dotnet workload restore Sudoku.App/Sudoku.App.csproj
 
       - name: 🏗️ Build Android
         run: dotnet build Sudoku.App -f net10.0-android
@@ -55,7 +55,7 @@ jobs:
           include-prerelease: true
 
       - name: 📦 Install MAUI Workloads
-        run: dotnet workload restore --project Sudoku.App
+        run: dotnet workload restore Sudoku.App/Sudoku.App.csproj
 
       - name: 🏗️ Build Windows
         run: dotnet build Sudoku.App -f net10.0-windows10.0.19041.0
