@@ -193,7 +193,7 @@ public partial class GameViewModel : ObservableObject, IDisposable
 
     private async Task SaveGameAsync()
     {
-        if (State != null) await _persistenceService.SaveAsync(State);
+        if (State != null && !IsGameComplete) await _persistenceService.SaveAsync(State);
     }
 
     public void RefreshSettings()
