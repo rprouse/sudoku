@@ -40,7 +40,7 @@ jobs:
         run: dotnet workload restore Sudoku.App/Sudoku.App.csproj
 
       - name: 🏗️ Build Android
-        run: dotnet build Sudoku.App -f net10.0-android
+        run: dotnet build Sudoku.App -f net10.0-android -p:EnableWindowsTargeting=true
 
   build-windows:
     name: 🪟 Build MAUI Windows
