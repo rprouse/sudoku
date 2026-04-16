@@ -10,17 +10,22 @@ dotnet test               # Run all tests
 dotnet test --filter "FullyQualifiedName~CanLoadFromJson"  # Run a single test by name
 dotnet test Sudoku.Tests  # Run tests in the test project only
 dotnet run --project Sudoku.Benchmarks -c Release  # Run benchmarks (must use Release)
+dotnet build Sudoku.App -f net10.0-windows10.0.19041.0  # Build MAUI app (Windows)
+dotnet build Sudoku.App -f net10.0-android              # Build MAUI app (Android)
 ```
 
 ## Architecture
 
-This is a C# Sudoku library with nullable reference types enabled. The solution has three projects:
+This is a C# Sudoku library and mobile game with nullable reference types enabled. The solution has four projects:
 
-- **Sudoku.Core** (net8.0) — Core library containing `Persistence` (JSON deserialization), data model `SudokuBoard`, and `Solvers` namespace (`ISolver` interface, `SimpleSolver`).
+- **Sudoku.Core** (net8.0) — Core library containing `SudokuBoard` data model, `Solvers` (`ISolver`, `SimpleSolver`), `Generators` (`SudokuGenerator`), `Game` namespace (`GameState`, `CellState`, `GameSettings`, `UndoAction`), and `Persistence` (JSON deserialization).
+- **Sudoku.App** (net10.0-android/windows) — .NET MAUI game app. MVVM with CommunityToolkit.Mvvm. GraphicsView-based board rendering. References Sudoku.Core.
 - **Sudoku.Tests** (net8.0) — NUnit 4 test project using FluentAssertions. Test data files (`sudokus.json`, `sudokus.txt`) are copied to output on build.
 - **Sudoku.Benchmarks** (net9.0) — BenchmarkDotNet performance benchmarks for solver implementations.
 
 `SudokuBoard` stores the grid internally as `int[,]` (2D array). It accepts `int[][]` (jagged array) via constructor for JSON deserialization but converts immediately. `0` represents empty cells. Puzzles are organized by difficulty tier: Easy, Medium, Hard, Expert, Evil (100 each).
+
+Game logic models (`GameState`, `CellState`, etc.) live in `Sudoku.Core/Game/` rather than the MAUI project so they remain testable from `Sudoku.Tests`.
 
 ## Code Style
 
