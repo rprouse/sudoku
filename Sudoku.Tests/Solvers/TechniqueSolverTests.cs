@@ -170,4 +170,23 @@ public class TechniqueSolverTests
         }
         found.Should().BeTrue("at least one Hard puzzle should exercise Intersection techniques");
     }
+
+    [Test]
+    public void Fish_FiresOnExpertPuzzle()
+    {
+        var solver = new TechniqueSolver();
+        var found = false;
+        foreach (var puzzle in SUDOKUS.Expert.Concat(SUDOKUS.Evil))
+        {
+            var trace = solver.Solve(puzzle.GetSudokuBoard());
+            if (trace.Steps.Any(s =>
+                s.Level == DifficultyTechnique.XWing ||
+                s.Level == DifficultyTechnique.Swordfish))
+            {
+                found = true;
+                break;
+            }
+        }
+        found.Should().BeTrue("at least one Expert/Evil puzzle should exercise X-Wing or Swordfish");
+    }
 }

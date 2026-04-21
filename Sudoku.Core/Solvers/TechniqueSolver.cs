@@ -16,7 +16,9 @@ public sealed class TechniqueSolver : ITechniqueSolver
         new NakedSubset(4, DifficultyTechnique.NakedQuad, "Naked Quad"),
         new HiddenSubset(4, DifficultyTechnique.HiddenQuad, "Hidden Quad"),
         new Intersection(pointing: true),
-        new Intersection(pointing: false)
+        new Intersection(pointing: false),
+        new Fish(2, DifficultyTechnique.XWing, "X-Wing"),
+        new Fish(3, DifficultyTechnique.Swordfish, "Swordfish")
     };
 
     public SolveTrace Solve(SudokuBoard board)
