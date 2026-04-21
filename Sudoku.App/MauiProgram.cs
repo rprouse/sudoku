@@ -20,7 +20,9 @@ public static class MauiProgram
             });
 
         // Core services
-        builder.Services.AddSingleton<ISolver, SimpleSolver>();
+        builder.Services.AddSingleton<ISolver, BitmaskSolver>();
+        builder.Services.AddSingleton<ITechniqueSolver, TechniqueSolver>();
+        builder.Services.AddSingleton<DifficultyGrader>();
         builder.Services.AddSingleton<SudokuGenerator>();
         builder.Services.AddSingleton<SettingsService>();
         builder.Services.AddSingleton<GamePersistenceService>();
