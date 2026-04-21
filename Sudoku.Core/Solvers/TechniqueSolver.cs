@@ -2,7 +2,7 @@ using Sudoku.Core.Solvers.Techniques;
 
 namespace Sudoku.Core.Solvers;
 
-public class TechniqueSolver : ITechniqueSolver
+public sealed class TechniqueSolver : ITechniqueSolver
 {
     // Ordered easiest-first. Later tasks append techniques to this list.
     private readonly ITechnique[] _techniques =
