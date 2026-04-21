@@ -71,7 +71,7 @@ public class TechniqueSolverTests
     }
 
     [Test]
-    public void HiddenSubset_DetectsHiddenPair()
+    public void HiddenSubset_DetectsHiddenTriple()
     {
         // Hidden-pair detection with placement-only discipline:
         //

@@ -41,11 +41,11 @@ internal sealed class HiddenSubset : ITechnique
         }
 
         // Try every N-subset of missing digits. If exactly N empty cells
-        // host any of those digits, those cells form a hidden subset —
-        // they can only hold those N digits. When a host cell's live
-        // candidates intersected with the subset mask equal just one bit
-        // AND the subset mask equals the cell's entire live candidates
-        // (i.e., no other digit can go there), place the forced digit.
+        // host any of those digits, those cells form a hidden subset.
+        // The hidden-subset property forces each host cell to hold one
+        // of the N subset digits, so when a host's live candidates &
+        // subset mask has popcount 1, that digit is placed — regardless
+        // of any outside candidates the cell may also have.
         var indices = new int[_size];
         return TryCombination(ref state, cells, missingDigits, indices, 0, 0, unitKind, unitIndex, out step);
     }
