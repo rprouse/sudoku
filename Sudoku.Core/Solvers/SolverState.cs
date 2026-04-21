@@ -84,6 +84,47 @@ internal struct SolverState
         EmptyCount--;
     }
 
+    // Like Place, but also removes the placed digit from every peer cell's
+    // CellCandidates (same row, column, or box). Used by TechniqueSolver so
+    // that CellCandidates stays accurate across technique firings. Do NOT
+    // use from BitmaskSolver's backtracking — that path does not read
+    // CellCandidates and the peer updates are not undone by Remove.
+    public void PlacePropagating(int r, int c, int digit)
+    {
+        Place(r, c, digit);
+        var bit = 1 << (digit - 1);
+        // Remove the digit from every peer cell's persistent candidate mask.
+        // Peers include every cell in the same row, column, or box as (r,c).
+        for (var k = 0; k < 9; k++)
+        {
+            if (k != c) CellCandidates[r, k] &= ~bit;
+            if (k != r) CellCandidates[k, c] &= ~bit;
+        }
+        var boxStartR = (r / 3) * 3;
+        var boxStartC = (c / 3) * 3;
+        for (var br = boxStartR; br < boxStartR + 3; br++)
+        {
+            for (var bc = boxStartC; bc < boxStartC + 3; bc++)
+            {
+                if (br == r || bc == c) continue; // already handled above
+                CellCandidates[br, bc] &= ~bit;
+            }
+        }
+    }
+
+    // Removes a single candidate digit from a cell's persistent CellCandidates
+    // mask. Returns true if the mask actually changed, false if the digit was
+    // already not a candidate. Used by techniques that identify eliminations
+    // without immediate placements (e.g., a NakedPair reducing peers' options).
+    public bool EliminateCandidate(int r, int c, int digit)
+    {
+        var bit = 1 << (digit - 1);
+        var old = CellCandidates[r, c];
+        if ((old & bit) == 0) return false;
+        CellCandidates[r, c] = old & ~bit;
+        return true;
+    }
+
     public void Remove(int r, int c, int digit)
     {
         var bit = 1 << (digit - 1);
