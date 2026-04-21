@@ -18,7 +18,9 @@ public sealed class TechniqueSolver : ITechniqueSolver
         new Intersection(pointing: true),
         new Intersection(pointing: false),
         new Fish(2, DifficultyTechnique.XWing, "X-Wing"),
-        new Fish(3, DifficultyTechnique.Swordfish, "Swordfish")
+        new Wing(2, DifficultyTechnique.XYWing, "XY-Wing"),
+        new Fish(3, DifficultyTechnique.Swordfish, "Swordfish"),
+        new Wing(3, DifficultyTechnique.XYZWing, "XYZ-Wing")
     };
 
     public SolveTrace Solve(SudokuBoard board)

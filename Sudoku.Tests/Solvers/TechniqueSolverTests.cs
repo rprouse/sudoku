@@ -189,4 +189,23 @@ public class TechniqueSolverTests
         }
         found.Should().BeTrue("at least one Expert/Evil puzzle should exercise X-Wing or Swordfish");
     }
+
+    [Test]
+    public void Wing_FiresOnExpertOrEvilPuzzle()
+    {
+        var solver = new TechniqueSolver();
+        var found = false;
+        foreach (var puzzle in SUDOKUS.Expert.Concat(SUDOKUS.Evil))
+        {
+            var trace = solver.Solve(puzzle.GetSudokuBoard());
+            if (trace.Steps.Any(s =>
+                s.Level == DifficultyTechnique.XYWing ||
+                s.Level == DifficultyTechnique.XYZWing))
+            {
+                found = true;
+                break;
+            }
+        }
+        found.Should().BeTrue("at least one Expert/Evil puzzle should exercise XY-Wing or XYZ-Wing");
+    }
 }
