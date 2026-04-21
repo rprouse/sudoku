@@ -147,4 +147,27 @@ public class TechniqueSolverTests
         // forcing (3,0)=3 and emitting a step attributed to NakedPair.
         trace.Steps.Should().Contain(s => s.Level == DifficultyTechnique.NakedPair);
     }
+
+    [Test]
+    public void Intersection_FiresOnHardPuzzle()
+    {
+        // PointingPair and BoxLineReduction techniques place digits when the
+        // intersection deduction collapses a cell to a single candidate.
+        // At least one Hard puzzle in the canned set should exercise one of
+        // these two levels before the solver runs out of steam.
+        var solver = new TechniqueSolver();
+        var found = false;
+        foreach (var puzzle in SUDOKUS.Hard)
+        {
+            var trace = solver.Solve(puzzle.GetSudokuBoard());
+            if (trace.Steps.Any(s =>
+                s.Level == DifficultyTechnique.PointingPair ||
+                s.Level == DifficultyTechnique.BoxLineReduction))
+            {
+                found = true;
+                break;
+            }
+        }
+        found.Should().BeTrue("at least one Hard puzzle should exercise Intersection techniques");
+    }
 }
