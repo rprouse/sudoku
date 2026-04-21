@@ -1325,9 +1325,9 @@ internal sealed class HiddenSubset : ITechnique
     {
         for (var u = 0; u < 9; u++)
         {
-            if (TryUnit(ref state, NakedSubset.RowCells(u), state.RowMask[u], "row " + u, out step)) return true;
-            if (TryUnit(ref state, NakedSubset.ColCells(u), state.ColMask[u], "col " + u, out step)) return true;
-            if (TryUnit(ref state, NakedSubset.BoxCells(u), state.BoxMask[u], "box " + u, out step)) return true;
+            if (TryUnit(ref state, SolverState.RowCells[u], state.RowMask[u], "row " + u, out step)) return true;
+            if (TryUnit(ref state, SolverState.ColCells[u], state.ColMask[u], "col " + u, out step)) return true;
+            if (TryUnit(ref state, SolverState.BoxCells[u], state.BoxMask[u], "box " + u, out step)) return true;
         }
         step = default!;
         return false;
@@ -2082,9 +2082,9 @@ internal sealed class Coloring : ITechnique
         // For each unit, if exactly 2 empty cells have the candidate, add an edge.
         for (var u = 0; u < 9; u++)
         {
-            AddIfTwo(in state, bit, NakedSubset.RowCells(u), edges);
-            AddIfTwo(in state, bit, NakedSubset.ColCells(u), edges);
-            AddIfTwo(in state, bit, NakedSubset.BoxCells(u), edges);
+            AddIfTwo(in state, bit, SolverState.RowCells[u], edges);
+            AddIfTwo(in state, bit, SolverState.ColCells[u], edges);
+            AddIfTwo(in state, bit, SolverState.BoxCells[u], edges);
         }
         return edges;
     }
