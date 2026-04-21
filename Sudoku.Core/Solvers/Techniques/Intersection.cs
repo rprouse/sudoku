@@ -33,28 +33,31 @@ internal sealed class Intersection : ITechnique
 
                 var startR = (box / 3) * 3;
                 var startC = (box % 3) * 3;
-                var rows = new HashSet<int>();
-                var cols = new HashSet<int>();
+                var rowBits = 0;
+                var colBits = 0;
                 for (var r = startR; r < startR + 3; r++)
                 {
                     for (var c = startC; c < startC + 3; c++)
                     {
                         if (state.Grid[r, c] != 0) continue;
                         if ((state.UnitCandidates(r, c) & bit) == 0) continue;
-                        rows.Add(r);
-                        cols.Add(c);
+                        rowBits |= 1 << r;
+                        colBits |= 1 << c;
                     }
                 }
 
-                if (rows.Count == 1 && cols.Count >= 2)
+                var rowCount = SolverState.PopCount(rowBits);
+                var colCount = SolverState.PopCount(colBits);
+
+                if (rowCount == 1 && colCount >= 2)
                 {
-                    var targetRow = rows.First();
+                    var targetRow = SolverState.LowestBitIndex(rowBits);
                     if (TryEliminateInLine(ref state, d, targetRow, isRow: true, excludeBox: box, out step))
                         return true;
                 }
-                if (cols.Count == 1 && rows.Count >= 2)
+                if (colCount == 1 && rowCount >= 2)
                 {
-                    var targetCol = cols.First();
+                    var targetCol = SolverState.LowestBitIndex(colBits);
                     if (TryEliminateInLine(ref state, d, targetCol, isRow: false, excludeBox: box, out step))
                         return true;
                 }
@@ -91,18 +94,18 @@ internal sealed class Intersection : ITechnique
 
     private bool TryLineToBox(ref SolverState state, int digit, int bit, int line, bool isRow, out SolveStep step)
     {
-        var boxes = new HashSet<int>();
+        var boxBits = 0;
         for (var k = 0; k < 9; k++)
         {
             var (r, c) = isRow ? (line, k) : (k, line);
             if (state.Grid[r, c] != 0) continue;
             if ((state.UnitCandidates(r, c) & bit) == 0) continue;
-            boxes.Add(SolverState.BoxIndex(r, c));
-            if (boxes.Count > 1) break;
+            boxBits |= 1 << SolverState.BoxIndex(r, c);
+            if (SolverState.PopCount(boxBits) > 1) break;
         }
-        if (boxes.Count != 1) { step = default!; return false; }
+        if (SolverState.PopCount(boxBits) != 1) { step = default!; return false; }
 
-        var targetBox = boxes.First();
+        var targetBox = SolverState.LowestBitIndex(boxBits);
         var startR = (targetBox / 3) * 3;
         var startC = (targetBox % 3) * 3;
         for (var r = startR; r < startR + 3; r++)
