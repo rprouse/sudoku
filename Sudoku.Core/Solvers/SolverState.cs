@@ -92,18 +92,17 @@ internal struct SolverState
         ColMask[c] &= ~bit;
         BoxMask[BoxIndex(r, c)] &= ~bit;
         EmptyCount++;
-        // Caller is responsible for recomputing CellCandidates if needed.
+        // CellCandidates is left stale intentionally: undoing a placement
+        // re-opens 'digit' as a candidate for every empty cell in the same
+        // row, column, and box. Callers that read per-cell candidates after
+        // Remove must either recompute via UnitCandidates on demand or
+        // refresh CellCandidates for all peers — do not trust CellCandidates.
     }
 
     public static int BoxIndex(int r, int c) => (r / 3) * 3 + (c / 3);
 
-    public static int PopCount(int mask)
-    {
-        // Avoid adding System.Numerics dependency; 9-bit popcount.
-        var n = 0;
-        while (mask != 0) { mask &= mask - 1; n++; }
-        return n;
-    }
+    public static int PopCount(int mask) =>
+        System.Numerics.BitOperations.PopCount((uint)mask);
 
     public static int LowestBitIndex(int mask) =>
         System.Numerics.BitOperations.TrailingZeroCount(mask);
