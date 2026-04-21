@@ -8,7 +8,7 @@ public class BitmaskSolver : ISolver
     {
         Iterations = 0;
         var state = SolverState.FromBoard(sudoku);
-        if (!Search(ref state, stopAfterFirst: true, out var solved))
+        if (!Search(ref state, out var solved))
         {
             throw new InvalidOperationException("No solution found.");
         }
@@ -25,12 +25,12 @@ public class BitmaskSolver : ISolver
         return found == 1;
     }
 
-    // Returns true if a solution is found; on success, 'solved' holds a snapshot.
-    private bool Search(ref SolverState state, bool stopAfterFirst, out SolverState solved)
+    // Returns true on the first solution found; 'solved' holds a snapshot.
+    private bool Search(ref SolverState state, out SolverState solved)
     {
         if (state.EmptyCount == 0)
         {
-            solved = CloneState(state);
+            solved = CloneSolvedState(state);
             return true;
         }
 
@@ -45,13 +45,10 @@ public class BitmaskSolver : ISolver
             var digit = SolverState.LowestBitIndex(mask) + 1;
             state.Place(bestR, bestC, digit);
             Iterations++;
-            if (Search(ref state, stopAfterFirst, out solved))
+            if (Search(ref state, out solved))
             {
-                if (stopAfterFirst)
-                {
-                    state.Remove(bestR, bestC, digit);
-                    return true;
-                }
+                state.Remove(bestR, bestC, digit);
+                return true;
             }
             state.Remove(bestR, bestC, digit);
             mask &= mask - 1;
@@ -114,17 +111,16 @@ public class BitmaskSolver : ISolver
         return bestR >= 0;
     }
 
-    private static SolverState CloneState(in SolverState source)
-    {
-        var clone = new SolverState
+    // Called only when EmptyCount == 0: every cell's CellCandidates entry is
+    // already zero, so we allocate a fresh zeroed array instead of cloning.
+    private static SolverState CloneSolvedState(in SolverState source) =>
+        new()
         {
             Grid = (int[,])source.Grid.Clone(),
             RowMask = (int[])source.RowMask.Clone(),
             ColMask = (int[])source.ColMask.Clone(),
             BoxMask = (int[])source.BoxMask.Clone(),
-            CellCandidates = (int[,])source.CellCandidates.Clone(),
-            EmptyCount = source.EmptyCount
+            CellCandidates = new int[9, 9],
+            EmptyCount = 0
         };
-        return clone;
-    }
 }
