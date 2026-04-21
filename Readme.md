@@ -233,6 +233,42 @@ dotnet test Sudoku.Tests                                      # Tests only
 dotnet run --project Sudoku.Benchmarks -c Release             # Benchmarks
 ```
 
+## Performance targets
+
+Puzzle generation targets on a typical development machine:
+
+| Tier     | Target generation time |
+| -------- | ---------------------- |
+| Easy     | <1 s                   |
+| Medium   | <1 s                   |
+| Hard     | <1 s                   |
+| Expert   | <3 s                   |
+| Evil     | <5 s                   |
+
+`SudokuGenerator` uses `BitmaskSolver` for fast uniqueness checking and `DifficultyGrader` (wrapping `TechniqueSolver`) for technique-based difficulty grading. See `Sudoku.Benchmarks` for measured performance.
+
+## Difficulty grading
+
+Difficulty is determined by the hardest *human-solving technique* actually required to solve the puzzle, not by clue count. Every generated puzzle is solvable using pure logic — if the technique solver can't complete the puzzle, it's rejected.
+
+| Tier (display name)     | Hardest technique required                             |
+| ----------------------- | ------------------------------------------------------ |
+| Easy (Gentle)           | Naked Single / Hidden Single                           |
+| Medium (Steady)         | Naked Pair / Hidden Pair                               |
+| Hard (Challenging)      | Pointing Pair, Box/Line Reduction, Naked/Hidden Triple |
+| Expert (Deep)           | X-Wing, XY-Wing, Simple Coloring                       |
+| Evil (Profound)         | Swordfish, XYZ-Wing, X-Chain                           |
+
+Clue counts per tier are used as a secondary sanity filter (see `SudokuGenerator.GetClueRange`). The technique grade is the primary acceptance criterion — ranges may overlap slightly at tier boundaries.
+
+## Future optimizations
+
+- **Relax symmetry at the hardest tiers.** The generator enforces strict 180° rotational symmetry at every difficulty. This slightly caps the space of reachable puzzles at Expert and Evil, because some genuinely hard configurations can only be reached by asymmetric clue removal. If Deep/Profound puzzles feel too easy after the technique-grading change, the next lever is a two-phase removal in `SudokuGenerator.TryGenerate`: first pass removes symmetric pairs (unchanged), a second pass tries individual-cell removals gated by a per-difficulty `SymmetryPolicy` enum (Strict / PreferredWithFallback). Estimated effort: ~15 lines.
+
+- **More advanced techniques.** The technique solver stops at X-Chain / Swordfish / XYZ-Wing for Evil. Puzzles requiring harder patterns (Jellyfish, ALS, Forcing Chains, Uniqueness Rectangles, Death Blossom) are rejected. Adding more techniques is mechanical: a new file in `Sudoku.Core/Solvers/Techniques/` implementing `ITechnique`, an entry in `DifficultyTechnique`, registration in `TechniqueSolver._techniques` (easiest-first), and a tier mapping in `DifficultyGrader`.
+
+- **Digit-order randomization inside BitmaskSolver.** `SudokuGenerator.BuildFullSolution` seeds a single random cell to perturb the solver's branch choices. If this ever produces insufficient variety across seeds, `BitmaskSolver` can accept an optional `Random` and shuffle candidate order inside its MRV loop.
+
 ## Acknowledgements
 
 Puzzle generation initially based on [How to generate sudokus](https://tn1ck.com/blog/how-to-generate-sudokus) by TN1ck and the accompanying [source code](https://github.com/TN1ck/super-sudoku).
