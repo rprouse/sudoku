@@ -92,7 +92,7 @@ public abstract class SolverContractTests
     public void CanSolveEvilSudoku()
     {
         var evilSudoku = _sudokus.Evil[0];
-        var solution = _solver.Solve(evilSudoku.GetSolutionBoard());
+        var solution = _solver.Solve(evilSudoku.GetSudokuBoard());
 
         solution.ShouldBeEqualTo(evilSudoku.GetSolutionBoard());
     }
