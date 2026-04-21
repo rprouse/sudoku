@@ -101,6 +101,51 @@ internal struct SolverState
 
     public static int BoxIndex(int r, int c) => (r / 3) * 3 + (c / 3);
 
+    // Pre-computed (r,c) coordinate arrays for each of the 27 units. Techniques
+    // that iterate unit cells share these to avoid re-allocating 9-element
+    // arrays inside the solver's hot loop.
+    internal static readonly (int r, int c)[][] RowCells = BuildRowCells();
+    internal static readonly (int r, int c)[][] ColCells = BuildColCells();
+    internal static readonly (int r, int c)[][] BoxCells = BuildBoxCells();
+
+    private static (int r, int c)[][] BuildRowCells()
+    {
+        var rows = new (int, int)[9][];
+        for (var r = 0; r < 9; r++)
+        {
+            rows[r] = new (int, int)[9];
+            for (var c = 0; c < 9; c++) rows[r][c] = (r, c);
+        }
+        return rows;
+    }
+
+    private static (int r, int c)[][] BuildColCells()
+    {
+        var cols = new (int, int)[9][];
+        for (var c = 0; c < 9; c++)
+        {
+            cols[c] = new (int, int)[9];
+            for (var r = 0; r < 9; r++) cols[c][r] = (r, c);
+        }
+        return cols;
+    }
+
+    private static (int r, int c)[][] BuildBoxCells()
+    {
+        var boxes = new (int, int)[9][];
+        for (var box = 0; box < 9; box++)
+        {
+            boxes[box] = new (int, int)[9];
+            var startR = (box / 3) * 3;
+            var startC = (box % 3) * 3;
+            var i = 0;
+            for (var r = startR; r < startR + 3; r++)
+                for (var c = startC; c < startC + 3; c++)
+                    boxes[box][i++] = (r, c);
+        }
+        return boxes;
+    }
+
     public static int PopCount(int mask) =>
         System.Numerics.BitOperations.PopCount((uint)mask);
 

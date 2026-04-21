@@ -17,17 +17,16 @@ internal sealed class NakedSubset : ITechnique
     {
         for (var u = 0; u < 9; u++)
         {
-            if (TryUnit(ref state, RowCells(u), "row " + u, out step)) return true;
-            if (TryUnit(ref state, ColCells(u), "col " + u, out step)) return true;
-            if (TryUnit(ref state, BoxCells(u), "box " + u, out step)) return true;
+            if (TryUnit(ref state, SolverState.RowCells[u], "row", u, out step)) return true;
+            if (TryUnit(ref state, SolverState.ColCells[u], "col", u, out step)) return true;
+            if (TryUnit(ref state, SolverState.BoxCells[u], "box", u, out step)) return true;
         }
         step = default!;
         return false;
     }
 
-    private bool TryUnit(ref SolverState state, (int r, int c)[] cells, string label, out SolveStep step)
+    private bool TryUnit(ref SolverState state, (int r, int c)[] cells, string unitKind, int unitIndex, out SolveStep step)
     {
-        // Collect candidate masks of empty cells.
         var empties = new List<(int r, int c, int mask)>();
         foreach (var (r, c) in cells)
         {
@@ -42,9 +41,8 @@ internal sealed class NakedSubset : ITechnique
             return false;
         }
 
-        // Try every combination of _size cells whose union of candidates is _size bits.
         var indices = new int[_size];
-        return TryCombination(ref state, empties, indices, 0, 0, label, out step);
+        return TryCombination(ref state, empties, indices, 0, 0, unitKind, unitIndex, out step);
     }
 
     private bool TryCombination(
@@ -53,7 +51,8 @@ internal sealed class NakedSubset : ITechnique
         int[] indices,
         int depth,
         int start,
-        string label,
+        string unitKind,
+        int unitIndex,
         out SolveStep step)
     {
         if (depth == _size)
@@ -78,7 +77,7 @@ internal sealed class NakedSubset : ITechnique
                 {
                     var digit = SolverState.LowestBitIndex(reduced) + 1;
                     state.Place(er, ec, digit);
-                    step = new SolveStep(Name, Level, $"{Name} in {label}: placed ({er},{ec})={digit}");
+                    step = new SolveStep(Name, Level, $"{Name} in {unitKind} {unitIndex}: placed ({er},{ec})={digit}");
                     return true;
                 }
             }
@@ -90,7 +89,7 @@ internal sealed class NakedSubset : ITechnique
         for (var i = start; i < empties.Count; i++)
         {
             indices[depth] = i;
-            if (TryCombination(ref state, empties, indices, depth + 1, i + 1, label, out step)) return true;
+            if (TryCombination(ref state, empties, indices, depth + 1, i + 1, unitKind, unitIndex, out step)) return true;
         }
         step = default!;
         return false;
@@ -100,31 +99,5 @@ internal sealed class NakedSubset : ITechnique
     {
         for (var i = 0; i < arr.Length; i++) if (arr[i] == v) return true;
         return false;
-    }
-
-    internal static (int r, int c)[] RowCells(int r)
-    {
-        var cells = new (int, int)[9];
-        for (var c = 0; c < 9; c++) cells[c] = (r, c);
-        return cells;
-    }
-
-    internal static (int r, int c)[] ColCells(int c)
-    {
-        var cells = new (int, int)[9];
-        for (var r = 0; r < 9; r++) cells[r] = (r, c);
-        return cells;
-    }
-
-    internal static (int r, int c)[] BoxCells(int box)
-    {
-        var cells = new (int, int)[9];
-        var startR = (box / 3) * 3;
-        var startC = (box % 3) * 3;
-        var i = 0;
-        for (var r = startR; r < startR + 3; r++)
-            for (var c = startC; c < startC + 3; c++)
-                cells[i++] = (r, c);
-        return cells;
     }
 }

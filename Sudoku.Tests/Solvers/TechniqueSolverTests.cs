@@ -71,7 +71,7 @@ public class TechniqueSolverTests
     }
 
     [Test]
-    public void NakedPair_EliminatesCandidatesInRow()
+    public void NakedPair_EliminatesCandidatesInColumn()
     {
         // Board is constructed so that in col 0:
         //   (0,0) has candidates {1,2}: rows 0+1 each place 3-9 in cols 1-7, and
