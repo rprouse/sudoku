@@ -14,6 +14,7 @@ public class SudokuBenchmarks
         new BitmaskSolver(),
         new DifficultyGrader(new TechniqueSolver()));
     private readonly SudokuJsonFile _sudokus = Persistence.LoadFromJson("sudokus.json");
+    private readonly DifficultyGrader _grader = new DifficultyGrader(new TechniqueSolver());
 
     [Benchmark]
     [ArgumentsSource(nameof(SudokuBoards))]
@@ -27,6 +28,13 @@ public class SudokuBenchmarks
     public void BitmaskSolveSudoku(SudokuJsonBoard board)
     {
         var _ = _bitmaskSolver.Solve(board.GetSudokuBoard());
+    }
+
+    [Benchmark]
+    [ArgumentsSource(nameof(SudokuBoards))]
+    public void GradePuzzle(SudokuJsonBoard board)
+    {
+        var _ = _grader.Grade(board.GetSudokuBoard());
     }
 
     [Benchmark]
