@@ -208,4 +208,23 @@ public class TechniqueSolverTests
         }
         found.Should().BeTrue("at least one Expert/Evil puzzle should exercise XY-Wing or XYZ-Wing");
     }
+
+    [Test]
+    public void Coloring_FiresOnExpertOrEvilPuzzle()
+    {
+        var solver = new TechniqueSolver();
+        var found = false;
+        foreach (var puzzle in SUDOKUS.Expert.Concat(SUDOKUS.Evil))
+        {
+            var trace = solver.Solve(puzzle.GetSudokuBoard());
+            if (trace.Steps.Any(s =>
+                s.Level == DifficultyTechnique.SimpleColoring ||
+                s.Level == DifficultyTechnique.XChain))
+            {
+                found = true;
+                break;
+            }
+        }
+        found.Should().BeTrue("at least one Expert/Evil puzzle should exercise Simple Coloring or X-Chain");
+    }
 }
