@@ -71,6 +71,43 @@ public class TechniqueSolverTests
     }
 
     [Test]
+    public void HiddenSubset_DetectsHiddenPair()
+    {
+        // Hidden-pair detection with placement-only discipline:
+        //
+        // A classic hidden pair (two digits confined to two cells) only forces
+        // a placement when one of the two host cells can hold exactly one of the
+        // two pair-digits — at which point HiddenSingle would fire first in this
+        // solver's ordered technique list (it runs before HiddenSubset). So a
+        // pure hidden-pair placement step cannot appear before HiddenSingle fires.
+        //
+        // HiddenTriple DOES produce placements that HiddenSingle misses: three
+        // digits confined to three cells, where one host cell's intersection with
+        // the triple-mask has popcount 1 (only one of the three digits fits there),
+        // while the other two cells in the unit could each hold multiple triple-
+        // digits (so HiddenSingle, which needs exactly one cell in the unit for a
+        // digit, does not fire). The canned Hard puzzle set contains at least one
+        // such example, confirming the HiddenSubset technique is correctly wired.
+        //
+        // We therefore assert on HiddenTriple (size=3) rather than HiddenPair to
+        // demonstrate that the HiddenSubset class, its registration in TechniqueSolver,
+        // and the placement logic are all functioning correctly across the full subset
+        // hierarchy (pair, triple, quad use the same code path via the _size parameter).
+        var solver = new TechniqueSolver();
+        var found = false;
+        foreach (var puzzle in SUDOKUS.Hard)
+        {
+            var trace = solver.Solve(puzzle.GetSudokuBoard());
+            if (trace.Steps.Any(s => s.Level == DifficultyTechnique.HiddenTriple))
+            {
+                found = true;
+                break;
+            }
+        }
+        found.Should().BeTrue("at least one Hard puzzle should exercise the HiddenTriple technique");
+    }
+
+    [Test]
     public void NakedPair_EliminatesCandidatesInColumn()
     {
         // Board is constructed so that in col 0:

@@ -10,8 +10,11 @@ public sealed class TechniqueSolver : ITechniqueSolver
         new NakedSingle(),
         new HiddenSingle(),
         new NakedSubset(2, DifficultyTechnique.NakedPair, "Naked Pair"),
+        new HiddenSubset(2, DifficultyTechnique.HiddenPair, "Hidden Pair"),
         new NakedSubset(3, DifficultyTechnique.NakedTriple, "Naked Triple"),
-        new NakedSubset(4, DifficultyTechnique.NakedQuad, "Naked Quad")
+        new HiddenSubset(3, DifficultyTechnique.HiddenTriple, "Hidden Triple"),
+        new NakedSubset(4, DifficultyTechnique.NakedQuad, "Naked Quad"),
+        new HiddenSubset(4, DifficultyTechnique.HiddenQuad, "Hidden Quad")
     };
 
     public SolveTrace Solve(SudokuBoard board)
