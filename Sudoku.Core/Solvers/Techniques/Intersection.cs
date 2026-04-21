@@ -40,7 +40,7 @@ internal sealed class Intersection : ITechnique
                     for (var c = startC; c < startC + 3; c++)
                     {
                         if (state.Grid[r, c] != 0) continue;
-                        if ((state.UnitCandidates(r, c) & bit) == 0) continue;
+                        if ((state.CellCandidates[r, c] & bit) == 0) continue;
                         rowBits |= 1 << r;
                         colBits |= 1 << c;
                     }
@@ -99,7 +99,7 @@ internal sealed class Intersection : ITechnique
         {
             var (r, c) = isRow ? (line, k) : (k, line);
             if (state.Grid[r, c] != 0) continue;
-            if ((state.UnitCandidates(r, c) & bit) == 0) continue;
+            if ((state.CellCandidates[r, c] & bit) == 0) continue;
             boxBits |= 1 << SolverState.BoxIndex(r, c);
             if (SolverState.PopCount(boxBits) > 1) break;
         }
@@ -108,6 +108,9 @@ internal sealed class Intersection : ITechnique
         var targetBox = SolverState.LowestBitIndex(boxBits);
         var startR = (targetBox / 3) * 3;
         var startC = (targetBox % 3) * 3;
+        var anyEliminated = false;
+        var firstElimR = 0;
+        var firstElimC = 0;
         for (var r = startR; r < startR + 3; r++)
         {
             for (var c = startC; c < startC + 3; c++)
@@ -115,18 +118,20 @@ internal sealed class Intersection : ITechnique
                 if (state.Grid[r, c] != 0) continue;
                 if (isRow && r == line) continue;
                 if (!isRow && c == line) continue;
-                var cands = state.UnitCandidates(r, c);
-                if ((cands & bit) == 0) continue;
-                var newCands = cands & ~bit;
-                if (SolverState.PopCount(newCands) == 1)
+                if ((state.CellCandidates[r, c] & bit) == 0) continue;
+                if (state.EliminateCandidate(r, c, digit) && !anyEliminated)
                 {
-                    var d = SolverState.LowestBitIndex(newCands) + 1;
-                    state.Place(r, c, d);
-                    step = new SolveStep(Name, Level,
-                        $"{Name}: digit {digit} in {(isRow ? "row" : "col")} {line} confined to box {targetBox}; placed ({r},{c})={d}");
-                    return true;
+                    anyEliminated = true;
+                    firstElimR = r;
+                    firstElimC = c;
                 }
             }
+        }
+        if (anyEliminated)
+        {
+            step = new SolveStep(Name, Level,
+                $"{Name}: digit {digit} in {(isRow ? "row" : "col")} {line} confined to box {targetBox}; eliminated from ({firstElimR},{firstElimC})");
+            return true;
         }
         step = default!;
         return false;
@@ -135,22 +140,27 @@ internal sealed class Intersection : ITechnique
     private bool TryEliminateInLine(ref SolverState state, int digit, int line, bool isRow, int excludeBox, out SolveStep step)
     {
         var bit = 1 << (digit - 1);
+        var anyEliminated = false;
+        var firstElimR = 0;
+        var firstElimC = 0;
         for (var k = 0; k < 9; k++)
         {
             var (r, c) = isRow ? (line, k) : (k, line);
             if (SolverState.BoxIndex(r, c) == excludeBox) continue;
             if (state.Grid[r, c] != 0) continue;
-            var cands = state.UnitCandidates(r, c);
-            if ((cands & bit) == 0) continue;
-            var newCands = cands & ~bit;
-            if (SolverState.PopCount(newCands) == 1)
+            if ((state.CellCandidates[r, c] & bit) == 0) continue;
+            if (state.EliminateCandidate(r, c, digit) && !anyEliminated)
             {
-                var d = SolverState.LowestBitIndex(newCands) + 1;
-                state.Place(r, c, d);
-                step = new SolveStep(Name, Level,
-                    $"{Name}: digit {digit} in box {excludeBox} confined to {(isRow ? "row" : "col")} {line}; placed ({r},{c})={d}");
-                return true;
+                anyEliminated = true;
+                firstElimR = r;
+                firstElimC = c;
             }
+        }
+        if (anyEliminated)
+        {
+            step = new SolveStep(Name, Level,
+                $"{Name}: digit {digit} in box {excludeBox} confined to {(isRow ? "row" : "col")} {line}; eliminated from ({firstElimR},{firstElimC})");
+            return true;
         }
         step = default!;
         return false;

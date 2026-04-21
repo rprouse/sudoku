@@ -30,14 +30,14 @@ internal sealed class HiddenSingle : ITechnique
             for (var c = 0; c < 9; c++)
             {
                 if (state.Grid[r, c] != 0) continue;
-                if ((state.UnitCandidates(r, c) & bit) == 0) continue;
+                if ((state.CellCandidates[r, c] & bit) == 0) continue;
                 candidateCol = c;
                 count++;
                 if (count > 1) break;
             }
             if (count == 1)
             {
-                state.Place(r, candidateCol, d);
+                state.PlacePropagating(r, candidateCol, d);
                 step = new SolveStep(Name, Level, $"Hidden single in row {r}: ({r},{candidateCol})={d}");
                 return true;
             }
@@ -57,14 +57,14 @@ internal sealed class HiddenSingle : ITechnique
             for (var r = 0; r < 9; r++)
             {
                 if (state.Grid[r, c] != 0) continue;
-                if ((state.UnitCandidates(r, c) & bit) == 0) continue;
+                if ((state.CellCandidates[r, c] & bit) == 0) continue;
                 candidateRow = r;
                 count++;
                 if (count > 1) break;
             }
             if (count == 1)
             {
-                state.Place(candidateRow, c, d);
+                state.PlacePropagating(candidateRow, c, d);
                 step = new SolveStep(Name, Level, $"Hidden single in col {c}: ({candidateRow},{c})={d}");
                 return true;
             }
@@ -89,7 +89,7 @@ internal sealed class HiddenSingle : ITechnique
                 for (var c = startC; c < startC + 3; c++)
                 {
                     if (state.Grid[r, c] != 0) continue;
-                    if ((state.UnitCandidates(r, c) & bit) == 0) continue;
+                    if ((state.CellCandidates[r, c] & bit) == 0) continue;
                     candidateR = r;
                     candidateC = c;
                     count++;
@@ -99,7 +99,7 @@ internal sealed class HiddenSingle : ITechnique
             }
             if (count == 1)
             {
-                state.Place(candidateR, candidateC, d);
+                state.PlacePropagating(candidateR, candidateC, d);
                 step = new SolveStep(Name, Level, $"Hidden single in box {box}: ({candidateR},{candidateC})={d}");
                 return true;
             }

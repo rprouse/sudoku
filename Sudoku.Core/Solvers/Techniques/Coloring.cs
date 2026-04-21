@@ -44,7 +44,7 @@ internal sealed class Coloring : ITechnique
         foreach (var (r, c) in cells)
         {
             if (state.Grid[r, c] != 0) continue;
-            if ((state.UnitCandidates(r, c) & bit) == 0) continue;
+            if ((state.CellCandidates[r, c] & bit) == 0) continue;
             count++;
             if (count == 1) a = (r, c);
             else if (count == 2) b = (r, c);
@@ -130,12 +130,11 @@ internal sealed class Coloring : ITechnique
         foreach (var (r, c) in cells)
         {
             if (state.Grid[r, c] != 0) continue;
-            var cands = state.UnitCandidates(r, c);
-            if ((cands & bit) == 0) continue;
+            if ((state.CellCandidates[r, c] & bit) == 0) continue;
             // Only place if the digit is truly forced — other candidates for the cell
             // must be eliminated by conflict. Since the coloring tells us the digit
             // MUST go here (color-conflict case), we place unconditionally.
-            state.Place(r, c, digit);
+            state.PlacePropagating(r, c, digit);
             step = new SolveStep(Name, Level, $"{reasonPrefix}({r},{c})={digit}");
             return true;
         }
@@ -151,6 +150,9 @@ internal sealed class Coloring : ITechnique
         int digit,
         out SolveStep step)
     {
+        var anyEliminated = false;
+        var firstElimR = 0;
+        var firstElimC = 0;
         for (var r = 0; r < 9; r++)
         {
             for (var c = 0; c < 9; c++)
@@ -158,19 +160,22 @@ internal sealed class Coloring : ITechnique
                 if (state.Grid[r, c] != 0) continue;
                 var cell = (r, c);
                 if (colorA.Contains(cell) || colorB.Contains(cell)) continue;
-                if ((state.UnitCandidates(r, c) & bit) == 0) continue;
+                if ((state.CellCandidates[r, c] & bit) == 0) continue;
                 if (!colorA.Any(a => Sees(a, cell))) continue;
                 if (!colorB.Any(b => Sees(b, cell))) continue;
 
-                var newCands = state.UnitCandidates(r, c) & ~bit;
-                if (SolverState.PopCount(newCands) == 1)
+                if (state.EliminateCandidate(r, c, digit) && !anyEliminated)
                 {
-                    var d = SolverState.LowestBitIndex(newCands) + 1;
-                    state.Place(r, c, d);
-                    step = new SolveStep(Name, Level, $"{Name}: eliminated {digit}, placed ({r},{c})={d}");
-                    return true;
+                    anyEliminated = true;
+                    firstElimR = r;
+                    firstElimC = c;
                 }
             }
+        }
+        if (anyEliminated)
+        {
+            step = new SolveStep(Name, Level, $"{Name}: eliminated {digit} from ({firstElimR},{firstElimC})");
+            return true;
         }
         step = default!;
         return false;

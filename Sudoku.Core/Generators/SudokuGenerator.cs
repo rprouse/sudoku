@@ -4,7 +4,7 @@ namespace Sudoku.Core.Generators;
 
 public class SudokuGenerator : IGenerator
 {
-    private const int MaxAttempts = 10;
+    private const int MaxAttempts = 1000;
 
     private readonly ISolver _solver;
     private readonly DifficultyGrader _grader;

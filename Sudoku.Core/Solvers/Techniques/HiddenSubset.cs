@@ -71,7 +71,7 @@ internal sealed class HiddenSubset : ITechnique
             foreach (var (r, c) in cells)
             {
                 if (state.Grid[r, c] != 0) continue;
-                if ((state.UnitCandidates(r, c) & digitMask) != 0) hostCells.Add((r, c));
+                if ((state.CellCandidates[r, c] & digitMask) != 0) hostCells.Add((r, c));
             }
             if (hostCells.Count != _size)
             {
@@ -79,27 +79,37 @@ internal sealed class HiddenSubset : ITechnique
                 return false;
             }
 
-            // Hidden subset identified. Because exactly _size cells can hold
-            // any of the _size subset digits, each host cell can only be assigned
-            // one of those digits. If a host cell's intersection with digitMask has
-            // popcount 1, that digit is forced into that cell regardless of any
-            // other (outside) candidates — the hidden-subset constraint confines the
-            // subset digits to these cells, so if only one subset digit fits in a
-            // host cell, it must go there.
+            // Hidden subset identified. Host cells can only hold subset digits.
+            // Eliminate all non-subset candidates from each host cell.
+            var anyEliminated = false;
+            var firstElimR = 0;
+            var firstElimC = 0;
+            var firstElimDigit = 0;
             foreach (var (r, c) in hostCells)
             {
-                var inside = state.UnitCandidates(r, c) & digitMask;
-                if (SolverState.PopCount(inside) == 1)
+                var nonSubset = state.CellCandidates[r, c] & ~digitMask & SolverState.All;
+                var tmp = nonSubset;
+                while (tmp != 0)
                 {
-                    var digit = SolverState.LowestBitIndex(inside) + 1;
-                    state.Place(r, c, digit);
-                    step = new SolveStep(Name, Level, $"{Name} in {unitKind} {unitIndex}: placed ({r},{c})={digit}");
-                    return true;
+                    var lowestBit = tmp & -tmp;
+                    var digit = SolverState.LowestBitIndex(lowestBit) + 1;
+                    if (state.EliminateCandidate(r, c, digit) && !anyEliminated)
+                    {
+                        anyEliminated = true;
+                        firstElimR = r;
+                        firstElimC = c;
+                        firstElimDigit = digit;
+                    }
+                    tmp &= tmp - 1;
                 }
             }
 
-            // Pattern identified but no cell reduces to a single candidate here.
-            // Return false so other techniques can make progress.
+            if (anyEliminated)
+            {
+                step = new SolveStep(Name, Level, $"{Name} in {unitKind} {unitIndex}: eliminated {firstElimDigit} from ({firstElimR},{firstElimC})");
+                return true;
+            }
+
             step = default!;
             return false;
         }

@@ -41,7 +41,7 @@ internal sealed class Fish : ITechnique
             {
                 var (r, c) = rows ? (u, k) : (k, u);
                 if (state.Grid[r, c] != 0) continue;
-                if ((state.UnitCandidates(r, c) & bit) != 0) posMask |= 1 << k;
+                if ((state.CellCandidates[r, c] & bit) != 0) posMask |= 1 << k;
             }
             var count = SolverState.PopCount(posMask);
             if (count >= 2 && count <= _size)
@@ -87,6 +87,9 @@ internal sealed class Fish : ITechnique
 
             // For each cross coordinate k in union, look at cells in cross units
             // not in baseUnitBits — eliminate digit from them.
+            var anyEliminated = false;
+            var firstElimR = 0;
+            var firstElimC = 0;
             for (var k = 0; k < 9; k++)
             {
                 if ((union & (1 << k)) == 0) continue;
@@ -95,18 +98,20 @@ internal sealed class Fish : ITechnique
                     if ((baseUnitBits & (1 << u)) != 0) continue;
                     var (r, c) = rows ? (u, k) : (k, u);
                     if (state.Grid[r, c] != 0) continue;
-                    var cands = state.UnitCandidates(r, c);
-                    if ((cands & bit) == 0) continue;
-                    var newCands = cands & ~bit;
-                    if (SolverState.PopCount(newCands) == 1)
+                    if ((state.CellCandidates[r, c] & bit) == 0) continue;
+                    if (state.EliminateCandidate(r, c, digit) && !anyEliminated)
                     {
-                        var d = SolverState.LowestBitIndex(newCands) + 1;
-                        state.Place(r, c, d);
-                        step = new SolveStep(Name, Level,
-                            $"{Name} on digit {digit}: placed ({r},{c})={d}");
-                        return true;
+                        anyEliminated = true;
+                        firstElimR = r;
+                        firstElimC = c;
                     }
                 }
+            }
+            if (anyEliminated)
+            {
+                step = new SolveStep(Name, Level,
+                    $"{Name} on digit {digit}: eliminated from ({firstElimR},{firstElimC})");
+                return true;
             }
             step = default!;
             return false;

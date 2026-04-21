@@ -32,7 +32,7 @@ internal sealed class NakedSubset : ITechnique
         {
             if (state.Grid[r, c] == 0)
             {
-                empties.Add((r, c, state.UnitCandidates(r, c)));
+                empties.Add((r, c, state.CellCandidates[r, c]));
             }
         }
         if (empties.Count <= _size)
@@ -65,21 +65,35 @@ internal sealed class NakedSubset : ITechnique
                 return false;
             }
 
-            // Eliminate these candidates from other empty cells in the unit.
-            // We can only track this via placements: if removing union from
-            // another cell leaves exactly one candidate, place it.
+            // Eliminate subset digits from other empty cells in the unit.
+            var anyEliminated = false;
+            var firstElimR = 0;
+            var firstElimC = 0;
+            var firstElimDigit = 0;
             for (var j = 0; j < empties.Count; j++)
             {
                 if (Contains(indices, j)) continue;
-                var (er, ec, em) = empties[j];
-                var reduced = em & ~union;
-                if (SolverState.PopCount(reduced) == 1)
+                var (er, ec, _) = empties[j];
+                var tmp = union;
+                while (tmp != 0)
                 {
-                    var digit = SolverState.LowestBitIndex(reduced) + 1;
-                    state.Place(er, ec, digit);
-                    step = new SolveStep(Name, Level, $"{Name} in {unitKind} {unitIndex}: placed ({er},{ec})={digit}");
-                    return true;
+                    var lowestBit = tmp & -tmp;
+                    var digit = SolverState.LowestBitIndex(lowestBit) + 1;
+                    if (state.EliminateCandidate(er, ec, digit) && !anyEliminated)
+                    {
+                        anyEliminated = true;
+                        firstElimR = er;
+                        firstElimC = ec;
+                        firstElimDigit = digit;
+                    }
+                    tmp &= tmp - 1;
                 }
+            }
+
+            if (anyEliminated)
+            {
+                step = new SolveStep(Name, Level, $"{Name} in {unitKind} {unitIndex}: eliminated {firstElimDigit} from ({firstElimR},{firstElimC})");
+                return true;
             }
 
             step = default!;

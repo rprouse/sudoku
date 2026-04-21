@@ -95,7 +95,7 @@ public class TechniqueSolverTests
         // hierarchy (pair, triple, quad use the same code path via the _size parameter).
         var solver = new TechniqueSolver();
         var found = false;
-        foreach (var puzzle in SUDOKUS.Hard)
+        foreach (var puzzle in SUDOKUS.Hard.Concat(SUDOKUS.Expert).Concat(SUDOKUS.Evil))
         {
             var trace = solver.Solve(puzzle.GetSudokuBoard());
             if (trace.Steps.Any(s => s.Level == DifficultyTechnique.HiddenTriple))
@@ -104,7 +104,7 @@ public class TechniqueSolverTests
                 break;
             }
         }
-        found.Should().BeTrue("at least one Hard puzzle should exercise the HiddenTriple technique");
+        found.Should().BeTrue("at least one Hard/Expert/Evil puzzle should exercise the HiddenTriple technique");
     }
 
     [Test]

@@ -21,7 +21,7 @@ internal sealed class Wing : ITechnique
             for (var pc = 0; pc < 9; pc++)
             {
                 if (state.Grid[pr, pc] != 0) continue;
-                var pivotMask = state.UnitCandidates(pr, pc);
+                var pivotMask = state.CellCandidates[pr, pc];
                 if (SolverState.PopCount(pivotMask) != _pivotSize) continue;
 
                 // For each pair of "pincer" cells seen from pivot that are bivalue.
@@ -50,7 +50,7 @@ internal sealed class Wing : ITechnique
                 if (r == pr && c == pc) continue;
                 if (state.Grid[r, c] != 0) continue;
                 if (!SeesEachOther(pr, pc, r, c)) continue;
-                var m = state.UnitCandidates(r, c);
+                var m = state.CellCandidates[r, c];
                 if (SolverState.PopCount(m) == 2) list.Add((r, c, m));
             }
         }
@@ -83,6 +83,9 @@ internal sealed class Wing : ITechnique
 
         // Eliminate Z from cells seeing both pincers (and pivot, for XYZ).
         var digit = SolverState.LowestBitIndex(z) + 1;
+        var anyEliminated = false;
+        var firstElimR = 0;
+        var firstElimC = 0;
         for (var r = 0; r < 9; r++)
         {
             for (var c = 0; c < 9; c++)
@@ -95,17 +98,19 @@ internal sealed class Wing : ITechnique
                 if (!SeesEachOther(b.r, b.c, r, c)) continue;
                 if (_pivotSize == 3 && !SeesEachOther(pr, pc, r, c)) continue;
 
-                var cands = state.UnitCandidates(r, c);
-                if ((cands & z) == 0) continue;
-                var newCands = cands & ~z;
-                if (SolverState.PopCount(newCands) == 1)
+                if ((state.CellCandidates[r, c] & z) == 0) continue;
+                if (state.EliminateCandidate(r, c, digit) && !anyEliminated)
                 {
-                    var d = SolverState.LowestBitIndex(newCands) + 1;
-                    state.Place(r, c, d);
-                    step = new SolveStep(Name, Level, $"{Name}: eliminated {digit}, placed ({r},{c})={d}");
-                    return true;
+                    anyEliminated = true;
+                    firstElimR = r;
+                    firstElimC = c;
                 }
             }
+        }
+        if (anyEliminated)
+        {
+            step = new SolveStep(Name, Level, $"{Name}: eliminated {digit} from ({firstElimR},{firstElimC})");
+            return true;
         }
         step = default!;
         return false;
