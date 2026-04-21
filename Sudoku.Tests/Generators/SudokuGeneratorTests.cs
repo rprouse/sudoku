@@ -7,26 +7,29 @@ namespace Sudoku.Tests.Generators;
 [Parallelizable(ParallelScope.All)]
 public class SudokuGeneratorTests
 {
+    private static SudokuGenerator CreateGenerator(int seed) =>
+        new SudokuGenerator(new BitmaskSolver(), new DifficultyGrader(new TechniqueSolver()), new Random(seed));
+
     [Test]
     public void Generate_ReturnsValidPuzzle()
     {
-        var generator = new SudokuGenerator(new SimpleSolver(), new Random(42));
+        var generator = CreateGenerator(42);
 
         var puzzle = generator.Generate(Difficulty.Easy);
-        var solution = new SimpleSolver().Solve(puzzle);
+        var solution = new BitmaskSolver().Solve(puzzle);
 
         solution.IsFilled().Should().BeTrue();
         solution.IsValid().Should().BeTrue();
     }
 
-    [TestCase(Difficulty.Easy, 40, 46)]
-    [TestCase(Difficulty.Medium, 33, 39)]
-    [TestCase(Difficulty.Hard, 28, 32)]
-    [TestCase(Difficulty.Expert, 24, 27)]
-    [TestCase(Difficulty.Evil, 20, 27)]
+    [TestCase(Difficulty.Easy, 40, 50)]
+    [TestCase(Difficulty.Medium, 32, 40)]
+    [TestCase(Difficulty.Hard, 27, 34)]
+    [TestCase(Difficulty.Expert, 24, 29)]
+    [TestCase(Difficulty.Evil, 22, 27)]
     public void Generate_ClueCountWithinRange(Difficulty difficulty, int min, int max)
     {
-        var generator = new SudokuGenerator(new SimpleSolver(), new Random(42));
+        var generator = CreateGenerator(42);
 
         var puzzle = generator.Generate(difficulty);
 
@@ -40,7 +43,7 @@ public class SudokuGeneratorTests
     [TestCase(Difficulty.Evil)]
     public void Generate_HasRotationalSymmetry(Difficulty difficulty)
     {
-        var generator = new SudokuGenerator(new SimpleSolver(), new Random(42));
+        var generator = CreateGenerator(42);
 
         var puzzle = generator.Generate(difficulty);
 
@@ -63,18 +66,33 @@ public class SudokuGeneratorTests
     [TestCase(Difficulty.Evil)]
     public void Generate_HasUniqueSolution(Difficulty difficulty)
     {
-        var generator = new SudokuGenerator(new SimpleSolver(), new Random(42));
+        var generator = CreateGenerator(42);
 
         var puzzle = generator.Generate(difficulty);
 
-        new SimpleSolver().IsUnique(puzzle).Should().BeTrue();
+        new BitmaskSolver().IsUnique(puzzle).Should().BeTrue();
+    }
+
+    [TestCase(Difficulty.Easy)]
+    [TestCase(Difficulty.Medium)]
+    [TestCase(Difficulty.Hard)]
+    [TestCase(Difficulty.Expert)]
+    [TestCase(Difficulty.Evil)]
+    public void Generate_GradesAsTargetTier(Difficulty difficulty)
+    {
+        var generator = CreateGenerator(42);
+        var grader = new DifficultyGrader(new TechniqueSolver());
+
+        var puzzle = generator.Generate(difficulty);
+
+        grader.Grade(puzzle).Should().Be(difficulty);
     }
 
     [Test]
     public void Generate_WithSameSeed_ProducesSameBoard()
     {
-        var generator1 = new SudokuGenerator(new SimpleSolver(), new Random(123));
-        var generator2 = new SudokuGenerator(new SimpleSolver(), new Random(123));
+        var generator1 = CreateGenerator(123);
+        var generator2 = CreateGenerator(123);
 
         var puzzle1 = generator1.Generate(Difficulty.Medium);
         var puzzle2 = generator2.Generate(Difficulty.Medium);

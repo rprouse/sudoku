@@ -10,7 +10,9 @@ public class SudokuBenchmarks
 {
     private readonly ISolver _simpleSolver = new SimpleSolver();
     private readonly ISolver _bitmaskSolver = new BitmaskSolver();
-    private readonly IGenerator _generator = new SudokuGenerator(new SimpleSolver());
+    private readonly IGenerator _generator = new SudokuGenerator(
+        new BitmaskSolver(),
+        new DifficultyGrader(new TechniqueSolver()));
     private readonly SudokuJsonFile _sudokus = Persistence.LoadFromJson("sudokus.json");
 
     [Benchmark]

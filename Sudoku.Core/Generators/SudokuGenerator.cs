@@ -4,74 +4,86 @@ namespace Sudoku.Core.Generators;
 
 public class SudokuGenerator : IGenerator
 {
+    private const int MaxAttempts = 10;
+
     private readonly ISolver _solver;
+    private readonly DifficultyGrader _grader;
     private readonly Random _random;
 
-    public SudokuGenerator(ISolver solver, Random? random = null)
+    public SudokuGenerator(ISolver solver, DifficultyGrader grader, Random? random = null)
     {
         _solver = solver;
+        _grader = grader;
         _random = random ?? Random.Shared;
     }
 
     public SudokuBoard Generate(Difficulty difficulty)
     {
-        var board = GenerateFullBoard();
-        RemoveClues(board, difficulty);
-        return board;
-    }
-
-    private SudokuBoard GenerateFullBoard()
-    {
-        var board = new SudokuBoard();
-        FillDiagonalBoxes(board);
-        return _solver.Solve(board);
-    }
-
-    private void FillDiagonalBoxes(SudokuBoard board)
-    {
-        // The three diagonal 3x3 boxes (top-left, center, bottom-right)
-        // don't constrain each other, so random fill is always valid.
-        for (var box = 0; box < 3; box++)
+        for (var attempt = 0; attempt < MaxAttempts; attempt++)
         {
-            var digits = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            Shuffle(digits);
-            var idx = 0;
-            var startRow = box * 3;
-            var startCol = box * 3;
-            for (var r = startRow; r < startRow + 3; r++)
-            {
-                for (var c = startCol; c < startCol + 3; c++)
-                {
-                    board[r, c] = digits[idx++];
-                }
-            }
+            var puzzle = TryGenerate(difficulty);
+            if (puzzle is not null) return puzzle;
         }
+        throw new InvalidOperationException("Generator exceeded max attempts.");
     }
 
-    private void RemoveClues(SudokuBoard board, Difficulty difficulty)
+    private SudokuBoard? TryGenerate(Difficulty target)
     {
-        var (min, max) = GetClueRange(difficulty);
+        var full = BuildFullSolution();
+        var working = new SudokuBoard(full);
+
         var pairs = BuildSymmetricPairs();
         Shuffle(pairs);
 
         foreach (var (r1, c1, r2, c2) in pairs)
         {
-            if (board.ClueCount <= max)
-                break;
+            TryRemovePair(working, r1, c1, r2, c2, target);
+        }
 
-            var val1 = board[r1, c1];
-            var val2 = (r1 == r2 && c1 == c2) ? val1 : board[r2, c2];
+        var grade = _grader.Grade(working);
+        var (minClues, maxClues) = GetClueRange(target);
+        if (grade == target && working.ClueCount >= minClues && working.ClueCount <= maxClues)
+        {
+            return working;
+        }
+        return null;
+    }
 
-            board[r1, c1] = 0;
-            if (r1 != r2 || c1 != c2)
-                board[r2, c2] = 0;
+    private SudokuBoard BuildFullSolution()
+    {
+        var board = new SudokuBoard();
+        var startR = _random.Next(9);
+        var startC = _random.Next(9);
+        board[startR, startC] = _random.Next(1, 10);
+        return _solver.Solve(board);
+    }
 
-            if (!_solver.IsUnique(board))
-            {
-                board[r1, c1] = val1;
-                if (r1 != r2 || c1 != c2)
-                    board[r2, c2] = val2;
-            }
+    private void TryRemovePair(SudokuBoard board, int r1, int c1, int r2, int c2, Difficulty target)
+    {
+        var v1 = board[r1, c1];
+        var v2 = (r1 == r2 && c1 == c2) ? v1 : board[r2, c2];
+
+        // Don't remove if we're already at the minimum clue count for this tier.
+        var (minClues, _) = GetClueRange(target);
+        var cellsRemoved = (r1 == r2 && c1 == c2) ? 1 : 2;
+        if (board.ClueCount - cellsRemoved < minClues)
+            return;
+
+        board[r1, c1] = 0;
+        if (r1 != r2 || c1 != c2) board[r2, c2] = 0;
+
+        if (!_solver.IsUnique(board))
+        {
+            board[r1, c1] = v1;
+            if (r1 != r2 || c1 != c2) board[r2, c2] = v2;
+            return;
+        }
+
+        var grade = _grader.Grade(board);
+        if (grade is null || grade > target)
+        {
+            board[r1, c1] = v1;
+            if (r1 != r2 || c1 != c2) board[r2, c2] = v2;
         }
     }
 
@@ -84,8 +96,7 @@ public class SudokuGenerator : IGenerator
         {
             for (var c = 0; c < 9; c++)
             {
-                if (visited[r, c])
-                    continue;
+                if (visited[r, c]) continue;
 
                 var mr = 8 - r;
                 var mc = 8 - c;
@@ -100,11 +111,11 @@ public class SudokuGenerator : IGenerator
 
     private static (int min, int max) GetClueRange(Difficulty difficulty) => difficulty switch
     {
-        Difficulty.Easy => (40, 46),
-        Difficulty.Medium => (33, 39),
-        Difficulty.Hard => (28, 32),
-        Difficulty.Expert => (24, 27),
-        Difficulty.Evil => (20, 27),
+        Difficulty.Easy => (40, 50),
+        Difficulty.Medium => (32, 40),
+        Difficulty.Hard => (27, 34),
+        Difficulty.Expert => (24, 29),
+        Difficulty.Evil => (22, 27),
         _ => throw new ArgumentOutOfRangeException(nameof(difficulty))
     };
 
