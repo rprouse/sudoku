@@ -239,11 +239,11 @@ Puzzle generation targets on a typical development machine:
 
 | Tier     | Target generation time |
 | -------- | ---------------------- |
-| Easy     | <1 s                   |
-| Medium   | <1 s                   |
-| Hard     | <1 s                   |
-| Expert   | <3 s                   |
-| Evil     | <5 s                   |
+| Easy     | < 1 s                   |
+| Medium   | < 1 s                   |
+| Hard     | < 1 s                   |
+| Expert   | < 3 s                   |
+| Evil     | < 5 s                   |
 
 `SudokuGenerator` uses `BitmaskSolver` for fast uniqueness checking and `DifficultyGrader` (wrapping `TechniqueSolver`) for technique-based difficulty grading. See `Sudoku.Benchmarks` for measured performance.
 
@@ -260,6 +260,30 @@ Difficulty is determined by the hardest *human-solving technique* actually requi
 | Evil (Profound)         | Swordfish, XYZ-Wing, X-Chain                           |
 
 Clue counts per tier are used as a secondary sanity filter (see `SudokuGenerator.GetClueRange`). The technique grade is the primary acceptance criterion — ranges may overlap slightly at tier boundaries.
+
+| Technique | Tier | Description |
+|---|---|---|
+| Naked Single | Easy | A cell has only one candidate remaining — place it directly. |
+| Hidden Single | Easy | A digit has only one possible cell within a row, column, or box. |
+| Naked Pair | Medium | Two cells in a unit share the same two candidates, eliminating those digits from the rest of the unit. |
+| Hidden Pair | Medium | Two digits appear as candidates in only two cells within a unit, allowing all other candidates in those cells to be removed. |
+| Pointing Pair | Hard | A candidate within a box is confined to one row or column, eliminating it from the rest of that row or column outside the box. |
+| Box/Line Reduction | Hard | A candidate in a row or column exists only within one box, eliminating it from the rest of that box. |
+| Naked Triple | Hard | Three cells in a unit share a total of three candidates between them, eliminating those digits elsewhere in the unit. |
+| Hidden Triple | Hard | Three digits appear only within the same three cells in a unit, allowing other candidates in those cells to be removed. |
+| Naked Quad ⁺ | Hard–Expert | Like a Naked Triple but with four cells and four candidates. Rarer but mechanically identical in logic. |
+| Hidden Quad ⁺ | Hard–Expert | Four digits confined to four cells in a unit; all other candidates in those cells can be eliminated. |
+| X-Wing | Expert | A digit appears in only two cells across two rows, and those cells share the same two columns — eliminating that digit from those columns elsewhere. |
+| Simple Coloring | Expert | Chains of conjugate pairs (cells where a digit has only two options) are colored to detect contradictions or forced placements. |
+| Skyscraper ⁺ | Expert | A two-row or two-column X-Wing variant where one end is offset, creating a chain that eliminates candidates from cells seeing both endpoints. |
+| XY-Wing | Expert | Three cells form a chain of bivalue candidates; the pivot sees two wings, and any cell seeing both wings can have their shared candidate eliminated. |
+| XYZ-Wing ⁺ | Evil | Like XY-Wing but the pivot cell contains three candidates; cells seen by all three cells can have the shared candidate removed. |
+| X-Chain | Evil | A chain of cells linked by a single candidate in conjugate pairs; the endpoints create forced eliminations. |
+| Swordfish | Evil | A three-row (or column) extension of X-Wing — a digit confined to the same three columns across three rows eliminates that digit elsewhere in those columns. |
+| BUG ⁺ | Evil | Bivalue Universal Grave — if all unsolved cells have exactly two candidates except one, that odd cell must contain the digit that prevents a non-unique solution. |
+| Forcing Chains ⁺ | Evil | Hypothetical chains testing both values of a bivalue cell; if both paths lead to the same elimination, that elimination is valid. |
+
+⁺ *Techniques not currently in the app's tier list.*
 
 ## Future optimizations
 
