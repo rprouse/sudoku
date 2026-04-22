@@ -43,6 +43,7 @@ Color definitions live in:
 - `SudokuBoardDrawable.cs` — board-specific colors as `static readonly Color` fields
 - `BoolToModeConverters.cs` — mode toggle button colors
 - XAML views — inline `AppThemeBinding` values for text and UI elements
+- `Resources/Images/sakura_branch_{light,dark}.svg` — watercolor cherry-blossom overlays (see Gotchas for the parity constraint)
 
 ## Code Style
 
@@ -67,3 +68,4 @@ Enforced via `.editorconfig`. Key conventions:
 - **Technique solver never guesses.** If the technique set is exhausted and the board is not full, `TechniqueSolver.Solve` returns `Solved = false`. Do not add a brute-force fallback — it would invalidate the "solvable by pure logic" guarantee that `SudokuGenerator` relies on for grading.
 - **Persistent candidates in `SolverState.CellCandidates`.** Techniques read candidates via `state.CellCandidates[r, c]` (not `UnitCandidates`, which is mask-only and ignores prior eliminations). Techniques mutate via `state.EliminateCandidate(r, c, digit)` or `state.PlacePropagating(r, c, digit)`. `Place` (used by `BitmaskSolver` backtracking) does NOT propagate peer updates — use it only when you don't need persistent candidate state across calls.
 - **Generator clue ranges.** Updated from the pre-redesign ranges; see `SudokuGenerator.GetClueRange`. Clue count is a secondary filter only — tier grade is the primary acceptance criterion, and ranges may overlap slightly at tier boundaries.
+- **Sakura SVG parity.** `sakura_branch_light.svg` and `sakura_branch_dark.svg` must share identical geometry — only color/opacity attributes may differ. `SakuraBranchParityTests` enforces this: edit one file, edit the other in the same commit.

@@ -41,4 +41,17 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\Sudoku.App\Resources\Images\sakura_branch_light.svg"
+          Link="sakura_branch_light.svg"
+          Condition="Exists('..\Sudoku.App\Resources\Images\sakura_branch_light.svg')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Sudoku.App\Resources\Images\sakura_branch_dark.svg"
+          Link="sakura_branch_dark.svg"
+          Condition="Exists('..\Sudoku.App\Resources\Images\sakura_branch_dark.svg')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

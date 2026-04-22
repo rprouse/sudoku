@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="456" height="456" viewBox="0 0 456 456" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <filter id="splashBlur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" />
+        </filter>
+    </defs>
+
+    <!-- Sakura branch — light palette, painted BEFORE the Ensō so it sits behind -->
+    <path d="M 465 30 Q 410 70 380 120 Q 350 180 310 220"
+          fill="none" stroke="#a08778" stroke-width="3" opacity="0.5" filter="url(#splashBlur)" />
+    <g opacity="0.6" filter="url(#splashBlur)">
+        <circle cx="455" cy="35" r="14" fill="#f2cdd1" />
+        <circle cx="465" cy="50" r="12" fill="#edb9c2" />
+        <circle cx="445" cy="60" r="10" fill="#f2cdd1" />
+        <circle cx="410" cy="90" r="12" fill="#edb9c2" />
+        <circle cx="420" cy="105" r="10" fill="#f2cdd1" />
+        <circle cx="380" cy="135" r="11" fill="#f2cdd1" />
+        <circle cx="395" cy="150" r="9" fill="#edb9c2" />
+        <circle cx="350" cy="180" r="11" fill="#f2cdd1" />
+        <circle cx="335" cy="195" r="9" fill="#edb9c2" />
+        <circle cx="310" cy="215" r="10" fill="#f2cdd1" />
+    </g>
+    <ellipse cx="395" cy="125" rx="9" ry="4" transform="rotate(30 395 125)" fill="#a8b89a" opacity="0.55" filter="url(#splashBlur)" />
+
     <!-- Ensō — zen brush-stroke circle, larger for splash -->
     <!-- Center: (228, 228), radius: 120, gap at top-right -->
-
     <!-- Main body — bold confident stroke -->
     <path d="M 320 151 A 120 120 0 1 1 187 115"
           fill="none" stroke="white" stroke-width="28" stroke-linecap="round"/>
