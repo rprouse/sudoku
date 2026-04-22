@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" opacity="0.4">
+  <defs>
+    <filter id="blur-branch" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="2" />
+    </filter>
+    <filter id="blur-bloom" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" />
+    </filter>
+  </defs>
+  <path d="M 610 60 Q 520 140 480 220 Q 430 310 380 370 Q 340 410 280 440" fill="none" stroke="#6a4f40" stroke-width="5" filter="url(#blur-branch)" />
+  <path d="M 510 165 Q 545 225 530 305" fill="none" stroke="#6a4f40" stroke-width="3.5" filter="url(#blur-branch)" />
+  <g filter="url(#blur-bloom)">
+    <circle cx="595" cy="65" r="22" fill="#a87682" />
+    <circle cx="610" cy="85" r="18" fill="#966374" />
+    <circle cx="580" cy="100" r="15" fill="#a87682" />
+    <circle cx="555" cy="140" r="19" fill="#966374" />
+    <circle cx="540" cy="158" r="14" fill="#a87682" />
+    <circle cx="510" cy="185" r="18" fill="#a87682" />
+    <circle cx="495" cy="200" r="13" fill="#966374" />
+    <circle cx="475" cy="240" r="19" fill="#a87682" />
+    <circle cx="490" cy="258" r="14" fill="#966374" />
+    <circle cx="460" cy="265" r="12" fill="#a87682" />
+    <circle cx="430" cy="305" r="17" fill="#966374" />
+    <circle cx="445" cy="322" r="13" fill="#a87682" />
+    <circle cx="395" cy="360" r="18" fill="#a87682" />
+    <circle cx="410" cy="378" r="14" fill="#966374" />
+    <circle cx="520" cy="260" r="16" fill="#a87682" />
+    <circle cx="532" cy="278" r="12" fill="#966374" />
+    <circle cx="345" cy="405" r="16" fill="#a87682" />
+    <circle cx="360" cy="420" r="12" fill="#966374" />
+    <circle cx="300" cy="440" r="14" fill="#966374" />
+    <circle cx="285" cy="452" r="11" fill="#a87682" />
+    <circle cx="560" cy="210" r="12" fill="#a87682" />
+    <circle cx="550" cy="222" r="9" fill="#966374" />
+  </g>
+  <ellipse cx="505" cy="225" rx="14" ry="6" transform="rotate(25 505 225)" fill="#6d7a5e" filter="url(#blur-branch)" />
+  <ellipse cx="420" cy="342" rx="13" ry="6" transform="rotate(40 420 342)" fill="#6d7a5e" filter="url(#blur-branch)" />
+</svg>
