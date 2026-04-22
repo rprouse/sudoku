@@ -13,7 +13,7 @@ public class SudokuBoardDrawable : IDrawable
     // Dark theme colors — warm earth tones
     private static readonly Color s_darkBackground = Color.FromArgb("#1e1b18");
     private static readonly Color s_darkSelectedCell = Color.FromArgb("#3a3228");
-    private static readonly Color s_darkRelatedCell = Color.FromArgb("#2a2520");
+    private static readonly Color s_darkRelatedCell = Color.FromArgb("#2e2224");
     private static readonly Color s_darkSameNumber = Color.FromArgb("#2d3328");
     private static readonly Color s_darkErrorCell = Color.FromArgb("#8b4040");
     private static readonly Color s_darkThinLine = Color.FromArgb("#4a4038");
@@ -25,7 +25,7 @@ public class SudokuBoardDrawable : IDrawable
     // Light theme colors — warm earth tones
     private static readonly Color s_lightBackground = Color.FromArgb("#f5f0eb");
     private static readonly Color s_lightSelectedCell = Color.FromArgb("#ddd2c4");
-    private static readonly Color s_lightRelatedCell = Color.FromArgb("#ebe4db");
+    private static readonly Color s_lightRelatedCell = Color.FromArgb("#f0ddda");
     private static readonly Color s_lightSameNumber = Color.FromArgb("#d8e0d0");
     private static readonly Color s_lightErrorCell = Color.FromArgb("#e8c4c0");
     private static readonly Color s_lightThinLine = Color.FromArgb("#c4b5a4");
