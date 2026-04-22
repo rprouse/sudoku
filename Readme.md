@@ -77,8 +77,8 @@ A Sudoku puzzle game built with C# and .NET MAUI, targeting Android and Windows.
   </tr>
   <tr>
     <td>Related Cells</td>
-    <td><img src="https://via.placeholder.com/24/ebe4db/ebe4db" alt="#ebe4db" /></td>
-    <td><code>#ebe4db</code></td>
+    <td><img src="https://via.placeholder.com/24/f0ddda/f0ddda" alt="#f0ddda" /></td>
+    <td><code>#f0ddda</code></td>
   </tr>
   <tr>
     <td>Same Number</td>
@@ -157,8 +157,8 @@ A Sudoku puzzle game built with C# and .NET MAUI, targeting Android and Windows.
   </tr>
   <tr>
     <td>Related Cells</td>
-    <td><img src="https://via.placeholder.com/24/2a2520/2a2520" alt="#2a2520" /></td>
-    <td><code>#2a2520</code></td>
+    <td><img src="https://via.placeholder.com/24/2c2422/2c2422" alt="#2c2422" /></td>
+    <td><code>#2c2422</code></td>
   </tr>
   <tr>
     <td>Same Number</td>
