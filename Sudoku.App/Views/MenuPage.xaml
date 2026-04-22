@@ -11,7 +11,7 @@
         <VerticalStackLayout VerticalOptions="Center" Spacing="8">
             <Label Text="SUDOKU ZEN" FontSize="32" HorizontalTextAlignment="Center" CharacterSpacing="3"
                    TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}" />
-            <Label Text="SOLVE FOR ONE" FontSize="11" CharacterSpacing="6" HorizontalTextAlignment="Center"
+            <Label Text="A MINDFUL MOMENT" FontSize="11" CharacterSpacing="6" HorizontalTextAlignment="Center"
                    TextColor="{AppThemeBinding Light=#8a7e74, Dark=#7a7068}" />
 
             <!-- Decorative separator -->
