@@ -8,15 +8,33 @@ namespace Sudoku.Benchmarks;
 
 public class SudokuBenchmarks
 {
-    private readonly ISolver _solver = new SimpleSolver();
-    private readonly IGenerator _generator = new SudokuGenerator(new SimpleSolver());
+    private readonly ISolver _simpleSolver = new SimpleSolver();
+    private readonly ISolver _bitmaskSolver = new BitmaskSolver();
+    private readonly IGenerator _generator = new SudokuGenerator(
+        new BitmaskSolver(),
+        new DifficultyGrader(new TechniqueSolver()));
     private readonly SudokuJsonFile _sudokus = Persistence.LoadFromJson("sudokus.json");
+    private readonly DifficultyGrader _grader = new DifficultyGrader(new TechniqueSolver());
 
     [Benchmark]
     [ArgumentsSource(nameof(SudokuBoards))]
     public void SimpleSolveSudoku(SudokuJsonBoard board)
     {
-        var _ = _solver.Solve(board.GetSudokuBoard());
+        var _ = _simpleSolver.Solve(board.GetSudokuBoard());
+    }
+
+    [Benchmark]
+    [ArgumentsSource(nameof(SudokuBoards))]
+    public void BitmaskSolveSudoku(SudokuJsonBoard board)
+    {
+        var _ = _bitmaskSolver.Solve(board.GetSudokuBoard());
+    }
+
+    [Benchmark]
+    [ArgumentsSource(nameof(SudokuBoards))]
+    public void GradePuzzle(SudokuJsonBoard board)
+    {
+        var _ = _grader.Grade(board.GetSudokuBoard());
     }
 
     [Benchmark]

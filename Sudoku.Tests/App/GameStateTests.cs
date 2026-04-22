@@ -12,8 +12,8 @@ public class GameStateTests
 {
     private static (SudokuBoard puzzle, SudokuBoard solution) GenerateTestPuzzle()
     {
-        var solver = new SimpleSolver();
-        var generator = new SudokuGenerator(solver, new Random(42));
+        var solver = new BitmaskSolver();
+        var generator = new SudokuGenerator(solver, new DifficultyGrader(new TechniqueSolver()), new Random(42));
         var puzzle = generator.Generate(Difficulty.Easy);
         var solution = solver.Solve(new SudokuBoard(puzzle));
         return (puzzle, solution);
