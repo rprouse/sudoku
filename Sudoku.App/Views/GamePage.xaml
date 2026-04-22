@@ -9,6 +9,16 @@
 
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto" Padding="8">
 
+        <!-- Sakura branch overlay — masked by the opaque board in Row 2 -->
+        <Image Source="{AppThemeBinding Light=sakura_branch_light.png, Dark=sakura_branch_dark.png}"
+               Grid.RowSpan="6"
+               InputTransparent="True"
+               Aspect="AspectFit"
+               HorizontalOptions="End"
+               VerticalOptions="Start"
+               WidthRequest="320"
+               HeightRequest="480" />
+
         <!-- Row 0: Navigation bar -->
         <Grid ColumnDefinitions="Auto,*,Auto" Padding="8,4">
             <Button Text="&#9664; Back" BackgroundColor="Transparent"
