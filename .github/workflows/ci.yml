@@ -6,6 +6,15 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 jobs:
   test:
     name: 🧪 Build & Test
@@ -13,16 +22,41 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: 🔧 Setup .NET 8
+      - name: 🔧 Setup .NET 10
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '8.0.x'
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: '**/*.csproj'
 
-      - name: 🏗️ Build Core
-        run: dotnet build Sudoku.Core
+      - name: 🏗️ Build Benchmarks (compile check)
+        run: dotnet build Sudoku.Benchmarks --configuration Release
 
-      - name: ✅ Run Tests
-        run: dotnet test Sudoku.Tests --verbosity normal
+      - name: ✅ Build + run tests
+        run: >
+          dotnet test Sudoku.Tests
+          --configuration Release
+          --logger "trx;LogFileName=test-results.trx"
+          --results-directory TestResults
+          --collect:"XPlat Code Coverage"
+
+      - name: 📊 Publish test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: NUnit test results
+          path: TestResults/*.trx
+          reporter: dotnet-trx
+          fail-on-error: false
+
+      - name: 📤 Upload test + coverage artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            TestResults/*.trx
+            TestResults/**/coverage.cobertura.xml
 
   build-android:
     name: 🤖 Build MAUI Android
@@ -33,14 +67,15 @@ jobs:
       - name: 🔧 Setup .NET 10
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
-          dotnet-quality: 'ga'
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: '**/*.csproj'
 
-      - name: 📦 Install MAUI Workloads
+      - name: 📦 Install MAUI workloads
         run: dotnet workload restore Sudoku.App/Sudoku.App.csproj
 
       - name: 🏗️ Build Android
-        run: dotnet build Sudoku.App -f net10.0-android -p:EnableWindowsTargeting=true
+        run: dotnet build Sudoku.App -f net10.0-android --configuration Release
 
   build-windows:
     name: 🪟 Build MAUI Windows
@@ -51,11 +86,12 @@ jobs:
       - name: 🔧 Setup .NET 10
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
-          dotnet-quality: 'ga'
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: '**/*.csproj'
 
-      - name: 📦 Install MAUI Workloads
+      - name: 📦 Install MAUI workloads
         run: dotnet workload restore Sudoku.App/Sudoku.App.csproj
 
       - name: 🏗️ Build Windows
-        run: dotnet build Sudoku.App -f net10.0-windows10.0.19041.0
+        run: dotnet build Sudoku.App -f net10.0-windows10.0.19041.0 --configuration Release
