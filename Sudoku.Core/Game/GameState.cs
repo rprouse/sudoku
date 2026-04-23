@@ -40,7 +40,7 @@ public class GameState
     public void PlaceNumber(int row, int col, int number, GameSettings? settings = null)
     {
         var cell = Cells[row, col];
-        if (cell.IsGiven || IsCorrectlyPlaced(row, col)) return;
+        if (cell.IsGiven) return;
 
         var relatedChanges = SnapshotRelatedCells(row, col, number);
         PushUndo(row, col, relatedChanges);
@@ -64,7 +64,7 @@ public class GameState
     public void ClearCell(int row, int col)
     {
         var cell = Cells[row, col];
-        if (cell.IsGiven || IsCorrectlyPlaced(row, col)) return;
+        if (cell.IsGiven) return;
 
         PushUndo(row, col);
         cell.Value = 0;
@@ -117,7 +117,6 @@ public class GameState
     public void Undo()
     {
         if (UndoStack.Count == 0) return;
-        if (IsCorrectlyPlaced(UndoStack.Peek().Row, UndoStack.Peek().Col)) return;
 
         var action = UndoStack.Pop();
         var cell = Cells[action.Row, action.Col];
@@ -276,12 +275,6 @@ public class GameState
             cell.ManualCandidates[number - 1] = false;
             cell.ExcludedCandidates[number - 1] = true;
         }
-    }
-
-    private bool IsCorrectlyPlaced(int row, int col)
-    {
-        var cell = Cells[row, col];
-        return cell.HasValue && !cell.IsGiven && cell.Value == Solution[row][col];
     }
 
     private bool IsNumberInRow(int row, int number)

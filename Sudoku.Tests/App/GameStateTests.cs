@@ -337,7 +337,7 @@ public class GameStateTests
     }
 
     [Test]
-    public void PlaceNumber_CannotOverwriteCorrectValue()
+    public void PlaceNumber_OverwritesCorrectValue()
     {
         var (puzzle, solution) = GenerateTestPuzzle();
         var state = new GameState(puzzle, solution, Difficulty.Easy);
@@ -348,11 +348,11 @@ public class GameStateTests
         var wrongValue = correctValue == 9 ? 1 : correctValue + 1;
         state.PlaceNumber(r, c, wrongValue);
 
-        state.Cells[r, c].Value.Should().Be(correctValue);
+        state.Cells[r, c].Value.Should().Be(wrongValue);
     }
 
     [Test]
-    public void ClearCell_CannotClearCorrectValue()
+    public void ClearCell_ClearsCorrectValue()
     {
         var (puzzle, solution) = GenerateTestPuzzle();
         var state = new GameState(puzzle, solution, Difficulty.Easy);
@@ -362,11 +362,11 @@ public class GameStateTests
         state.PlaceNumber(r, c, correctValue);
         state.ClearCell(r, c);
 
-        state.Cells[r, c].Value.Should().Be(correctValue);
+        state.Cells[r, c].Value.Should().Be(0);
     }
 
     [Test]
-    public void Undo_CannotUndoCorrectValue()
+    public void Undo_RestoresAfterCorrectPlacement()
     {
         var (puzzle, solution) = GenerateTestPuzzle();
         var state = new GameState(puzzle, solution, Difficulty.Easy);
@@ -376,7 +376,8 @@ public class GameStateTests
         state.PlaceNumber(r, c, correctValue);
         state.Undo();
 
-        state.Cells[r, c].Value.Should().Be(correctValue);
+        state.Cells[r, c].Value.Should().Be(0);
+        state.UndoStack.Should().BeEmpty();
     }
 
     private static (int r, int c) FindEmptyCell(GameState state)
