@@ -157,8 +157,8 @@ A Sudoku puzzle game built with C# and .NET MAUI, targeting Android and Windows.
   </tr>
   <tr>
     <td>Related Cells</td>
-    <td><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-label="#2c2422"><rect width="24" height="24" fill="#2c2422"/></svg></td>
-    <td><code>#2c2422</code></td>
+    <td><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" role="img" aria-label="#3a2826"><rect width="24" height="24" fill="#3a2826"/></svg></td>
+    <td><code>#3a2826</code></td>
   </tr>
   <tr>
     <td>Same Number</td>
