@@ -6,22 +6,38 @@
         </filter>
     </defs>
 
-    <!-- Sakura branch — light palette, painted BEFORE the Ensō so it sits behind -->
-    <path d="M 465 30 Q 410 70 380 120 Q 350 180 310 220"
-          fill="none" stroke="#a08778" stroke-width="3" opacity="0.5" filter="url(#splashBlur)" />
+    <!-- Sakura branch — light palette, painted BEFORE the Ensō so the zen stroke sits in front -->
+    <!-- Main branch sweeps from upper-right corner through the ensō's top gap, mirroring sakura_branch_light.svg scale -->
+    <path d="M 475 15 Q 415 55 380 105 Q 345 145 300 160 Q 250 175 205 158"
+          fill="none" stroke="#a08778" stroke-width="4.5" opacity="0.55" filter="url(#splashBlur)" />
+    <!-- Secondary offshoot -->
+    <path d="M 395 95 Q 425 130 405 175"
+          fill="none" stroke="#a08778" stroke-width="3" opacity="0.55" filter="url(#splashBlur)" />
     <g opacity="0.6" filter="url(#splashBlur)">
-        <circle cx="455" cy="35" r="14" fill="#f2cdd1" />
-        <circle cx="465" cy="50" r="12" fill="#edb9c2" />
-        <circle cx="445" cy="60" r="10" fill="#f2cdd1" />
-        <circle cx="410" cy="90" r="12" fill="#edb9c2" />
-        <circle cx="420" cy="105" r="10" fill="#f2cdd1" />
-        <circle cx="380" cy="135" r="11" fill="#f2cdd1" />
-        <circle cx="395" cy="150" r="9" fill="#edb9c2" />
-        <circle cx="350" cy="180" r="11" fill="#f2cdd1" />
-        <circle cx="335" cy="195" r="9" fill="#edb9c2" />
-        <circle cx="310" cy="215" r="10" fill="#f2cdd1" />
+        <!-- Blooms along the main branch, upper-right → lower-left -->
+        <circle cx="465" cy="20" r="20" fill="#f2cdd1" />
+        <circle cx="480" cy="45" r="16" fill="#edb9c2" />
+        <circle cx="445" cy="55" r="14" fill="#f2cdd1" />
+        <circle cx="425" cy="75" r="18" fill="#edb9c2" />
+        <circle cx="410" cy="95" r="15" fill="#f2cdd1" />
+        <circle cx="385" cy="115" r="17" fill="#edb9c2" />
+        <circle cx="365" cy="130" r="13" fill="#f2cdd1" />
+        <circle cx="345" cy="150" r="16" fill="#f2cdd1" />
+        <circle cx="325" cy="160" r="12" fill="#edb9c2" />
+        <circle cx="300" cy="165" r="15" fill="#f2cdd1" />
+        <circle cx="275" cy="170" r="13" fill="#edb9c2" />
+        <circle cx="245" cy="168" r="15" fill="#f2cdd1" />
+        <circle cx="215" cy="155" r="14" fill="#edb9c2" />
+        <!-- Blooms along the secondary offshoot -->
+        <circle cx="400" cy="90" r="14" fill="#edb9c2" />
+        <circle cx="415" cy="115" r="12" fill="#f2cdd1" />
+        <circle cx="425" cy="140" r="15" fill="#f2cdd1" />
+        <circle cx="410" cy="160" r="13" fill="#edb9c2" />
+        <circle cx="395" cy="178" r="12" fill="#f2cdd1" />
     </g>
-    <ellipse cx="395" cy="125" rx="9" ry="4" transform="rotate(30 395 125)" fill="#a8b89a" opacity="0.55" filter="url(#splashBlur)" />
+    <!-- Sage leaves -->
+    <ellipse cx="420" cy="110" rx="12" ry="5" transform="rotate(25 420 110)" fill="#a8b89a" opacity="0.55" filter="url(#splashBlur)" />
+    <ellipse cx="320" cy="155" rx="11" ry="5" transform="rotate(40 320 155)" fill="#a8b89a" opacity="0.55" filter="url(#splashBlur)" />
 
     <!-- Ensō — zen brush-stroke circle, larger for splash -->
     <!-- Center: (228, 228), radius: 120, gap at top-right -->
