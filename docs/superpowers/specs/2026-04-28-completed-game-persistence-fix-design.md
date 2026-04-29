@@ -85,24 +85,42 @@ if (State != null) await _persistenceService.SaveAsync(State);
 
 ### 3. Make `GamePersistenceService` testable
 
-`GamePersistenceService` currently uses `FileSystem.AppDataDirectory` (MAUI Essentials) directly inside a private static `SavePath`, which makes it untestable from `Sudoku.Tests`. Make the directory a constructor parameter with a default that preserves existing production behavior.
+Two coupled changes are required to reach the service from `Sudoku.Tests`:
+
+**3a. Move the file from `Sudoku.App/Services/GamePersistenceService.cs` to `Sudoku.Core/Game/GamePersistenceService.cs`.**
+`Sudoku.Tests` only references `Sudoku.Core`, and `Sudoku.App` is a multi-TFM MAUI project (`net10.0-android`, `net10.0-windows10.0.19041.0`). Adding a project reference from tests to the app would force a MAUI workload dependency on the test project. Moving the service to `Sudoku.Core/Game/` matches the architectural rule already documented in `CLAUDE.md`:
+> *"Game logic models (`GameState`, `CellState`, etc.) live in `Sudoku.Core/Game/` rather than the MAUI project so they remain testable from `Sudoku.Tests`."*
+The namespace becomes `Sudoku.Core.Game`. The two helper JSON converters (`CellStateArrayConverter`, `UndoStackConverter`) move with it — they reference `CellState` and `UndoAction` from `Sudoku.Core.Game` already.
+
+**3b. Make the save directory a required constructor parameter** — no default. With the file in `Sudoku.Core`, the service no longer has access to `FileSystem.AppDataDirectory` (that lives in `Microsoft.Maui.Storage`), and we don't want `Sudoku.Core` to take a MAUI dependency. The MAUI app supplies the path at registration time.
 
 ```csharp
+namespace Sudoku.Core.Game;
+
 public class GamePersistenceService
 {
     private readonly string _saveDirectory;
 
-    public GamePersistenceService(string? saveDirectory = null)
+    public GamePersistenceService(string saveDirectory)
     {
-        _saveDirectory = saveDirectory ?? FileSystem.AppDataDirectory;
+        _saveDirectory = saveDirectory;
     }
 
     private string SavePath => Path.Combine(_saveDirectory, "game_state.json");
-    // ... rest unchanged
+    // ... rest unchanged (with the IsComplete guard from §1 added)
 }
 ```
 
-A single constructor with an optional parameter avoids ambiguity in DI's constructor selection and reads more directly than a pair of overloads. DI registration in `MauiProgram.cs:28` (`AddSingleton<GamePersistenceService>()`) requires no change — the optional parameter resolves to its default. Tests construct with a per-test temp directory.
+**3c. Update `MauiProgram.cs` registration** to supply the directory via factory lambda:
+
+```csharp
+// before:
+builder.Services.AddSingleton<GamePersistenceService>();
+// after:
+builder.Services.AddSingleton(_ => new GamePersistenceService(FileSystem.AppDataDirectory));
+```
+
+Tests construct with a per-test temp directory.
 
 ### 4. Add regression test
 
@@ -128,7 +146,8 @@ If we want to retain a breadcrumb, replace it with a one-liner documenting the n
 
 | Risk | Mitigation |
 |---|---|
-| The constructor change to `GamePersistenceService` breaks DI registration. | The default constructor overload preserves current behavior. `MauiProgram.cs:28` registers `AddSingleton<GamePersistenceService>()` which uses the parameterless constructor — no change required. |
+| The constructor change + file move breaks DI registration. | `MauiProgram.cs:28` is updated to register via factory lambda (`AddSingleton(_ => new GamePersistenceService(FileSystem.AppDataDirectory))`). The factory supplies the path; the service no longer depends on MAUI. |
+| Moving the service to `Sudoku.Core` causes namespace breakage in `Sudoku.App` consumers. | Three call sites (`MenuViewModel`, `GameViewModel`, `App.xaml.cs`) gain a `using Sudoku.Core.Game;` (or remove `using Sudoku.App.Services;`). Mechanical change covered by compiler. |
 | `state.IsComplete()` is mildly expensive (iterates all cells) and `SaveAsync` runs after every input. | `GameState.IsComplete()` is an `O(81)` row/col/box check. Saves are already async file writes — the cost is negligible compared to disk I/O. |
 | Users who already have a poisoned save file from a buggy build still see Continue on first launch after the fix. | The self-healing `Delete()` inside the guard cleans this up the next time the lifecycle calls `SaveAsync` with a completed state. In the meantime, tapping Continue and finishing (or abandoning) the puzzle once will heal it on the next save. Acceptable. |
 
@@ -139,9 +158,10 @@ If we want to retain a breadcrumb, replace it with a one-liner documenting the n
 
 ## Implementation order
 
-1. Refactor `GamePersistenceService` to accept an injectable directory (no behavior change).
-2. Add the `IsComplete()` early-return + `Delete()` to `SaveAsync`.
-3. Add regression tests in `Sudoku.Tests/App/GamePersistenceServiceTests.cs`.
-4. Remove the `!IsGameComplete` guard in `GameViewModel.SaveGameAsync`.
-5. Update `CLAUDE.md` (remove or replace the gotcha).
-6. Manual smoke test on Android: complete a game, return to menu, dismiss app, reopen — verify Continue is gone.
+1. Move `GamePersistenceService` from `Sudoku.App/Services/` to `Sudoku.Core/Game/`, change namespace to `Sudoku.Core.Game`, change constructor to take a required `string saveDirectory`. Update three callers and `MauiProgram.cs` registration. (No behavior change yet; build should succeed.)
+2. Add the first regression test (in-progress save round-trip) — proves the new constructor wiring works. Should pass immediately.
+3. Add the failing test for "completed game does not persist," then add the `IsComplete()` early-return to `SaveAsync` to make it pass.
+4. Add the failing test for the self-heal path ("completed save with existing file deletes it"), then add the `Delete()` call inside the guard to make it pass.
+5. Remove the redundant `!IsGameComplete` guard in `GameViewModel.SaveGameAsync` (line 197).
+6. Update `CLAUDE.md`: replace the **Save-state lifecycle** gotcha with the new persistence-invariant one-liner.
+7. Manual smoke test on Android: complete a game, return to menu, dismiss app, reopen — verify Continue is gone.
