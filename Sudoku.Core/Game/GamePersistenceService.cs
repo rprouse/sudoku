@@ -1,9 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-using Sudoku.Core.Game;
-
-namespace Sudoku.App.Services;
+namespace Sudoku.Core.Game;
 
 public class GamePersistenceService
 {
@@ -14,8 +12,14 @@ public class GamePersistenceService
         Converters = { new CellStateArrayConverter(), new UndoStackConverter() }
     };
 
-    private static string SavePath =>
-        Path.Combine(FileSystem.AppDataDirectory, "game_state.json");
+    private readonly string _saveDirectory;
+
+    public GamePersistenceService(string saveDirectory)
+    {
+        _saveDirectory = saveDirectory;
+    }
+
+    private string SavePath => Path.Combine(_saveDirectory, "game_state.json");
 
     public async Task SaveAsync(GameState state)
     {

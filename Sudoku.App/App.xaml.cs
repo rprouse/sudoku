@@ -1,5 +1,6 @@
 using Sudoku.App.Services;
 using Sudoku.App.ViewModels;
+using Sudoku.Core.Game;
 
 namespace Sudoku.App;
 
