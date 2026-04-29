@@ -77,4 +77,16 @@ public class GamePersistenceServiceTests
         loaded.Should().NotBeNull();
         loaded!.Difficulty.Should().Be(Difficulty.Easy);
     }
+
+    [Test]
+    public async Task SaveAsync_DeletesExistingFile_WhenGameIsComplete()
+    {
+        // Pre-write a stale save (simulates a save file written by a buggy older build).
+        await _service.SaveAsync(MakeInProgressState());
+        _service.HasSavedGame().Should().BeTrue("precondition: a save file must exist before the completed save call");
+
+        await _service.SaveAsync(MakeCompletedState());
+
+        _service.HasSavedGame().Should().BeFalse("completed save must remove any existing save file");
+    }
 }
