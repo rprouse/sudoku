@@ -23,6 +23,9 @@ public class GamePersistenceService
 
     public async Task SaveAsync(GameState state)
     {
+        if (state.IsComplete())
+            return;
+
         var json = JsonSerializer.Serialize(state, s_options);
         await File.WriteAllTextAsync(SavePath, json);
     }
