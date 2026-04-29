@@ -1,7 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-using Sudoku.App.Services;
 using Sudoku.Core;
 using Sudoku.Core.Game;
 using Sudoku.Core.Generators;

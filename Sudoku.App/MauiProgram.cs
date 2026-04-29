@@ -1,6 +1,7 @@
 using Sudoku.App.Services;
 using Sudoku.App.ViewModels;
 using Sudoku.App.Views;
+using Sudoku.Core.Game;
 using Sudoku.Core.Generators;
 using Sudoku.Core.Solvers;
 
@@ -25,7 +26,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<DifficultyGrader>();
         builder.Services.AddSingleton<SudokuGenerator>();
         builder.Services.AddSingleton<SettingsService>();
-        builder.Services.AddSingleton<GamePersistenceService>();
+        builder.Services.AddSingleton(_ => new GamePersistenceService(FileSystem.AppDataDirectory));
 
         // ViewModels
         builder.Services.AddTransient<MenuViewModel>();
