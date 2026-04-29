@@ -192,7 +192,7 @@ public partial class GameViewModel : ObservableObject, IDisposable
         TimerText = $"{minutes}:{seconds:D2}";
     }
 
-    private async Task SaveGameAsync()
+    public async Task SaveGameAsync()
     {
         if (State != null) await _persistenceService.SaveAsync(State);
     }

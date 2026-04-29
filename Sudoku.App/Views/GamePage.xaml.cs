@@ -21,10 +21,12 @@ public partial class GamePage : ContentPage
         _viewModel?.ResumeTimer();
     }
 
-    protected override void OnDisappearing()
+    protected override async void OnDisappearing()
     {
         base.OnDisappearing();
-        _viewModel?.StopTimer();
+        if (_viewModel == null) return;
+        _viewModel.StopTimer();
+        await _viewModel.SaveGameAsync();
     }
 
     private Button[] _numberButtons = [];
