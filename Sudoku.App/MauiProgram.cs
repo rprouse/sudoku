@@ -33,11 +33,13 @@ public static class MauiProgram
         builder.Services.AddTransient<MenuViewModel>();
         builder.Services.AddSingleton<GameViewModel>();
         builder.Services.AddTransient<SettingsViewModel>();
+        builder.Services.AddTransient<KoanViewModel>();
 
         // Pages
         builder.Services.AddTransient<MenuPage>();
         builder.Services.AddTransient<GamePage>();
         builder.Services.AddTransient<SettingsPage>();
+        builder.Services.AddTransient<KoanPage>();
 
         return builder.Build();
     }
