@@ -22,6 +22,9 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     public partial bool ShowErrors { get; set; } = true;
 
+    [ObservableProperty]
+    public partial bool ShowKoans { get; set; } = true;
+
     public SettingsViewModel(SettingsService settingsService)
     {
         _settingsService = settingsService;
@@ -35,6 +38,7 @@ public partial class SettingsViewModel : ObservableObject
         HighlightRelatedCells = _settings.HighlightRelatedCells;
         HighlightSameNumbers = _settings.HighlightSameNumbers;
         ShowErrors = _settings.ShowErrors;
+        ShowKoans = _settings.ShowKoans;
     }
 
     partial void OnIsDarkThemeChanged(bool value)
@@ -46,6 +50,7 @@ public partial class SettingsViewModel : ObservableObject
     partial void OnHighlightRelatedCellsChanged(bool value) { _settings.HighlightRelatedCells = value; Save(); }
     partial void OnHighlightSameNumbersChanged(bool value) { _settings.HighlightSameNumbers = value; Save(); }
     partial void OnShowErrorsChanged(bool value) { _settings.ShowErrors = value; Save(); }
+    partial void OnShowKoansChanged(bool value) { _settings.ShowKoans = value; Save(); }
 
     private void Save() => _settingsService.Save(_settings);
 
