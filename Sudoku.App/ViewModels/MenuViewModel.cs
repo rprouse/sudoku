@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using Sudoku.App.Services;
 using Sudoku.Core;
 using Sudoku.Core.Game;
 using Sudoku.Core.Generators;
@@ -14,6 +15,7 @@ public partial class MenuViewModel : ObservableObject
     private readonly ISolver _solver;
     private readonly GamePersistenceService _persistenceService;
     private readonly GameViewModel _gameViewModel;
+    private readonly SettingsService _settingsService;
 
     [ObservableProperty]
     public partial bool HasSavedGame { get; set; }
@@ -25,12 +27,14 @@ public partial class MenuViewModel : ObservableObject
     public partial bool IsGenerating { get; set; }
 
     public MenuViewModel(SudokuGenerator generator, ISolver solver,
-        GamePersistenceService persistenceService, GameViewModel gameViewModel)
+        GamePersistenceService persistenceService, GameViewModel gameViewModel,
+        SettingsService settingsService)
     {
         _generator = generator;
         _solver = solver;
         _persistenceService = persistenceService;
         _gameViewModel = gameViewModel;
+        _settingsService = settingsService;
     }
 
     public async Task CheckForSavedGameAsync()
@@ -78,6 +82,10 @@ public partial class MenuViewModel : ObservableObject
         _gameViewModel.LoadState(state);
 
         IsGenerating = false;
-        await Shell.Current.GoToAsync(nameof(Views.GamePage));
+
+        var route = _settingsService.Load().ShowKoans
+            ? nameof(Views.KoanPage)
+            : nameof(Views.GamePage);
+        await Shell.Current.GoToAsync(route);
     }
 }
