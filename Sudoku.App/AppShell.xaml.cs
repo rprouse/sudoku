@@ -7,5 +7,6 @@ public partial class AppShell : Shell
         InitializeComponent();
         Routing.RegisterRoute(nameof(Views.GamePage), typeof(Views.GamePage));
         Routing.RegisterRoute(nameof(Views.SettingsPage), typeof(Views.SettingsPage));
+        Routing.RegisterRoute(nameof(Views.KoanPage), typeof(Views.KoanPage));
     }
 }

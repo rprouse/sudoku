@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Sudoku.App.ViewModels"
+             x:Class="Sudoku.App.Views.KoanPage"
+             x:DataType="vm:KoanViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight}, Dark={StaticResource PageBackgroundDark}}">
+
+    <Grid RowDefinitions="*,Auto" Padding="32,40">
+
+        <Image Source="{AppThemeBinding Light=sakura_branch_light.png, Dark=sakura_branch_dark.png}"
+               Grid.RowSpan="2"
+               InputTransparent="True"
+               Aspect="AspectFit"
+               HorizontalOptions="End"
+               VerticalOptions="Start"
+               WidthRequest="320"
+               HeightRequest="480" />
+
+        <Label Grid.Row="0"
+               Text="{Binding KoanText}"
+               FontSize="{Binding KoanFontSize}"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center"
+               VerticalOptions="Center"
+               LineHeight="1.4"
+               TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}"
+               Margin="16" />
+
+        <Button Grid.Row="1"
+                Text="Begin"
+                FontSize="16"
+                HeightRequest="56"
+                CornerRadius="16"
+                BackgroundColor="{AppThemeBinding Light=#7d8c6e, Dark=#9aab88}"
+                TextColor="White"
+                Margin="32,16,32,32"
+                Command="{Binding BeginCommand}" />
+
+    </Grid>
+</ContentPage>

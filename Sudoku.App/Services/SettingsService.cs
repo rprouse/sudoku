@@ -8,6 +8,7 @@ public class SettingsService
     private const string HighlightRelatedCellsKey = "HighlightRelatedCells";
     private const string HighlightSameNumbersKey = "HighlightSameNumbers";
     private const string ShowErrorsKey = "ShowErrors";
+    private const string ShowKoansKey = "ShowKoans";
 
     public GameSettings Load()
     {
@@ -16,7 +17,8 @@ public class SettingsService
             IsDarkTheme = Preferences.Default.Get(IsDarkThemeKey, true),
             HighlightRelatedCells = Preferences.Default.Get(HighlightRelatedCellsKey, true),
             HighlightSameNumbers = Preferences.Default.Get(HighlightSameNumbersKey, true),
-            ShowErrors = Preferences.Default.Get(ShowErrorsKey, true)
+            ShowErrors = Preferences.Default.Get(ShowErrorsKey, true),
+            ShowKoans = Preferences.Default.Get(ShowKoansKey, true)
         };
     }
 
@@ -26,5 +28,6 @@ public class SettingsService
         Preferences.Default.Set(HighlightRelatedCellsKey, settings.HighlightRelatedCells);
         Preferences.Default.Set(HighlightSameNumbersKey, settings.HighlightSameNumbers);
         Preferences.Default.Set(ShowErrorsKey, settings.ShowErrors);
+        Preferences.Default.Set(ShowKoansKey, settings.ShowKoans);
     }
 }

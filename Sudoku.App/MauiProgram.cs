@@ -26,17 +26,20 @@ public static class MauiProgram
         builder.Services.AddSingleton<DifficultyGrader>();
         builder.Services.AddSingleton<SudokuGenerator>();
         builder.Services.AddSingleton<SettingsService>();
+        builder.Services.AddSingleton<KoanService>();
         builder.Services.AddSingleton(_ => new GamePersistenceService(FileSystem.AppDataDirectory));
 
         // ViewModels
         builder.Services.AddTransient<MenuViewModel>();
         builder.Services.AddSingleton<GameViewModel>();
         builder.Services.AddTransient<SettingsViewModel>();
+        builder.Services.AddTransient<KoanViewModel>();
 
         // Pages
         builder.Services.AddTransient<MenuPage>();
         builder.Services.AddTransient<GamePage>();
         builder.Services.AddTransient<SettingsPage>();
+        builder.Services.AddTransient<KoanPage>();
 
         return builder.Build();
     }

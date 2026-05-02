@@ -52,6 +52,11 @@
           Condition="Exists('..\Sudoku.App\Resources\Images\sakura_branch_dark.svg')">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\Sudoku.App\Resources\Raw\koans.json"
+          Link="koans.json"
+          Condition="Exists('..\Sudoku.App\Resources\Raw\koans.json')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
