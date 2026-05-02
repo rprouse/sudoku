@@ -686,7 +686,6 @@ git commit -m "feat(app): add ShowKoans setting and Settings page toggle"
 - [ ] **Step 4.1: Create `Sudoku.App/Services/KoanService.cs`.**
 
 ```csharp
-using System.Text.Json;
 using Sudoku.Core.Game;
 
 namespace Sudoku.App.Services;

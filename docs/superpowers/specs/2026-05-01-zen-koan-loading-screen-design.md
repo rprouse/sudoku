@@ -87,6 +87,8 @@ public static class KoanParser
 Thin MAUI-specific wrapper around `KoanParser`. Singleton lifetime — the file is parsed and filtered once per app session.
 
 ```csharp
+using Sudoku.Core.Game;
+
 namespace Sudoku.App.Services;
 
 public class KoanService
