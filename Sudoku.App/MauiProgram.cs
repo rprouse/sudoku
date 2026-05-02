@@ -26,6 +26,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<DifficultyGrader>();
         builder.Services.AddSingleton<SudokuGenerator>();
         builder.Services.AddSingleton<SettingsService>();
+        builder.Services.AddSingleton<KoanService>();
         builder.Services.AddSingleton(_ => new GamePersistenceService(FileSystem.AppDataDirectory));
 
         // ViewModels
