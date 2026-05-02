@@ -375,7 +375,7 @@ namespace Sudoku.Tests;
 public class KoansAssetTests
 {
     private const string AssetFile = "koans.json";
-    private static readonly HashSet<string> KnownTones =
+    private static readonly HashSet<string> s_knownTones =
         new() { "gentle", "contemplative", "exchange", "sharp" };
 
     private static List<Koan> LoadKoans()
@@ -400,13 +400,13 @@ public class KoansAssetTests
         var koans = LoadKoans();
 
         var unknownTones = koans
-            .Where(k => !KnownTones.Contains(k.Tone))
+            .Where(k => !s_knownTones.Contains(k.Tone))
             .Select(k => $"id={k.Id} tone='{k.Tone}'")
             .ToList();
 
         unknownTones.Should().BeEmpty(
             "every tone must be in {gentle, contemplative, exchange, sharp}; " +
-            "if you're adding a new tone, update KnownTones in this test deliberately");
+            "if you're adding a new tone, update s_knownTones in this test deliberately");
     }
 
     [Test]
