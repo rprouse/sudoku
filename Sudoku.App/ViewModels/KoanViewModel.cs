@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -34,11 +36,14 @@ public partial class KoanViewModel : ObservableObject
                 _ => 20
             };
         }
-        catch (Exception)
+        catch (Exception ex) when (ex is IOException or JsonException or FileNotFoundException or InvalidOperationException)
         {
             // Asset missing or corrupt — bail straight to the puzzle.
             // The koan is decoration; failing to render one must not block play.
-            await Shell.Current.GoToAsync($"../{nameof(Views.GamePage)}");
+            // Nest the recovery nav in its own try/catch so a navigation failure
+            // here cannot leak out of OnAppearing's async void.
+            try { await Shell.Current.GoToAsync($"../{nameof(Views.GamePage)}"); }
+            catch { /* last resort — leave user on koan page; Begin button still works */ }
         }
     }
 
