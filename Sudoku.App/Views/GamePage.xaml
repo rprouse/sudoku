@@ -115,6 +115,7 @@
                     Padding="24,32" WidthRequest="340">
                 <VerticalStackLayout Spacing="12" HorizontalOptions="Fill">
                     <Label Text="&#9775;" FontSize="40"
+                           TextColor="{AppThemeBinding Light=#3d3632, Dark=#e0d8cf}"
                            HorizontalTextAlignment="Center" />
                     <Label x:Name="WinWordLabel"
                            Text="{Binding WinMessage}"
