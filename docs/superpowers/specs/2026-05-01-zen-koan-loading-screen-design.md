@@ -119,6 +119,8 @@ public class KoanService
 Transient lifetime (DI registration: `AddTransient`). A fresh instance per page push guarantees a fresh koan on each new puzzle, while the load-once guard inside `LoadAsync` keeps the same koan stable across `OnAppearing` calls (e.g., app resume).
 
 ```csharp
+using System.Text.Json;
+
 namespace Sudoku.App.ViewModels;
 
 public partial class KoanViewModel : ObservableObject
@@ -150,11 +152,14 @@ public partial class KoanViewModel : ObservableObject
                 _ => 20
             };
         }
-        catch (Exception)
+        catch (Exception ex) when (ex is IOException or JsonException or FileNotFoundException or InvalidOperationException)
         {
             // Asset missing or corrupt — bail straight to the puzzle.
             // The koan is decoration; failing to render one must not block play.
-            await Shell.Current.GoToAsync($"../{nameof(Views.GamePage)}");
+            // Nest the recovery nav in its own try/catch so a navigation failure
+            // here cannot leak out of OnAppearing's async void.
+            try { await Shell.Current.GoToAsync($"../{nameof(Views.GamePage)}"); }
+            catch { /* last resort — leave user on koan page; Begin button still works */ }
         }
     }
 
@@ -168,7 +173,7 @@ public partial class KoanViewModel : ObservableObject
 
 **Why `static` on `BeginCommand`:** the method captures nothing from the VM. The MVVM Toolkit source generator handles `static` `[RelayCommand]` methods cleanly and it suppresses an analyzer warning.
 
-**Why catch-all on `LoadAsync` failure:** `OpenAppPackageFileAsync` is a system-boundary call (file system / platform asset manager) that can genuinely fail — corrupt asset, malformed package, platform-specific edge case. The fallback path navigates to the already-loaded puzzle (`GameViewModel.State` was set on the menu before push). The koan is decoration; a render failure must not block play.
+**Why a narrowed catch on `LoadAsync` failure:** `OpenAppPackageFileAsync` is a system-boundary call (file system / platform asset manager) that can genuinely fail — corrupt asset, malformed package, platform-specific edge case. The filter lists the bounded set of exception types thrown by the load path (`IOException`/`FileNotFoundException` from the stream, `JsonException`/`InvalidOperationException` from `KoanParser.Parse`); programmer bugs (e.g., `NullReferenceException`) are deliberately not swallowed. The recovery navigation is itself wrapped in a nested try/catch so a navigation failure here cannot leak out of `OnAppearing`'s `async void` and crash the app — the worst case becomes "the user stays on the koan page and can still tap Begin." The fallback path navigates to the already-loaded puzzle (`GameViewModel.State` was set on the menu before push). The koan is decoration; a render failure must not block play.
 
 ### 5. Page — `Sudoku.App/Views/KoanPage.xaml` + `KoanPage.xaml.cs`
 
